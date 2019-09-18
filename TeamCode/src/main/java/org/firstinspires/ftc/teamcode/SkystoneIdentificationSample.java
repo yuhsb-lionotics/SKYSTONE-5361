@@ -106,8 +106,9 @@ public class SkystoneIdentificationSample extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
+    //EDIT: DO NOT CHANGE FOLLOWING 2 LINES--THIS IS OUR VUFORIA KEY
     private static final String VUFORIA_KEY =
-            "AboXNav/////AAABmeGOS7NozU5qnTs51UZZ17g1BcHElTpLG7nsEbYufdDfWLm+ZbdqBWX7hOXxoHiu9tzNUQI4PIsRb96x9UHLizYXL8ZzqsCRKqmHx6iiGL81vuTLUyZ3yTybJ5AENkTY8h7YrKSJZnvS7W3V4EoZFxXRe4mEhxxWYsYSlBx6MEX7m9RAet8LGIf35OjCd5wzC/tSGMs+RGx+4tU+aCQkytnoaPcnEGzzt9nLu/0DypuJFc2pI+FuwGw0Y52PbDBrnb/cw+SLSRYGbYavN77to3eguAn7rG8vN0W0RrYYvkWxiRh1HY0WWtew91WaN4+hmkwWRoEFmC6CAt3kAzg1NSQWpRGXNreOlMqOf8Dr+H8j";
+            "ASJ84HD/////AAABmRoapDQCMUVDsobE/TsERteBT/byfHigXNEF2qLnOl7XfT98+cbIJA2YIN0aAWkQjcn5auEYl861a1geKL9WarkoFWWN9GlCUSzte7rr/bvtZ5QK0bYpGvN428j0jaYFd24N59osAY7JsiVrs8E4fjzudhN82YVsC0vs11yYcDzTtSxtIZ2JEZcaiLEjoyOhJCe0H8FwnqP7z3XMIo8JmxlqKcDOD4YCc6VImHR4D/hUADmzvv5w2Genyq143rT/E2Zx6FzqIy0zY/tbNBtz2irIqGizqiNlyl3/bVbBa+Wqzyfhsxv4Z6v8dkAMYJCPT23fcdsHhMCKIaxvIDhX44LF4/AqVdhQPjGRwr5XPI3o";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
