@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.Range;
 /* This is an autonomous code based on the setup we had last year. */
 
 @Autonomous(name="Time-Based Auto", group="Autonomous")
-public class Auto5361 extends LinearOpMode {
+public class MecanumAutoTimeBased extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
