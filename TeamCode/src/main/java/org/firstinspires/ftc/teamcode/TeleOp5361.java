@@ -73,12 +73,12 @@ public class TeleOp5361 extends LinearOpMode {
         telemetry.addData("Drive Mode", driveMode);
         telemetry.update();
         if (driveMode == "Tank Control") {
-            leftPower = -gamepad1.left_stick.y;
-            rightPower = -gamepad1.right_stick.y;
+            leftPower = -gamepad1.left_stick_y;
+            rightPower = -gamepad1.right_stick_y;
         }
         else if (driveMode == "Joystick Control") {
-            leftPower = Range.clip(-gamepad1.right_stick.y + gamepad1.right_stick.x, -1, 1);
-            rightPower = Range.clip(-gamepad1.right_stick.y - gamepad2.right_stick.x, -1, 1);
+            leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
+            rightPower = Range.clip(-gamepad1.right_stick_y - gamepad2.right_stick_x, -1, 1);
         }
         else {telemetry.addData("Error", "unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0;}
 
