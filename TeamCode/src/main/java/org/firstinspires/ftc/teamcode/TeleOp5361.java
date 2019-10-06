@@ -32,7 +32,9 @@ public class TeleOp5361 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor, rightMotor, landerRiser;
     private Servo markerDrop;
-    private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control"
+    private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
+                                               //Press Y on the controller to change the mode.
+    private boolean yWasPressed = false;
 
     @Override
     public void runOpMode() {
@@ -48,7 +50,7 @@ public class TeleOp5361 extends LinearOpMode {
             double upPower = gamepad1.right_trigger;
             double downPower = -gamepad1.left_trigger;
             landerRiser.setPower(upPower + downPower); //To stop, let go of both. If that doesn't work, hold both all the way down, but this is not preferable.
-
+            //idle();
         }
     }
 
@@ -69,9 +71,15 @@ public class TeleOp5361 extends LinearOpMode {
         double leftPower;
         double rightPower;
 
-        //Assign values to leftPower and rightPower
+        if (!yWasPressed & gamepad1.y) {
+            if (driveMode == "Tank Control") {driveMode = "Joystick Control";}
+            else if (driveMode == "Joystick Control") {driveMode = "Tank Control";}
+            else {telemetry.addData("Error", "Unacceptable driveMode");}
+        }
+        yWasPressed = gamepad1.y;
         telemetry.addData("Drive Mode", driveMode);
         telemetry.update();
+        //Assign values to leftPower and rightPower
         if (driveMode == "Tank Control") {
             leftPower = -gamepad1.left_stick_y;
             rightPower = -gamepad1.right_stick_y;
@@ -80,7 +88,7 @@ public class TeleOp5361 extends LinearOpMode {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
             rightPower = Range.clip(-gamepad1.right_stick_y - gamepad2.right_stick_x, -1, 1);
         }
-        else {telemetry.addData("Error", "unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0;}
+        else {telemetry.addData("Error", "Unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0;}
 
         // write the values to the motors
         leftMotor.setPower(leftPower);
