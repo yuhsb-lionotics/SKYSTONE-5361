@@ -32,6 +32,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -136,6 +139,12 @@ public class SkystoneIdentificationSample extends LinearOpMode {
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
+
+    // Declare OpMode members.
+    public final boolean isBlueAlliance = true; //Set to false if red alliance
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor leftMotor, rightMotor, landerRiser;
+    private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
 
     @Override public void runOpMode() {
         /*
@@ -311,7 +320,11 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         // CONSEQUENTLY do not put any driving commands in this loop.
         // To restore the normal opmode structure, just un-comment the following line:
 
-        // waitForStart();
+        setUp();
+        //I uncommented:
+        waitForStart();
+
+        runtime.reset();
 
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
@@ -372,4 +385,32 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
     }
+
+    private void setUp(){
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+        if (isBlueAlliance) {
+            leftMotor = hardwareMap.dcMotor.get("leftMotor");
+            rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        } else {
+            rightMotor = hardwareMap.dcMotor.get("leftMotor");
+            leftMotor = hardwareMap.dcMotor.get("rightMotor");
+        }
+        servoFL = hardwareMap.servo.get("servoFL");
+        servoFR = hardwareMap.servo.get("servoFR");
+        servoBL = hardwareMap.servo.get("servoBL");
+        servoBR = hardwareMap.servo.get("servoBR");
+        landerRiser = hardwareMap.get(DcMotor.class, "lander riser");
+        clawUpDown = hardwareMap.servo.get("clawUpDown");
+
+        //switch these if the robot is going backward
+        leftMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        servoFL.setDirection(Servo.Direction.FORWARD);
+        servoFR.setDirection(Servo.Direction.REVERSE);
+        servoBL.setDirection(Servo.Direction.FORWARD);
+        servoBR.setDirection(Servo.Direction.REVERSE);
+        clawUpDown.setDirection(Servo.Direction.FORWARD);
+    }
 }
+

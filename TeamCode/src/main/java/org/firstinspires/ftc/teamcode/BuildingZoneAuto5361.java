@@ -17,10 +17,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Disabled
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
-    public final boolean isBlueTeam = true; //Set to false if red team
+    public final boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor, rightMotor, landerRiser;
-    private Servo markerDrop;
+    private Servo servoFR, servoFL, servoBR, servoBL;
 
     @Override
     public void runOpMode() {
@@ -36,12 +36,28 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
     private void setUp(){
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        leftMotor = hardwareMap.dcMotor.get("leftMotor");
-        rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        if (isBlueAlliance) {
+            leftMotor = hardwareMap.dcMotor.get("leftMotor");
+            rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        } else {
+            rightMotor = hardwareMap.dcMotor.get("leftMotor");
+            leftMotor = hardwareMap.dcMotor.get("rightMotor");
+        }
+        servoFL = hardwareMap.servo.get("servoFL");
+        servoFR = hardwareMap.servo.get("servoFR");
+        servoBL = hardwareMap.servo.get("servoBL");
+        servoBR = hardwareMap.servo.get("servoBR");
         landerRiser = hardwareMap.get(DcMotor.class, "lander riser");
-        markerDrop = hardwareMap.servo.get("marker");
         //switch these if the robot is going backward
         leftMotor.setDirection(DcMotor.Direction.FORWARD);
         rightMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        //switch these if the robot is going backward
+        leftMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        servoFL.setDirection(Servo.Direction.FORWARD);
+        servoFR.setDirection(Servo.Direction.REVERSE);
+        servoBL.setDirection(Servo.Direction.FORWARD);
+        servoBR.setDirection(Servo.Direction.REVERSE);
     }
 }

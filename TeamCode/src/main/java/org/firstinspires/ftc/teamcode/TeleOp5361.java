@@ -31,7 +31,7 @@ public class TeleOp5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor, rightMotor, landerRiser;
-    private Servo markerDrop;
+    private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
     private boolean yWasPressed = false;
@@ -49,7 +49,7 @@ public class TeleOp5361 extends LinearOpMode {
             //Lander Riser:
             double upPower = gamepad1.right_trigger;
             double downPower = -gamepad1.left_trigger;
-            landerRiser.setPower(upPower + downPower); //To stop, let go of both. If that doesn't work, hold both all the way down, but this is not preferable.
+            //landerRiser.setPower(upPower + downPower); //To stop, let go of both. If that doesn't work, hold both all the way down, but this is not preferable.
             //idle();
         }
     }
@@ -59,11 +59,21 @@ public class TeleOp5361 extends LinearOpMode {
         telemetry.update();
         leftMotor = hardwareMap.dcMotor.get("leftMotor");
         rightMotor = hardwareMap.dcMotor.get("rightMotor");
-        landerRiser = hardwareMap.get(DcMotor.class, "lander riser");
-        markerDrop = hardwareMap.servo.get("marker");
+        //landerRiser = hardwareMap.get(DcMotor.class, "lander riser");
+        servoFL = hardwareMap.servo.get("servoFL");
+        servoFR = hardwareMap.servo.get("servoFR");
+        servoBL = hardwareMap.servo.get("servoBL");
+        servoBR = hardwareMap.servo.get("servoBR");
+        clawUpDown = hardwareMap.servo.get("clawUpDown");
+
         //switch these if the robot is going backward
         leftMotor.setDirection(DcMotor.Direction.FORWARD);
         rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        servoFL.setDirection(Servo.Direction.FORWARD);
+        servoFR.setDirection(Servo.Direction.REVERSE);
+        servoBL.setDirection(Servo.Direction.FORWARD);
+        servoBR.setDirection(Servo.Direction.REVERSE);
+        clawUpDown.setDirection(Servo.Direction.FORWARD);
     }
 
     private void omniCalc() //turns the gamepad controls into omniwheel commands
@@ -71,28 +81,33 @@ public class TeleOp5361 extends LinearOpMode {
         double leftPower;
         double rightPower;
 
-        if (!yWasPressed & gamepad1.y) {
+     /* if (!yWasPressed & gamepad1.y) {
             if (driveMode == "Tank Control") {driveMode = "Joystick Control";}
             else if (driveMode == "Joystick Control") {driveMode = "Tank Control";}
             else {telemetry.addData("Error", "Unacceptable driveMode");}
         }
-        yWasPressed = gamepad1.y;
+        yWasPressed = gamepad1.y; */
         telemetry.addData("Drive Mode", driveMode);
         telemetry.update();
         //Assign values to leftPower and rightPower
         if (driveMode == "Tank Control") {
             leftPower = -gamepad1.left_stick_y;
             rightPower = -gamepad1.right_stick_y;
-        }
-        else if (driveMode == "Joystick Control") {
+        }/* else if (driveMode == "Joystick Control") {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
             rightPower = Range.clip(-gamepad1.right_stick_y - gamepad2.right_stick_x, -1, 1);
-        }
-        else {telemetry.addData("Error", "Unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0;}
+        } */ else {telemetry.addData("Error", "Unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0;}
 
         // write the values to the motors
         leftMotor.setPower(leftPower);
         rightMotor.setPower(rightPower);
+
+        if (gamepad1.right_bumper) {servoBL.setPosition(.1); servoBR.setPosition(.1);}
+        if (gamepad1.left_bumper) {servoBL.setPosition(.7); servoBR.setPosition(.7);}
+        if (gamepad1.b) {servoFL.setPosition(0); servoFR.setPosition(0);}
+        if (gamepad1.x) {servoFL.setPosition(.2); servoFR.setPosition(.2);}
+        if (gamepad1.y) {clawUpDown.setPosition(0.5);}
+        if (gamepad1.a) {clawUpDown.setPosition(0);}
 
         //What does this do?
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
