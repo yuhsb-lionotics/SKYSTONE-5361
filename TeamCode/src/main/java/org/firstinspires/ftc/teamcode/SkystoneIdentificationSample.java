@@ -140,6 +140,9 @@ public class SkystoneIdentificationSample extends LinearOpMode {
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
 
+    // For convenience, gather together all the trackable objects in one easily-iterable collection
+    private List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+
     // Declare OpMode members.
     public final boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
@@ -195,7 +198,7 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         rear2.setName("Rear Perimeter 2");
 
         // For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+        //List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>(); I put this outside of runOpMode
         allTrackables.addAll(targetsSkyStone);
 
         /**
@@ -331,56 +334,8 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
-        while (!isStopRequested()) {
-
-            // check all the trackable targets to see which one (if any) is visible.
-            targetVisible = false;
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
-
-                    if(trackable.getName().equals("Stone Target")){
-                        telemetry.addLine("Stone Target Is Visible");
-                    }
-
-                    targetVisible = true;
-
-                    // getUpdatedRobotLocation() will return null if no new information is available since
-                    // the last time that call was made, or if the trackable is not currently visible.
-                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
-                    if (robotLocationTransform != null) {
-                        lastLocation = robotLocationTransform;
-                    }
-                    break;
-                }
-            }
-
-            // Provide feedback as to where the robot is located (if we know).
-            String positionSkystone = "";
-            if (targetVisible) {
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-
-                double xPosition = translation.get(0);
-                if(xPosition < -10){
-                    positionSkystone = "left";
-                }else{
-                    positionSkystone = "center";
-                }
-
-                // express the rotation of the robot in degrees.
-                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-                telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-            }
-            else {
-                positionSkystone = "right";
-                telemetry.addData("Visible Target", "none");
-            }
-            telemetry.addData("Skystone Position", positionSkystone);
-            telemetry.update();
-        }
+        boolean isSkyStoneFound = false;
+        while (!isStopRequested() & !isSkyStoneFound) {vuforiaDetect();}
 
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
@@ -411,6 +366,56 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         servoBL.setDirection(Servo.Direction.FORWARD);
         servoBR.setDirection(Servo.Direction.REVERSE);
         clawUpDown.setDirection(Servo.Direction.FORWARD);
+    }
+
+    private void vuforiaDetect() {
+        // check all the trackable targets to see which one (if any) is visible.
+        targetVisible = false;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                telemetry.addData("Visible Target", trackable.getName());
+
+                if(trackable.getName().equals("Stone Target")){
+                    telemetry.addLine("Stone Target Is Visible");
+                }
+
+                targetVisible = true;
+
+                // getUpdatedRobotLocation() will return null if no new information is available since
+                // the last time that call was made, or if the trackable is not currently visible.
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+                break;
+            }
+        }
+
+        // Provide feedback as to where the robot is located (if we know).
+        String positionSkystone = "";
+        if (targetVisible) {
+            // express position (translation) of robot in inches.
+            VectorF translation = lastLocation.getTranslation();
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+
+            double xPosition = translation.get(0);
+            if(xPosition < -10){
+                positionSkystone = "left";
+            }else{
+                positionSkystone = "center";
+            }
+
+            // express the rotation of the robot in degrees.
+            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+        }
+        else {
+            positionSkystone = "right";
+            telemetry.addData("Visible Target", "none");
+        }
+        telemetry.addData("Skystone Position", positionSkystone);
+        telemetry.update();
     }
 }
 
