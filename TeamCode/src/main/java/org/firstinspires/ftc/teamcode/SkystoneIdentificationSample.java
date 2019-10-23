@@ -335,7 +335,13 @@ public class SkystoneIdentificationSample extends LinearOpMode {
 
         targetsSkyStone.activate();
         boolean isSkyStoneFound = false;
-        while (!isStopRequested() & !isSkyStoneFound) {vuforiaDetect();}
+        while (!isStopRequested() & !isSkyStoneFound) {vuforiaDetect(); omniCalc(); telemetry.update(); }
+        /* When done testing vuforia, copy-paste the code of vuforiaDetect() directly in here, not as a separate method.
+        In the actual autonomous it should only be called once (not in a loop).
+
+        if (positionSkystone == "left") {}
+        if (positionSkystone == "center") {}
+        if (positionSkystone == "right") {} */
 
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
@@ -392,7 +398,7 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         }
 
         // Provide feedback as to where the robot is located (if we know).
-        String positionSkystone = "";
+        String positionSkystone;
         if (targetVisible) {
             // express position (translation) of robot in inches.
             VectorF translation = lastLocation.getTranslation();
@@ -400,6 +406,7 @@ public class SkystoneIdentificationSample extends LinearOpMode {
                     translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
             double xPosition = translation.get(0);
+            //Make sure to reverse it if the robot is on the other side.
             if(xPosition < -10){
                 positionSkystone = "left";
             }else{
@@ -415,7 +422,27 @@ public class SkystoneIdentificationSample extends LinearOpMode {
             telemetry.addData("Visible Target", "none");
         }
         telemetry.addData("Skystone Position", positionSkystone);
-        telemetry.update();
+        //telemetry.update();
+    }
+
+    private void omniCalc() //turns the gamepad controls into omniwheel commands. Delete this method after testing vuforia.
+    {
+        // write the values to the motors
+        leftMotor.setPower(-gamepad1.left_stick_y);
+        rightMotor.setPower(-gamepad1.right_stick_y);
+
+        if (gamepad1.right_bumper) {servoBL.setPosition(.1); servoBR.setPosition(.1);}
+        if (gamepad1.left_bumper) {servoBL.setPosition(.7); servoBR.setPosition(.7);}
+        if (gamepad1.b) {servoFL.setPosition(0); servoFR.setPosition(0);}
+        if (gamepad1.x) {servoFL.setPosition(.2); servoFR.setPosition(.2);}
+        if (gamepad1.y) {clawUpDown.setPosition(0.5);}
+        if (gamepad1.a) {clawUpDown.setPosition(0);}
+
+        //What does this do?
+        String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Motors", teleFormat, -gamepad1.left_stick_y, -gamepad1.right_stick_y);
+        //telemetry.update();
     }
 }
 
