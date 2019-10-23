@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name="Building Zone Autonomous", group="Linear Opmode")
 @Disabled
-public class BuildingZoneAuto5361 extends LinearOpMode {
+public class OldBuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     public final boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
