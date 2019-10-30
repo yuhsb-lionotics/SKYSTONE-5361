@@ -25,7 +25,6 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Driver controlled", group="Linear Opmode")
-@Disabled
 public class TeleOp5361 extends LinearOpMode {
 
     // Declare OpMode members.
@@ -34,7 +33,7 @@ public class TeleOp5361 extends LinearOpMode {
     private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
-    private boolean yWasPressed = false;
+    //private boolean yWasPressed = false;
 
     @Override
     public void runOpMode() {
@@ -47,8 +46,8 @@ public class TeleOp5361 extends LinearOpMode {
         while (opModeIsActive()) {
             omniCalc();
             //Lander Riser:
-            double upPower = gamepad1.right_trigger;
-            double downPower = -gamepad1.left_trigger;
+            //double upPower = gamepad1.right_trigger;
+            //double downPower = -gamepad1.left_trigger;
             //landerRiser.setPower(upPower + downPower); //To stop, let go of both. If that doesn't work, hold both all the way down, but this is not preferable.
             //idle();
         }
@@ -67,13 +66,13 @@ public class TeleOp5361 extends LinearOpMode {
         clawUpDown = hardwareMap.servo.get("clawUpDown");
 
         //switch these if the robot is going backward
-        leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightMotor.setDirection(DcMotor.Direction.FORWARD);
         servoFL.setDirection(Servo.Direction.FORWARD);
         servoFR.setDirection(Servo.Direction.REVERSE);
-        servoBL.setDirection(Servo.Direction.FORWARD);
-        servoBR.setDirection(Servo.Direction.REVERSE);
-        clawUpDown.setDirection(Servo.Direction.FORWARD);
+        servoBL.setDirection(Servo.Direction.REVERSE);
+        servoBR.setDirection(Servo.Direction.FORWARD);
+        clawUpDown.setDirection(Servo.Direction.REVERSE);
     }
 
     private void omniCalc() //turns the gamepad controls into omniwheel commands
@@ -103,11 +102,11 @@ public class TeleOp5361 extends LinearOpMode {
         rightMotor.setPower(rightPower);
 
         if (gamepad1.right_bumper) {servoBL.setPosition(.1); servoBR.setPosition(.1);}
-        if (gamepad1.left_bumper) {servoBL.setPosition(.7); servoBR.setPosition(.7);}
-        if (gamepad1.b) {servoFL.setPosition(0); servoFR.setPosition(0);}
-        if (gamepad1.x) {servoFL.setPosition(.2); servoFR.setPosition(.2);}
-        if (gamepad1.y) {clawUpDown.setPosition(0.5);}
-        if (gamepad1.a) {clawUpDown.setPosition(0);}
+        if (gamepad1.left_bumper) {servoBL.setPosition(.75); servoBR.setPosition(.75);}
+        if (gamepad1.b) {servoFL.setPosition(.1); servoFR.setPosition(.1);}
+        if (gamepad1.x) {servoFL.setPosition(.4); servoFR.setPosition(.4);}
+        if (gamepad1.y) {clawUpDown.setPosition(0.12);}
+        if (gamepad1.a) {clawUpDown.setPosition(0.05);}
 
         //What does this do?
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
