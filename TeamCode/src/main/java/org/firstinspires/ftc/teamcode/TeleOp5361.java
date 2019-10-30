@@ -29,7 +29,7 @@ public class TeleOp5361 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftMotor, rightMotor, landerRiser;
+    private DcMotor leftMotor, rightMotor;
     private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
@@ -43,14 +43,7 @@ public class TeleOp5361 extends LinearOpMode {
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            omniCalc();
-            //Lander Riser:
-            //double upPower = gamepad1.right_trigger;
-            //double downPower = -gamepad1.left_trigger;
-            //landerRiser.setPower(upPower + downPower); //To stop, let go of both. If that doesn't work, hold both all the way down, but this is not preferable.
-            //idle();
-        }
+        while (opModeIsActive()) { omniCalc();  /*idle();*/ }
     }
 
     private void setUp(){
@@ -87,7 +80,6 @@ public class TeleOp5361 extends LinearOpMode {
         }
         yWasPressed = gamepad1.y; */
         telemetry.addData("Drive Mode", driveMode);
-        telemetry.update();
         //Assign values to leftPower and rightPower
         if (driveMode == "Tank Control") {
             leftPower = -gamepad1.left_stick_y;
