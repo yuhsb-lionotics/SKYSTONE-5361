@@ -13,14 +13,13 @@ import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Building Zone Autonomous", group="Linear Opmode")
-@Disabled
-public class OldBuildingZoneAuto5361 extends LinearOpMode {
+@Autonomous(name="Loading Zone Autonomous", group="Linear Opmode")
+public class LoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     public final boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftMotor, rightMotor, landerRiser;
-    private Servo servoFR, servoFL, servoBR, servoBL;
+    private DcMotor leftMotor, rightMotor;
+    private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
 
     @Override
     public void runOpMode() {
@@ -30,6 +29,21 @@ public class OldBuildingZoneAuto5361 extends LinearOpMode {
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
+        clawUpDown.setPosition(.035);
+        leftMotor.setPower(.5);
+        rightMotor.setPower(.5);
+        sleep(800);
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        servoFR.setPosition(.42); //Maybe .1
+        servoFL.setPosition(.3);
+        sleep(400);
+        leftMotor.setPower(-1);
+        rightMotor.setPower(-.1);
+        sleep(1000);
+        leftMotor.setPower(0.7);
+        rightMotor.setPower(0.7);
+        sleep(800);
 
     }
 
@@ -47,17 +61,16 @@ public class OldBuildingZoneAuto5361 extends LinearOpMode {
         servoFR = hardwareMap.servo.get("servoFR");
         servoBL = hardwareMap.servo.get("servoBL");
         servoBR = hardwareMap.servo.get("servoBR");
-        landerRiser = hardwareMap.get(DcMotor.class, "lander riser");
         //switch these if the robot is going backward
-        leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        clawUpDown = hardwareMap.servo.get("clawUpDown");
 
         //switch these if the robot is going backward
-        leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightMotor.setDirection(DcMotor.Direction.FORWARD);
         servoFL.setDirection(Servo.Direction.FORWARD);
         servoFR.setDirection(Servo.Direction.REVERSE);
         servoBL.setDirection(Servo.Direction.FORWARD);
         servoBR.setDirection(Servo.Direction.REVERSE);
+        clawUpDown.setDirection(Servo.Direction.REVERSE);
     }
 }
