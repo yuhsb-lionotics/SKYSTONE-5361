@@ -89,6 +89,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 @Disabled
 public class SkystoneIdentificationSample extends LinearOpMode {
 
+
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
     // 2) Phone Orientation. Choices are: PHONE_IS_PORTRAIT = true (portrait) or PHONE_IS_PORTRAIT = false (landscape)
@@ -143,6 +144,8 @@ public class SkystoneIdentificationSample extends LinearOpMode {
 
     // For convenience, gather together all the trackable objects in one easily-iterable collection
     private List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+
+    //comment end: removing Vuforia
 
     // Declare OpMode members.
     public final boolean isBlueAlliance = true; //Set to false if red alliance
@@ -325,7 +328,6 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         // To restore the normal opmode structure, just un-comment the following line:
 
         setUp();
-        //I uncommented:
         waitForStart();
 
         runtime.reset();
@@ -433,12 +435,13 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         rightMotor.setPower(-gamepad1.right_stick_y);
 
         if (gamepad1.right_bumper) {servoBL.setPosition(.1); servoBR.setPosition(.1);}
-        if (gamepad1.left_bumper) {servoBL.setPosition(.7); servoBR.setPosition(.7);}
-        if (gamepad1.b) {servoFL.setPosition(0); servoFR.setPosition(0);}
-        if (gamepad1.x) {servoFL.setPosition(.2); servoFR.setPosition(.2);}
-        if (gamepad1.y) {clawUpDown.setPosition(0.5);}
-        if (gamepad1.a) {clawUpDown.setPosition(0);}
+        if (gamepad1.left_bumper) {servoBL.setPosition(.75); servoBR.setPosition(.75);}
+        if (gamepad1.b) {servoFL.setPosition(.05); servoFR.setPosition(.12);}
+        if (gamepad1.x) {servoFL.setPosition(.45); servoFR.setPosition(.32);}
+        if (gamepad1.y) {clawUpDown.setPosition(0.07);}
+        if (gamepad1.a) {clawUpDown.setPosition(0.04);}
 
+        
         //What does this do?
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
