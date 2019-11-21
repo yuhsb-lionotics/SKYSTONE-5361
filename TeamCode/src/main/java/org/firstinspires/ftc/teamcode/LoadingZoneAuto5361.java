@@ -29,21 +29,49 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
+
+        telemetry.addData("Status","Toward stone");
+        telemetry.update();
         clawUpDown.setPosition(.035);
+        servoFL.setPosition(.05); //make narrower
+        servoFR.setPosition(.12);
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
         sleep(800);
+
+        telemetry.addData("Status", "Grabbing stone");
+        telemetry.update();
         leftMotor.setPower(0);
         rightMotor.setPower(0);
+        sleep(800);
         servoFR.setPosition(.42); //Maybe .1
-        servoFL.setPosition(.3);
-        sleep(400);
-        leftMotor.setPower(-1);
-        rightMotor.setPower(-.1);
+        servoFL.setPosition(.34);
+        sleep(500);
+        clawUpDown.setPosition(.07);
         sleep(1000);
+
+        telemetry.addData("Status","Turning back");
+        telemetry.update();
+        leftMotor.setPower(-1);
+        rightMotor.setPower(.1);
+        sleep(800);
+
+        telemetry.addData("Status", "Crossing bridge");
+        telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(800);
+        sleep(1500);
+
+        telemetry.addData("Status", "Release");
+        telemetry.update();
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(300);
+        servoFL.setPosition(.05);
+        servoFR.setPosition(.12);
+        sleep(500);
+
+        //then go backwards
 
     }
 
