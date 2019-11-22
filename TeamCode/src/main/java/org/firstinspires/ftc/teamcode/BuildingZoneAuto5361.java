@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Loading Zone Autonomous", group="Linear Opmode")
-public class LoadingZoneAuto5361 extends LinearOpMode {
+@Autonomous(name="Building Zone Autonomous", group="Linear Opmode")
+public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     public final boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
@@ -30,69 +30,8 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
 
-        telemetry.addData("Status","Toward stone");
-        telemetry.update();
-        clawUpDown.setPosition(.035);
-        servoFL.setPosition(.22); //may need adjusting
-        servoFR.setPosition(.30);
-        leftMotor.setPower(.5);
-        rightMotor.setPower(.5);
-        sleep(800);
-
-        telemetry.addData("Status", "Grabbing stone");
-        telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(800);
-        servoFL.setPosition(.34);
-        servoFR.setPosition(.47);
-        sleep(500);
-        clawUpDown.setPosition(.07);
-        sleep(1000);
-
-        telemetry.addData("Status","Turning back");
-        telemetry.update();
-        leftMotor.setPower(-1);
-        rightMotor.setPower(.1);
-        sleep(800);
-
-        telemetry.addData("Status", "Crossing bridge");
-        telemetry.update();
-        leftMotor.setPower(0.7);
-        rightMotor.setPower(0.7);
-        sleep(1200); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
-
-        telemetry.addData("Status", "Release");
-        telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        clawUpDown.setPosition(.035);
-        sleep(300);
-        servoFL.setPosition(.22);
-        servoFR.setPosition(.30);
-        sleep(500);
-
-        telemetry.addData("Status","Back to Loading Zone");
-        telemetry.update();
-        leftMotor.setPower(-0.7);
-        rightMotor.setPower(-0.7);
-        sleep(1400);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(300);
-
-        telemetry.addData("Status","Turning forward");
-        telemetry.update();
-        leftMotor.setPower(1);
-        rightMotor.setPower(-.2);
-        sleep(700);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(300);
-
-        telemetry.addData("Status", "In position for next block [done]");
-        telemetry.update();
-        sleep(2500); //At the end, try to park over midfield tape (5 points)
+        //Goal: Move the foundation (probably go around and push it) to the building site (10 points).
+        //At the end, try to park over midfield tape (5 points).
 
     }
 
