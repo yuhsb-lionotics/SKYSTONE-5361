@@ -37,7 +37,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.30);
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(800);
+        sleep(900);
 
         telemetry.addData("Status", "Grabbing stone");
         telemetry.update();
@@ -48,19 +48,19 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.47);
         sleep(500);
         clawUpDown.setPosition(.07);
-        sleep(1000);
+        sleep(800);
 
         telemetry.addData("Status","Turning back");
         telemetry.update();
         leftMotor.setPower(-1);
         rightMotor.setPower(.1);
-        sleep(800);
+        sleep(900);
 
         telemetry.addData("Status", "Crossing bridge");
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(1200); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+        sleep(1700); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
 
         telemetry.addData("Status", "Release");
         telemetry.update();
@@ -76,7 +76,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(-0.7);
         rightMotor.setPower(-0.7);
-        sleep(1400);
+        sleep(2000);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
         sleep(300);
@@ -90,9 +90,32 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         rightMotor.setPower(0);
         sleep(300);
 
-        telemetry.addData("Status", "In position for next block [done]");
+        telemetry.addData("Status", "Grabbing stone");
         telemetry.update();
-        sleep(2500); //At the end, try to park over midfield tape (5 points)
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(800);
+        servoFL.setPosition(.34);
+        servoFR.setPosition(.47);
+        sleep(500);
+        clawUpDown.setPosition(.07);
+        sleep(800);
+
+        telemetry.addData("Status","Turning back");
+        telemetry.update();
+        leftMotor.setPower(-1);
+        rightMotor.setPower(.1);
+        sleep(900);
+
+        //Add code to bring the second block all the way in
+
+        telemetry.addData("Status", "Parking");
+        telemetry.update();
+        leftMotor.setPower(0.7);
+        rightMotor.setPower(0.7);
+        sleep(1200);
+
+        //At the end, try to park over midfield tape (5 points)
 
     }
 
