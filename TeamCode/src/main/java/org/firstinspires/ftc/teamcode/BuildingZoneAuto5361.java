@@ -33,6 +33,50 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         //Goal: Move the foundation (probably go around and push it) to the building site (10 points).
         //At the end, try to park over midfield tape (5 points).
 
+        //Robot starts facing backward with the middle of the robot aligned with the middle of the foundation.
+        telemetry.addData("Status","Toward foundation");
+        telemetry.update();
+        servoFL.setPosition(.8);
+        servoFR.setPosition(.9);
+        leftMotor.setPower(-.7);
+        rightMotor.setPower(-.7);
+        sleep(1000);
+
+        telemetry.addData("Status", "Grabbing foundation");
+        telemetry.update();
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(300);
+        servoBL.setPosition(.78);
+        servoBR.setPosition(.75);
+        sleep(643); //(not Siri recommended)
+
+        telemetry.addData("Status", "Pulling foundation");
+        telemetry.update();
+        leftMotor.setPower(1);
+        rightMotor.setPower(1);
+        sleep(2500); //tentative
+
+        telemetry.addData("Status", "Releasing foundation");
+        telemetry.update();
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        servoBL.setPosition(.13);
+        servoBR.setPosition(.1);
+        sleep(643);
+        leftMotor.setPower(.4);
+        rightMotor.setPower(.4);
+
+        telemetry.addData("Status", "Turning");
+        telemetry.update();
+        sleep(150);
+        leftMotor.setPower(.5);
+        rightMotor.setPower(-.5);
+        sleep(700);
+
+        telemetry.addData("Status", "Pulling out");
+        telemetry.update();
+        leftMotor.setPower(.5);
     }
 
     private void setUp(){
@@ -56,8 +100,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
         servoFL.setDirection(Servo.Direction.FORWARD);
         servoFR.setDirection(Servo.Direction.REVERSE);
-        servoBL.setDirection(Servo.Direction.FORWARD);
-        servoBR.setDirection(Servo.Direction.REVERSE);
+        servoBL.setDirection(Servo.Direction.REVERSE);
+        servoBR.setDirection(Servo.Direction.FORWARD);
         clawUpDown.setDirection(Servo.Direction.REVERSE);
     }
 }

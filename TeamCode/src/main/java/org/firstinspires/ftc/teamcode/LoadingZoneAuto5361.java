@@ -33,6 +33,8 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.addData("Status","Toward stone");
         telemetry.update();
         clawUpDown.setPosition(.035);
+        servoBL.setPosition(.13);
+        servoBR.setPosition(.1);
         servoFL.setPosition(.22); //may need adjusting
         servoFR.setPosition(.30);
         leftMotor.setPower(.5);
