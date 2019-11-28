@@ -74,6 +74,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         servoBL.setPosition(.13);
         servoBR.setPosition(.1);
         sleep(643);
+        //May have to turn a little so the robot doesn't crash
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
         sleep(1500);
