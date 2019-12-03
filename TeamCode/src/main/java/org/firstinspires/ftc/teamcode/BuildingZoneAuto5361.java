@@ -33,7 +33,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         //Goal: Move the foundation (probably go around and push it) to the building site (10 points).
         //At the end, try to park over midfield tape (5 points).
 
-        //Robot starts facing backward with the middle of the robot aligned with the middle of the foundation.
+        //Robot starts facing backward with the left edge of the robot aligned with the left edge of the foundation (on the blue alliance).
         telemetry.addData("Status","Toward foundation");
         telemetry.update();
         servoFL.setPosition(.8);
@@ -51,13 +51,11 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         servoBR.setPosition(.75);
         sleep(643); //(not Siri recommended)
 
-        telemetry.addData("Status", "Pulling foundation");
+        telemetry.addData("Status", "Pulling foundation around");
         telemetry.update();
-        leftMotor.setPower(1);
-        rightMotor.setPower(1);
-        sleep(1000); //tentative
-        leftMotor.setPower(0);
-        sleep(1000);
+        leftMotor.setPower(.2);
+        rightMotor.setPower(.8);
+        sleep(2000); //tentative
 
         telemetry.addData("Status", "Pushing foundation");
         telemetry.update();
