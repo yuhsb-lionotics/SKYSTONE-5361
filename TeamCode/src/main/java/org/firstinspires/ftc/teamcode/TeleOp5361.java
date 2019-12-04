@@ -97,8 +97,8 @@ public class TeleOp5361 extends LinearOpMode {
         if (gamepad1.left_bumper) {servoBL.setPosition(.78); servoBR.setPosition(.75);} //down
         if (gamepad1.b) {servoFL.setPosition(.05); servoFR.setPosition(.12);} //open - originally both .1
         if (gamepad1.x) {servoFL.setPosition(.34); servoFR.setPosition(.47);} // close - originally both .4
-        if (gamepad1.y) {clawUpDown.setPosition(0.07);}
-        if (gamepad1.a) {clawUpDown.setPosition(0.035);}
+        if (gamepad1.y) {clawUpDown.setPosition(0.7);} //up
+        if (gamepad1.a) {clawUpDown.setPosition(0.1);} //down
         if (gamepad1.dpad_left) { //debugging
             clawUpDown.setPosition(gamepad1.right_trigger/2);
             //telemetry.addData("Claw Position", gamepad1.right_trigger/10);

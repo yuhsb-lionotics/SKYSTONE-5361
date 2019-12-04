@@ -32,14 +32,14 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
 
         telemetry.addData("Status","Toward stone");
         telemetry.update();
-        clawUpDown.setPosition(.035);
+        clawUpDown.setPosition(.1);
         servoBL.setPosition(.13);
         servoBR.setPosition(.1);
-        servoFL.setPosition(.22); //may need adjusting
-        servoFR.setPosition(.30);
+        servoFL.setPosition(.18); //may need adjusting
+        servoFR.setPosition(.26);
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(900);
+        sleep(1100);
 
         telemetry.addData("Status", "Grabbing stone");
         telemetry.update();
@@ -49,26 +49,26 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         servoFL.setPosition(.34);
         servoFR.setPosition(.47);
         sleep(500);
-        clawUpDown.setPosition(.07);
+        clawUpDown.setPosition(.7);
         sleep(800);
 
         telemetry.addData("Status","Turning back");
         telemetry.update();
         leftMotor.setPower(-1);
         rightMotor.setPower(.1);
-        sleep(900);
+        sleep(1200);
 
         telemetry.addData("Status", "Crossing bridge");
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(1700); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+        sleep(2000); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
 
         telemetry.addData("Status", "Release");
         telemetry.update();
         leftMotor.setPower(0);
         rightMotor.setPower(0);
-        clawUpDown.setPosition(.035);
+        clawUpDown.setPosition(.1);
         sleep(300);
         servoFL.setPosition(.22);
         servoFR.setPosition(.30);
@@ -78,7 +78,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(-0.7);
         rightMotor.setPower(-0.7);
-        sleep(2000);
+        sleep(2300);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
         sleep(300);
@@ -100,7 +100,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         servoFL.setPosition(.34);
         servoFR.setPosition(.47);
         sleep(500);
-        clawUpDown.setPosition(.07);
+        clawUpDown.setPosition(.7);
         sleep(800);
 
         telemetry.addData("Status","Turning back");
@@ -142,8 +142,8 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
         servoFL.setDirection(Servo.Direction.FORWARD);
         servoFR.setDirection(Servo.Direction.REVERSE);
-        servoBL.setDirection(Servo.Direction.FORWARD);
-        servoBR.setDirection(Servo.Direction.REVERSE);
+        servoBL.setDirection(Servo.Direction.REVERSE);
+        servoBR.setDirection(Servo.Direction.FORWARD);
         clawUpDown.setDirection(Servo.Direction.REVERSE);
     }
 }
