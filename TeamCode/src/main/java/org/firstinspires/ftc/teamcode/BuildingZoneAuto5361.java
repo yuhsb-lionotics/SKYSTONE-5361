@@ -54,8 +54,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.addData("Status", "Pulling foundation around");
         telemetry.update();
         leftMotor.setPower(.2);
-        rightMotor.setPower(.8);
-        sleep(4500);
+        rightMotor.setPower(1);
+        sleep(4000);
 
         telemetry.addData("Status", "Repositioning");
         leftMotor.setPower(0);
@@ -63,25 +63,19 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         servoBL.setPosition(.13);
         servoBR.setPosition(.1);
         sleep(300);
-        leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(500);
-        rightMotor.setPower(0);
-        sleep(200);
-        leftMotor.setPower(0);
-        rightMotor.setPower(-.5);
-        sleep(600);
-        leftMotor.setPower(-.5);
         sleep(400);
-        rightMotor.setPower(0);
+        leftMotor.setPower(.5);
+        sleep(400);
+        rightMotor.setPower(-.5);
+        sleep(400);
+        leftMotor.setPower(-.5);
         sleep(400);
 
         telemetry.addData("Status", "Pushing foundation");
         telemetry.update();
-        rightMotor.setPower(0);
-        sleep(300);
-        leftMotor.setPower(-.5);
-        rightMotor.setPower(-.5);
+        leftMotor.setPower(-.8);
+        rightMotor.setPower(-.8);
         sleep(1500);
 
         telemetry.addData("Status", "Releasing foundation");
@@ -92,7 +86,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         //May have to turn a little so the robot doesn't crash
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(1500);
+        sleep(1600);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
 

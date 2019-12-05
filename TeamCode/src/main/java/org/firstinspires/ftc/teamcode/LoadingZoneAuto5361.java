@@ -35,8 +35,8 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         clawUpDown.setPosition(.1);
         servoBL.setPosition(.13);
         servoBR.setPosition(.1);
-        servoFL.setPosition(.18); //may need adjusting
-        servoFR.setPosition(.26);
+        servoFL.setPosition(.16); //may need adjusting
+        servoFR.setPosition(.25);
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
         sleep(1100);
@@ -78,12 +78,12 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(-0.7);
         rightMotor.setPower(-0.7);
-        sleep(2300);
+        sleep(1300);  // 2300 if going back for a second block
         leftMotor.setPower(0);
         rightMotor.setPower(0);
         sleep(300);
 
-        telemetry.addData("Status","Turning forward");
+    /*  telemetry.addData("Status","Turning forward");
         telemetry.update();
         leftMotor.setPower(1);
         rightMotor.setPower(-.2);
@@ -115,7 +115,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(1200);
+        sleep(1200); */
 
         //At the end, try to park over midfield tape (5 points)
 
