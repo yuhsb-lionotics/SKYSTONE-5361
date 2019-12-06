@@ -55,22 +55,22 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(.2);
         rightMotor.setPower(1);
-        sleep(4000);
-
-        telemetry.addData("Status", "Repositioning");
+        sleep(4200);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
         servoBL.setPosition(.13);
         servoBR.setPosition(.1);
         sleep(300);
+
+        telemetry.addData("Status", "Repositioning");
         rightMotor.setPower(.5);
-        sleep(400);
+        sleep(400); //angle
         leftMotor.setPower(.5);
-        sleep(400);
+        sleep(600); //distance
         rightMotor.setPower(-.5);
-        sleep(400);
+        sleep(300); //twisting
         leftMotor.setPower(-.5);
-        sleep(400);
+        sleep(450); //returning to foundation
 
         telemetry.addData("Status", "Pushing foundation");
         telemetry.update();
