@@ -441,7 +441,7 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         if (gamepad1.y) {clawUpDown.setPosition(0.07);}
         if (gamepad1.a) {clawUpDown.setPosition(0.04);}
 
-
+        
         //What does this do?
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
