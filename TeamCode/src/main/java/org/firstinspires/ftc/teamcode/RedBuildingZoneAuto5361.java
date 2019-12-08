@@ -67,7 +67,7 @@ public class RedBuildingZoneAuto5361 extends BuildingZoneAuto5361 {
         telemetry.update();
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(1000);
+        sleep(2150);
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
