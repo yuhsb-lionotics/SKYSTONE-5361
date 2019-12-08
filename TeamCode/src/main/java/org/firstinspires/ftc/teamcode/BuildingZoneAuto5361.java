@@ -13,13 +13,15 @@ import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Building Zone Autonomous", group="Linear Opmode")
+@Autonomous(name="Blue Building Zone Auto", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
-    public final boolean isBlueAlliance = true; //Set to false if red alliance
+    // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor, rightMotor;
     private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
+
+    public boolean getIsBlueAlliance() {return true;}
 
     @Override
     public void runOpMode() {
@@ -106,12 +108,16 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
     private void setUp(){
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        if (isBlueAlliance) {
+        if (getIsBlueAlliance()) {
             leftMotor = hardwareMap.dcMotor.get("leftMotor");
             rightMotor = hardwareMap.dcMotor.get("rightMotor");
+            leftMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightMotor.setDirection(DcMotor.Direction.FORWARD);
         } else {
             rightMotor = hardwareMap.dcMotor.get("leftMotor");
             leftMotor = hardwareMap.dcMotor.get("rightMotor");
+            rightMotor.setDirection(DcMotor.Direction.REVERSE);
+            leftMotor.setDirection(DcMotor.Direction.FORWARD);
         }
         servoFL = hardwareMap.servo.get("servoFL");
         servoFR = hardwareMap.servo.get("servoFR");
@@ -120,8 +126,6 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         clawUpDown = hardwareMap.servo.get("clawUpDown");
 
         //switch these if the robot is going backward
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
         servoFL.setDirection(Servo.Direction.FORWARD);
         servoFR.setDirection(Servo.Direction.REVERSE);
         servoBL.setDirection(Servo.Direction.REVERSE);
