@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Blue Loading (Good Al.)", group="Linear Opmode") // assuming our teammate's robot will move the foundation to the building site
-public class LoadingZoneAuto5361 extends LinearOpMode {
+@Autonomous(name="Blue Loading (Bad Al.)", group="Linear Opmode") // Assuming our teammate will do nothing
+public class SafeLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
@@ -64,65 +64,45 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(3700); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+        sleep(2700); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+
+        telemetry.addData("Status", "Turning");
+        telemetry.update();
+        leftMotor.setPower(0.7);
+        rightMotor.setPower(-0.7);
+        sleep(600);
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(300);
 
         telemetry.addData("Status", "Release");
         telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
         clawUpDown.setPosition(.1);
         sleep(300);
         servoFL.setPosition(.22);
         servoFR.setPosition(.30);
         sleep(500);
 
+        telemetry.addData("Status", "Turning the other way");
+        telemetry.update();
+        leftMotor.setPower(-0.7);
+        rightMotor.setPower(0.7);
+        sleep(600);
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(300);
+
         telemetry.addData("Status","Back to Loading Zone");
         telemetry.update();
         leftMotor.setPower(-0.7);
         rightMotor.setPower(-0.7);
-        sleep(1500);  // 2300 if going back for a second block
+        sleep(1000);  // 2300 if going back for a second block
         leftMotor.setPower(0);
         rightMotor.setPower(0);
         sleep(300);
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
-
-    /*  telemetry.addData("Status","Turning forward");
-        telemetry.update();
-        leftMotor.setPower(1);
-        rightMotor.setPower(-.2);
-        sleep(700);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(300);
-
-        telemetry.addData("Status", "Grabbing stone");
-        telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(800);
-        servoFL.setPosition(.34);
-        servoFR.setPosition(.47);
-        sleep(500);
-        clawUpDown.setPosition(.7);
-        sleep(800);
-
-        telemetry.addData("Status","Turning back");
-        telemetry.update();
-        leftMotor.setPower(-1);
-        rightMotor.setPower(.1);
-        sleep(900);
-
-        //Add code to bring the second block all the way in
-
-        telemetry.addData("Status", "Parking");
-        telemetry.update();
-        leftMotor.setPower(0.7);
-        rightMotor.setPower(0.7);
-        sleep(1200); */
-
-        //At the end, try to park over midfield tape (5 points)
 
     }
 
