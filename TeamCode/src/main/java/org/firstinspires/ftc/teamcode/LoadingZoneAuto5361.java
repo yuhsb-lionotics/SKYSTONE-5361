@@ -41,7 +41,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.25);
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(1100);
+        sleep(1000);
 
         telemetry.addData("Status", "Grabbing stone");
         telemetry.update();
@@ -64,7 +64,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(3700); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+        sleep(3500); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
 
         telemetry.addData("Status", "Release");
         telemetry.update();

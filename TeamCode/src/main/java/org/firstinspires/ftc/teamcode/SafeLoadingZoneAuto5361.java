@@ -41,7 +41,7 @@ public class SafeLoadingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.25);
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(1100);
+        sleep(1000);
 
         telemetry.addData("Status", "Grabbing stone");
         telemetry.update();
