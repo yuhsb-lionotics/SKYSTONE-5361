@@ -42,7 +42,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.9);
         leftMotor.setPower(-.7);
         rightMotor.setPower(-.7);
-        sleep(1000);
+        sleep(1100);
 
         telemetry.addData("Status", "Grabbing foundation");
         telemetry.update();
@@ -51,19 +51,40 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         sleep(300);
         servoBL.setPosition(.78);
         servoBR.setPosition(.75);
-        sleep(643); //(not Siri recommended)
+        sleep(500); //(not Siri recommended)
 
-        telemetry.addData("Status", "Pulling foundation around");
+        telemetry.addData("Status", "Pull F");
+        leftMotor.setPower(.7);
+        rightMotor.setPower(.7);
+        sleep(1000);
+
+        telemetry.addData("Status", "Turning F");
         telemetry.update();
-        leftMotor.setPower(.2);
+        leftMotor.setPower(-1);
         rightMotor.setPower(1);
-        sleep(4200);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        sleep(4000);
+
+        telemetry.addData("Status", "Unlatch");
         servoBL.setPosition(.13);
-        servoBR.setPosition(.1);
+        servoBR.setPosition(.10);
         sleep(300);
 
+
+        telemetry.addData("Status", "Pushing foundation");
+        telemetry.update();
+        leftMotor.setPower(-.8);
+        rightMotor.setPower(-.8);
+        sleep(1500);
+
+        telemetry.addData("Status", "Robot park under bridge");
+        telemetry.update();
+        leftMotor.setPower(.5);
+        rightMotor.setPower(.5);
+        sleep(1000);
+
+        telemetry.addData("Dinner", "Served <0/");
+        telemetry.update();
+/*
         telemetry.addData("Status", "Repositioning");
         rightMotor.setPower(.5);
         sleep(400); //angle
@@ -72,14 +93,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         rightMotor.setPower(-.5);
         sleep(300); //twisting
         leftMotor.setPower(-.5);
-        sleep(450); //returning to foundation
-
-        telemetry.addData("Status", "Pushing foundation");
-        telemetry.update();
-        leftMotor.setPower(-.8);
-        rightMotor.setPower(-.8);
-        sleep(1500);
-
+        sleep(450); //returning to foundation*/
+/*
         telemetry.addData("Status", "Releasing foundation");
         telemetry.update();
         leftMotor.setPower(0);
@@ -88,21 +103,11 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         //May have to turn a little so the robot doesn't crash
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(1600);
+        sleep(3000);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
 
-        /* Old autonomous (go around and push)
-        telemetry.addData("Status", "Turning");
-        telemetry.update();
-        sleep(150);
-        leftMotor.setPower(.5);
-        rightMotor.setPower(-.5);
-        sleep(700);
-
-        telemetry.addData("Status", "Pulling out");
-        telemetry.update();
-        leftMotor.setPower(.5); */
+ */
     }
 
     private void setUp(){
