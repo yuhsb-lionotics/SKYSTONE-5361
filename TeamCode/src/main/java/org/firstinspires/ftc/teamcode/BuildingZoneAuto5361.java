@@ -4,12 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -23,7 +20,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
     public boolean getIsBlueAlliance() {return true;}
 
-    @Override
+
     public void runOpMode() {
         setUp();
         // Wait for the game to start (driver presses PLAY)
@@ -42,7 +39,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.9);
         leftMotor.setPower(-.7);
         rightMotor.setPower(-.7);
-        sleep(1100);
+        sleep(1200);
 
         telemetry.addData("Status", "Grabbing foundation");
         telemetry.update();
@@ -51,7 +48,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         sleep(300);
         servoBL.setPosition(.78);
         servoBR.setPosition(.75);
-        sleep(500); //(not Siri recommended)
+        sleep(500);
 
         telemetry.addData("Status", "Pull F");
         leftMotor.setPower(.7);
@@ -62,7 +59,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(-1);
         rightMotor.setPower(1);
-        sleep(4000);
+        sleep(6000);
 
         telemetry.addData("Status", "Unlatch");
         servoBL.setPosition(.13);
@@ -74,7 +71,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(-.8);
         rightMotor.setPower(-.8);
-        sleep(1500);
+        sleep(2000);
 
         telemetry.addData("Status", "Robot park under bridge");
         telemetry.update();
