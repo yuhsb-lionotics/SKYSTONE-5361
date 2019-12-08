@@ -64,7 +64,7 @@ public class SafeLoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(2700); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+        sleep(2700);
 
         telemetry.addData("Status", "Turning");
         telemetry.update();
@@ -83,23 +83,45 @@ public class SafeLoadingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.30);
         sleep(500);
 
-        telemetry.addData("Status", "Turning the other way");
+        //the following until end is taken from building zone
+
+        telemetry.addData("Status", "Grabbing foundation");
         telemetry.update();
-        leftMotor.setPower(-0.7);
-        rightMotor.setPower(0.7);
-        sleep(600);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
+        sleep(300);
+        servoBL.setPosition(.78);
+        servoBR.setPosition(.75);
+        sleep(500);
+
+        telemetry.addData("Status", "Pull F");
+        leftMotor.setPower(.6);
+        rightMotor.setPower(.8);
+        sleep(1000);
+
+        telemetry.addData("Status", "Turning F");
+        telemetry.update();
+        leftMotor.setPower(-1);
+        rightMotor.setPower(1);
+        sleep(7000);
+
+        telemetry.addData("Status", "Unlatch");
+        servoBL.setPosition(.13);
+        servoBR.setPosition(.10);
         sleep(300);
 
-        telemetry.addData("Status","Back to Loading Zone");
+
+        telemetry.addData("Status", "Pushing foundation");
         telemetry.update();
-        leftMotor.setPower(-0.7);
-        rightMotor.setPower(-0.7);
-        sleep(1000);  // 2300 if going back for a second block
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(300);
+        leftMotor.setPower(-.8);
+        rightMotor.setPower(-.8);
+        sleep(2000);
+
+        telemetry.addData("Status", "Robot park under bridge");
+        telemetry.update();
+        leftMotor.setPower(.5);
+        rightMotor.setPower(.5);
+        sleep(1000);
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();

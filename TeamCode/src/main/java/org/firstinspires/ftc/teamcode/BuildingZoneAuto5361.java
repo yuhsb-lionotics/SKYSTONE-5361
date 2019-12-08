@@ -51,15 +51,15 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         sleep(500);
 
         telemetry.addData("Status", "Pull F");
-        leftMotor.setPower(.7);
-        rightMotor.setPower(.7);
+        leftMotor.setPower(.6);
+        rightMotor.setPower(.8);
         sleep(1000);
 
         telemetry.addData("Status", "Turning F");
         telemetry.update();
         leftMotor.setPower(-1);
         rightMotor.setPower(1);
-        sleep(6000);
+        sleep(7000);
 
         telemetry.addData("Status", "Unlatch");
         servoBL.setPosition(.13);
@@ -81,30 +81,6 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
-/*
-        telemetry.addData("Status", "Repositioning");
-        rightMotor.setPower(.5);
-        sleep(400); //angle
-        leftMotor.setPower(.5);
-        sleep(600); //distance
-        rightMotor.setPower(-.5);
-        sleep(300); //twisting
-        leftMotor.setPower(-.5);
-        sleep(450); //returning to foundation*/
-/*
-        telemetry.addData("Status", "Releasing foundation");
-        telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(643);
-        //May have to turn a little so the robot doesn't crash
-        leftMotor.setPower(.5);
-        rightMotor.setPower(.5);
-        sleep(3000);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-
- */
     }
     
     private void setUp(){

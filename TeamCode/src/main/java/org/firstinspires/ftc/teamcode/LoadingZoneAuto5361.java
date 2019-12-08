@@ -43,7 +43,55 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         rightMotor.setPower(.5);
         sleep(1000);
 
-        telemetry.addData("Status", "Grabbing stone");
+        telemetry.addData("Status", "Grabbing stone #1");
+        telemetry.update();
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(800);
+        servoFL.setPosition(.34);
+        servoFR.setPosition(.47);
+        sleep(500);
+        clawUpDown.setPosition(.7);
+        sleep(800);
+
+        telemetry.addData("Status","Turning back");
+        telemetry.update();
+        leftMotor.setPower(-1);
+        rightMotor.setPower(.1);
+        sleep(900);
+
+        telemetry.addData("Status", "Crossing bridge");
+        telemetry.update();
+        leftMotor.setPower(0.7);
+        rightMotor.setPower(0.7);
+        sleep(1250);
+
+        telemetry.addData("Status", "Release stone #1");
+        telemetry.update();
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        clawUpDown.setPosition(.1);
+        sleep(300);
+        servoFL.setPosition(.22);
+        servoFR.setPosition(.30);
+        sleep(500);
+
+        telemetry.addData("Status","Back to Loading Zone for stone #2");
+        telemetry.update();
+        leftMotor.setPower(-0.7);
+        rightMotor.setPower(-0.7);
+        sleep(2300);  // 2300 if going back for a second block
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
+        sleep(300);
+
+        telemetry.addData("Status", "Turn to face for 2nd Block");
+        telemetry.update();
+        leftMotor.setPower(1);
+        rightMotor.setPower(-.1);
+        sleep(1100);
+
+        telemetry.addData("Status", "Grabbing stone #2");
         telemetry.update();
         leftMotor.setPower(0);
         rightMotor.setPower(0);
@@ -64,9 +112,9 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(0.7);
         rightMotor.setPower(0.7);
-        sleep(3500); //Try to time it so the stone falls in the foundation. Robot must be completely in the building zone.
+        sleep(1250);
 
-        telemetry.addData("Status", "Release");
+        telemetry.addData("Status", "Release stone #1");
         telemetry.update();
         leftMotor.setPower(0);
         rightMotor.setPower(0);
@@ -76,54 +124,16 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         servoFR.setPosition(.30);
         sleep(500);
 
-        telemetry.addData("Status","Back to Loading Zone");
+        telemetry.addData("Status", "Parking under Bridge");
         telemetry.update();
-        leftMotor.setPower(-0.7);
-        rightMotor.setPower(-0.7);
-        sleep(1500);  // 2300 if going back for a second block
+        leftMotor.setPower(.5);
+        rightMotor.setPower(.5);
+        sleep(500);
         leftMotor.setPower(0);
         rightMotor.setPower(0);
-        sleep(300);
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
-
-    /*  telemetry.addData("Status","Turning forward");
-        telemetry.update();
-        leftMotor.setPower(1);
-        rightMotor.setPower(-.2);
-        sleep(700);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(300);
-
-        telemetry.addData("Status", "Grabbing stone");
-        telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
-        sleep(800);
-        servoFL.setPosition(.34);
-        servoFR.setPosition(.47);
-        sleep(500);
-        clawUpDown.setPosition(.7);
-        sleep(800);
-
-        telemetry.addData("Status","Turning back");
-        telemetry.update();
-        leftMotor.setPower(-1);
-        rightMotor.setPower(.1);
-        sleep(900);
-
-        //Add code to bring the second block all the way in
-
-        telemetry.addData("Status", "Parking");
-        telemetry.update();
-        leftMotor.setPower(0.7);
-        rightMotor.setPower(0.7);
-        sleep(1200); */
-
-        //At the end, try to park over midfield tape (5 points)
-
     }
 
     private void setUp(){
