@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Blue Building Zone Auto", group="Linear Opmode")
+@Autonomous(name="MOVE FORWARD LOL", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
@@ -27,12 +27,6 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-
-        //Goal: Move the foundation (probably go around and push it) to the building site (10 points).
-        //At the end, try to park over midfield tape (5 points).
-
-        //Robot starts facing backward with the left edge of the robot aligned with the left edge of the foundation (on the blue alliance).
         telemetry.addData("Status","Toward foundation");
         telemetry.update();
         servoFL.setPosition(.8);
@@ -51,15 +45,15 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         sleep(500);
 
         telemetry.addData("Status", "Pull F");
-        leftMotor.setPower(.6);
-        rightMotor.setPower(.8);
+        leftMotor.setPower(.7);
+        rightMotor.setPower(.7);
         sleep(1000);
 
         telemetry.addData("Status", "Turning F");
         telemetry.update();
         leftMotor.setPower(-1);
         rightMotor.setPower(1);
-        sleep(7000);
+        sleep(6000);
 
         telemetry.addData("Status", "Unlatch");
         servoBL.setPosition(.13);
@@ -77,12 +71,12 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         leftMotor.setPower(.5);
         rightMotor.setPower(.5);
-        sleep(1000);
+        sleep(1075);
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
     }
-    
+
     private void setUp(){
         telemetry.addData("Status", "Initialized");
         telemetry.update();
