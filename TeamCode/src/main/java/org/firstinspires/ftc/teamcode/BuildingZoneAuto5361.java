@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+@Disabled
 @Autonomous(name="MOVE FORWARD LOL", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.

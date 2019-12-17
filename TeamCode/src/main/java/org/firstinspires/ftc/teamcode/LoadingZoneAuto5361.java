@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+@Disabled
 @Autonomous(name="Blue Loading (Good Al.)", group="Linear Opmode") // assuming our teammate's robot will move the foundation to the building site
 public class LoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
