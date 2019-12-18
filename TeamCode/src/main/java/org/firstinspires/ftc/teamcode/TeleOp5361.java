@@ -2,13 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -29,8 +25,8 @@ public class TeleOp5361 extends LinearOpMode {
 
     // Declare OpMode members. //RECODING FOR 6 MOTORS, 5 SERVOS
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motorBL, motorBR, motorFL, motorFR, motorM, clawTower;
-    private Servo bClawR, bClawL, fGripR, fGripL, bClawM; //fGrip : foundationGripRight/Left, bClaw : blockClawRight/Left/Middle
+    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
+    private Servo sClawR, sClawL, fGripR, fGripL, bClawM; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
     //private boolean yWasPressed = false;
@@ -53,10 +49,10 @@ public class TeleOp5361 extends LinearOpMode {
         motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFL = hardwareMap.dcMotor.get("motorFL");
         motorFR = hardwareMap.dcMotor.get("motorFR");
-        motorM = hardwareMap.dcMotor.get("motorM");
+        strafeMotor = hardwareMap.dcMotor.get("motorM");
         clawTower = hardwareMap.dcMotor.get("clawTower");
-        bClawL = hardwareMap.servo.get("blockClawL");
-        bClawR = hardwareMap.servo.get("blockClawR");
+        sClawL = hardwareMap.servo.get("blockClawL");
+        sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
         bClawM = hardwareMap.servo.get("blockClawM");
@@ -66,10 +62,10 @@ public class TeleOp5361 extends LinearOpMode {
         motorBR.setDirection(DcMotor.Direction.FORWARD);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
-        motorM.setDirection(DcMotor.Direction.FORWARD);
+        strafeMotor.setDirection(DcMotor.Direction.FORWARD);
         clawTower.setDirection(DcMotor.Direction.FORWARD);
-        bClawL.setDirection(Servo.Direction.FORWARD);
-        bClawR.setDirection(Servo.Direction.REVERSE);
+        sClawL.setDirection(Servo.Direction.FORWARD);
+        sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
         bClawM.setDirection(Servo.Direction.REVERSE);
@@ -103,14 +99,25 @@ public class TeleOp5361 extends LinearOpMode {
 
         if (gamepad1.right_bumper) {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
         if (gamepad1.left_bumper) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
-        if (gamepad1.b) {bClawL.setPosition(.05); bClawR.setPosition(.12);} //open - originally both .1
-        if (gamepad1.x) {bClawL.setPosition(.34); bClawR.setPosition(.47);} // close - originally both .4
+        if (gamepad1.b) {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1
+        if (gamepad1.x) {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
         if (gamepad1.y) {bClawM.setPosition(0.7);} //up
         if (gamepad1.a) {bClawM.setPosition(0.1);} //down
-        if (gamepad1.dpad_left) { //debugging
+
+        /*
+        float rTrigger = gamepad1.right_trigger;
+        float lTrigger = gamepad1.left_trigger;
+        if(rTrigger > 0){
+            strafeMotor.setPower(-rTrigger);
+        } else if(lTrigger > 0){
+            strafeMotor.setPower(lTrigger);
+        } */
+        strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+
+        /* if (gamepad1.dpad_left) { //debugging
             bClawM.setPosition(gamepad1.right_trigger/2);
             //telemetry.addData("Claw Position", gamepad1.right_trigger/10);
-        }telemetry.addData("Claw Position", bClawM.getPosition());
+        }telemetry.addData("Claw Position", bClawM.getPosition()); */
 
         //What does this do?
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
