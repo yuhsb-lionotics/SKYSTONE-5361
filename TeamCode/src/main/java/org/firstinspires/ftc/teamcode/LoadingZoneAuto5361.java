@@ -140,11 +140,36 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
     private void setUp(){ //account for alliance
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        motorBL = hardwareMap.dcMotor.get("motorBL");
-        motorBR = hardwareMap.dcMotor.get("motorBR");
-        motorFL = hardwareMap.dcMotor.get("motorFL");
-        motorFR = hardwareMap.dcMotor.get("motorFR");
-        strafeMotor = hardwareMap.dcMotor.get("motorM");
+
+        // Exchange right and left if in the red alliance.
+        // We may need to assign a different variable to represent motors that don't switch for vuforia,
+        // if the camera is on the side of the phone.
+        if(getIsBlueAlliance()){
+            motorBL = hardwareMap.dcMotor.get("motorBL");
+            motorFL = hardwareMap.dcMotor.get("motorFL");
+            motorBR = hardwareMap.dcMotor.get("motorBR");
+            motorFR = hardwareMap.dcMotor.get("motorFR");
+            strafeMotor = hardwareMap.dcMotor.get("motorM");
+
+            motorBL.setDirection(DcMotor.Direction.REVERSE);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorBR.setDirection(DcMotor.Direction.FORWARD);
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+        } else {
+            motorBR = hardwareMap.dcMotor.get("motorBL");
+            motorFR = hardwareMap.dcMotor.get("motorFL");
+            motorBL = hardwareMap.dcMotor.get("motorBR");
+            motorFL = hardwareMap.dcMotor.get("motorFR");
+            strafeMotor = hardwareMap.dcMotor.get("motorM");
+
+            motorBR.setDirection(DcMotor.Direction.REVERSE);
+            motorFR.setDirection(DcMotor.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.REVERSE);
+        }
+
         clawTower = hardwareMap.dcMotor.get("clawTower");
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
@@ -152,12 +177,7 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
         fGripR = hardwareMap.servo.get("foundationGripR");
         bClawM = hardwareMap.servo.get("blockClawM");
 
-        //switch these if the robot is going backward
-        motorBL.setDirection(DcMotor.Direction.REVERSE);
-        motorBR.setDirection(DcMotor.Direction.FORWARD);
-        motorFL.setDirection(DcMotor.Direction.REVERSE);
-        motorFR.setDirection(DcMotor.Direction.FORWARD);
-        strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+        //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
