@@ -33,108 +33,176 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
 
-        /* telemetry.addData("Status","Toward stone");
+        telemetry.addData("Status","Toward stone");
         telemetry.update();
+		
         clawUpDown.setPosition(.1);
         servoBL.setPosition(.13);
         servoBR.setPosition(.1);
         servoFL.setPosition(.16); //may need adjusting
         servoFR.setPosition(.25);
-        leftMotor.setPower(.5);
-        rightMotor.setPower(.5);
+		
+        motorFL.setPower(.5);
+		motorBL.setPower(.5);
+        motorFR.setPower(.5);
+		motorBR.setPower(.5);
+		
         sleep(1000);
 
-        telemetry.addData("Status", "Grabbing stone #1");
+        telemetry.addData("Status", "Grabbing stone #1");	
         telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+		
+        motorFL.setPower(0);
+		motorBL.setPower(0);
+		motorFR.setPower(0);
+		motorBR.setPower(0);
+		
         sleep(800);
+		
         servoFL.setPosition(.34);
         servoFR.setPosition(.47);
+		
         sleep(500);
+		
         clawUpDown.setPosition(.7);
         sleep(800);
 
         telemetry.addData("Status","Turning back");
         telemetry.update();
-        leftMotor.setPower(-1);
-        rightMotor.setPower(.1);
+		
+        motorFL.setPower(-1);
+		motorBL.setPower(-1);
+		motorFR.setPower(.1);
+		motorBR.setPower(.1);
+		
         sleep(900);
 
         telemetry.addData("Status", "Crossing bridge");
         telemetry.update();
-        leftMotor.setPower(0.7);
-        rightMotor.setPower(0.7);
+		
+        motorFL.setPower(0.7);
+		motorBL.setPower(0.7);
+		motorFR.setPower(0.7);
+		motorBR.setPower(0.7);
+		
         sleep(1250);
 
         telemetry.addData("Status", "Release stone #1");
         telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+		
+        motorFL.setPower(0);
+        motorBL.setPower(0);
+		motorFR.setPower(0);
+		motorBR.setPower(0);
+		
         clawUpDown.setPosition(.1);
+		
         sleep(300);
+		
         servoFL.setPosition(.22);
         servoFR.setPosition(.30);
+		
         sleep(500);
 
         telemetry.addData("Status","Back to Loading Zone for stone #2");
         telemetry.update();
-        leftMotor.setPower(-0.7);
-        rightMotor.setPower(-0.7);
+		
+        motorFL.setPower(-0.7);
+        motorBL.setPower(-0.7);
+		motorFR.setPower(-0.7);
+		motorBR.setPower(-0.7);
+		
         sleep(2300);  // 2300 if going back for a second block
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+		
+        motorFL.setPower(0);
+        motorBL.setPower(0);
+		motorFR.setPower(0);
+		motorBR.setPower(0);
+		
         sleep(300);
 
         telemetry.addData("Status", "Turn to face for 2nd Block");
         telemetry.update();
-        leftMotor.setPower(1);
-        rightMotor.setPower(-.1);
+		
+        motorFL.setPower(1);
+		motorBL.setPower(1);
+        motorFR.setPower(-.1);
+		motorBR.setPower(-.1);
+		
         sleep(1100);
 
         telemetry.addData("Status", "Grabbing stone #2");
         telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+		
+        motorFL.setPower(0);
+        motorBL.setPower(0);
+		motorFR.setPower(0);
+		motorBR.setPower(0);
+		
         sleep(800);
+		
         servoFL.setPosition(.34);
         servoFR.setPosition(.47);
+		
         sleep(500);
+		
         clawUpDown.setPosition(.7);
         sleep(800);
 
         telemetry.addData("Status","Turning back");
         telemetry.update();
-        leftMotor.setPower(-1);
-        rightMotor.setPower(.1);
+		
+        motorFL.setPower(-1);
+        motorBL.setPower(-1);
+		motorFR.setPower(.1);
+		motorBR.setPower(.1);
+		
         sleep(1050);
 
         telemetry.addData("Status", "Crossing bridge");
         telemetry.update();
-        leftMotor.setPower(0.7);
-        rightMotor.setPower(0.7);
+		
+        motorFL.setPower(0.7);
+		motorBL.setPower(0.7)
+        motorFR.setPower(0.7);
+		motorBR.setPower(0.7);
+		
         sleep(1250);
 
         telemetry.addData("Status", "Release stone #1");
         telemetry.update();
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+		
+        motorFL.setPower(0);
+		motorBL.setPower(0);
+		motorFR.setPower(0);
+        motorBR.setPower(0);
+		
         clawUpDown.setPosition(.1);
+		
         sleep(300);
+		
         servoFL.setPosition(.22);
         servoFR.setPosition(.30);
+		
         sleep(500);
 
         telemetry.addData("Status", "Parking under Bridge");
         telemetry.update();
-        leftMotor.setPower(.5);
-        rightMotor.setPower(.5);
+		
+        motorFL.setPower(.5);
+		motorBL.setPower(.5);
+		motorFR.setPower(.5);
+        motorBR.setPower(.5);
+		
         sleep(500);
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+		
+        motorFL.setPower(0);
+		motorBL.setPower(0);
+		motorFR.setPower(0);
+        motorBR.setPower(0);
 
         telemetry.addData("Dinner", "Served <0/");
-        telemetry.update(); */
+        telemetry.update(); 
     }
 
     private void setUp(){ //account for alliance
