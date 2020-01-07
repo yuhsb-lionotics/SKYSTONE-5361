@@ -187,44 +187,39 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
     }
     /* //Account for the 5 driving motors
     public void encoderDrive(double speed,
-                             double FLin, double FRin, double BLin, double BRin, double SMin
+                             double FLin, double FRin, double BLin, double BRin,
                              double timeoutS) { // middle inputs are how many inches to travel
         int newFLTarget;
         int newFRTarget;
         int newBLTarget;
         int newBRTarget;
-		int newSMTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFLTarget = motorFR.getCurrentPosition() + (int) (FLin * COUNTS_PER_INCH);
-            newFRTarget = motorFL.getCurrentPosition() + (int) (FRin * COUNTS_PER_INCH);
-            newBLTarget = motorBL.getCurrentPosition() + (int) (BLin * COUNTS_PER_INCH);
-            newBRTarget = motorBR.getCurrentPosition() + (int) (BRin * COUNTS_PER_INCH);
-			newSMTarget = strafeMotor.getCurrentPosition() + (int) (SMin * COUNTS_PER_INCH);
+            newFLTarget = FR.getCurrentPosition() + (int) (FLin * COUNTS_PER_INCH);
+            newFRTarget = FL.getCurrentPosition() + (int) (FRin * COUNTS_PER_INCH);
+            newBLTarget = BL.getCurrentPosition() + (int) (BLin * COUNTS_PER_INCH);
+            newBRTarget = BR.getCurrentPosition() + (int) (BRin * COUNTS_PER_INCH);
 
-            motorFR.setTargetPosition(newFLTarget);
-            motorFL.setTargetPosition(newFRTarget);
-            motorBL.setTargetPosition(newBLTarget);
-            motorBR.setTargetPosition(newBRTarget);
-			strafeMotor.setTargetPosition(newSMTarget);
+            FR.setTargetPosition(newFLTarget);
+            FL.setTargetPosition(newFRTarget);
+            BL.setTargetPosition(newBLTarget);
+            BR.setTargetPosition(newBRTarget);
 
             // Turn On RUN_TO_POSITION
-            motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-			strafeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
-            motorFR.setPower(Math.abs(speed));
-            motorFL.setPower(Math.abs(speed));
-            motorBL.setPower(Math.abs(speed));
-            motorBR.setPower(Math.abs(speed));
-			strafeMotor.setPower(Math.abs(speed));
+            FR.setPower(Math.abs(speed));
+            FL.setPower(Math.abs(speed));
+            BL.setPower(Math.abs(speed));
+            BR.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -239,27 +234,24 @@ public class LoadingZoneAuto5361 extends LinearOpMode {
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d :%7d", newFLTarget, newFRTarget, newBLTarget, newFLTarget);
                 telemetry.addData("Path2", "Running at %7d :%7d :%7d",
-                        motorFR.getCurrentPosition(),
-                        motorFL.getCurrentPosition(),
-                        motorBL.getCurrentPosition(),
-                        motorBR.getCurrentPosition()
-						strafeMotor.getCurrentPosition());
+                        FR.getCurrentPosition(),
+                        FL.getCurrentPosition(),
+                        BL.getCurrentPosition(),
+                        BR.getCurrentPosition());
                 telemetry.update();
             }
 
             // Stop all motion;
-            motorFR.setPower(0);
-            motorFL.setPower(0);
-            motorBL.setPower(0);
-            motorBR.setPower(0);
-			strafeMotor.setPower(0);
+            FR.setPower(0);
+            FL.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-			strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     } */
 }
