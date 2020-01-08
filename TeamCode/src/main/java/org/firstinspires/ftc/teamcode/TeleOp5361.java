@@ -25,7 +25,7 @@ public class TeleOp5361 extends LinearOpMode {
 
     // Declare OpMode members. //RECODING FOR 6 MOTORS, 4 SERVOS
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
+    private DcMotor motorFL, motorFR, strafeMotor, clawTower;
     private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
@@ -45,8 +45,8 @@ public class TeleOp5361 extends LinearOpMode {
     private void setUp(){
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        motorBL = hardwareMap.dcMotor.get("motorBL");
-        motorBR = hardwareMap.dcMotor.get("motorBR");
+        //motorBL = hardwareMap.dcMotor.get("motorBL");
+        //motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFL = hardwareMap.dcMotor.get("motorFL");
         motorFR = hardwareMap.dcMotor.get("motorFR");
         strafeMotor = hardwareMap.dcMotor.get("motorM");
@@ -57,8 +57,8 @@ public class TeleOp5361 extends LinearOpMode {
         fGripR = hardwareMap.servo.get("foundationGripR");
 
         //switch these if the robot is going backward
-        motorBL.setDirection(DcMotor.Direction.REVERSE);
-        motorBR.setDirection(DcMotor.Direction.FORWARD);
+        //motorBL.setDirection(DcMotor.Direction.REVERSE);
+        //motorBR.setDirection(DcMotor.Direction.FORWARD);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
         strafeMotor.setDirection(DcMotor.Direction.REVERSE); //change if backwards
@@ -92,8 +92,8 @@ public class TeleOp5361 extends LinearOpMode {
         } */ else {telemetry.addData("Error", "Unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0;}
 
         // write the values to the motors
-        motorBL.setPower(leftPower);
-        motorBR.setPower(rightPower);
+        //motorBL.setPower(leftPower);
+        //motorBR.setPower(rightPower);
         motorFL.setPower(leftPower);
         motorFR.setPower(rightPower);
 
@@ -102,8 +102,8 @@ public class TeleOp5361 extends LinearOpMode {
         if (gamepad1.left_bumper) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
         if (gamepad1.b) {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //might have to make these open more for robotV2
         if (gamepad1.x) {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
-        if (gamepad1.y) {clawTower.setPower(1); sleep(3000);} //tower up
-        if (gamepad1.a) {clawTower.setPower(-1); sleep(3000);} //tower down
+        if (gamepad1.y) {clawTower.setPower(1); sleep(1500);} //tower up
+        if (gamepad1.a) {clawTower.setPower(-1); sleep(1500);} //tower down
 
 
         /*
