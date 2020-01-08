@@ -23,10 +23,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name="Driver controlled", group="Linear Opmode")
 public class TeleOp5361 extends LinearOpMode {
 
-    // Declare OpMode members. //RECODING FOR 6 MOTORS, 5 SERVOS
+    // Declare OpMode members. //RECODING FOR 6 MOTORS, 4 SERVOS
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
-    private Servo sClawR, sClawL, fGripR, fGripL, bClawM; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
+    private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
     //private boolean yWasPressed = false;
@@ -55,22 +55,19 @@ public class TeleOp5361 extends LinearOpMode {
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
-        bClawM = hardwareMap.servo.get("blockClawM");
 
         //switch these if the robot is going backward
         motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
-        strafeMotor.setDirection(DcMotor.Direction.FORWARD);
-        clawTower.setDirection(DcMotor.Direction.FORWARD);
+        strafeMotor.setDirection(DcMotor.Direction.REVERSE); //change if backwards
+        clawTower.setDirection(DcMotor.Direction.FORWARD); //change if backwards
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
-        bClawM.setDirection(Servo.Direction.REVERSE);
     }
-//thousand,,,work from here down, recode 6motors and 5servos (5wheels+1eightytwenty tower, 2foundation grips, 3 prongs to hold block)
     private void omniCalc() //turns the gamepad controls into omniwheel commands
     {
         double leftPower;
@@ -88,6 +85,7 @@ public class TeleOp5361 extends LinearOpMode {
             leftPower = -gamepad1.left_stick_y;
             rightPower = -gamepad1.right_stick_y;
 
+
         }/* else if (driveMode == "Joystick Control") {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
             rightPower = Range.clip(-gamepad1.right_stick_y - gamepad2.right_stick_x, -1, 1);
@@ -96,13 +94,17 @@ public class TeleOp5361 extends LinearOpMode {
         // write the values to the motors
         motorBL.setPower(leftPower);
         motorBR.setPower(rightPower);
+        motorFL.setPower(leftPower);
+        motorFR.setPower(rightPower);
+
 
         if (gamepad1.right_bumper) {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
         if (gamepad1.left_bumper) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
-        if (gamepad1.b) {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1
+        if (gamepad1.b) {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //might have to make these open more for robotV2
         if (gamepad1.x) {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
-        if (gamepad1.y) {bClawM.setPosition(0.7);} //up
-        if (gamepad1.a) {bClawM.setPosition(0.1);} //down
+        if (gamepad1.y) {clawTower.setPower(1); sleep(3000);} //tower up
+        if (gamepad1.a) {clawTower.setPower(-1); sleep(3000);} //tower down
+
 
         /*
         float rTrigger = gamepad1.right_trigger;
@@ -112,7 +114,7 @@ public class TeleOp5361 extends LinearOpMode {
         } else if(lTrigger > 0){
             strafeMotor.setPower(lTrigger);
         } */
-        strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+        //strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //[thousand]
 
         /* if (gamepad1.dpad_left) { //debugging
             bClawM.setPosition(gamepad1.right_trigger/2);
