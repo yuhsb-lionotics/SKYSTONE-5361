@@ -87,8 +87,13 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 @TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
 @Disabled
-public class SkystoneIdentificationSample extends LinearOpMode {
+public class VuforiaLoadingZoneAuto5361 extends LinearOpMode {
 
+    // Declare OpMode members.
+    public boolean getIsBlueAlliance() {return true;} //set to false if red alliance
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
+    private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -146,12 +151,6 @@ public class SkystoneIdentificationSample extends LinearOpMode {
     private List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
 
     //comment end: removing Vuforia
-
-    // Declare OpMode members.
-    public final boolean isBlueAlliance = true; //Set to false if red alliance
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftMotor, rightMotor, landerRiser;
-    private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
 
     @Override public void runOpMode() {
         /*
@@ -310,7 +309,9 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
         final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
         final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
+        final float CAMERA_LEFT_DISPLACEMENT;
+        if(getIsBlueAlliance()) {CAMERA_LEFT_DISPLACEMENT     = 0;}    // eg: Camera is ON the robot's center line
+        else                    {CAMERA_LEFT_DISPLACEMENT     = 0;}    // should be negative of blue value
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
                     .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -331,6 +332,8 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         waitForStart();
 
         runtime.reset();
+
+        //if(getIsBlueAlliance()) {blueSample();} else {redSample();}
 
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
@@ -353,28 +356,52 @@ public class SkystoneIdentificationSample extends LinearOpMode {
     private void setUp(){
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        if (isBlueAlliance) {
-            leftMotor = hardwareMap.dcMotor.get("leftMotor");
-            rightMotor = hardwareMap.dcMotor.get("rightMotor");
-        } else {
-            rightMotor = hardwareMap.dcMotor.get("leftMotor");
-            leftMotor = hardwareMap.dcMotor.get("rightMotor");
+        if (getIsBlueAlliance()) {
+            motorFL = hardwareMap.dcMotor.get("motorFL");
+            motorBL = hardwareMap.dcMotor.get("motorBL");
+            motorFR = hardwareMap.dcMotor.get("motorFR");
+            motorBR = hardwareMap.dcMotor.get("motorBR");
+            //switch these if the robot is going backward
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.REVERSE);
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            motorBR.setDirection(DcMotor.Direction.FORWARD);
+        } else { //switch right and left
+            motorFR = hardwareMap.dcMotor.get("motorFL");
+            motorBR = hardwareMap.dcMotor.get("motorBL");
+            motorFL = hardwareMap.dcMotor.get("motorFR");
+            motorBL = hardwareMap.dcMotor.get("motorBR");
+            //switch these if the robot is going backward
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            motorBR.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.REVERSE);
         }
-        servoFL = hardwareMap.servo.get("servoFL");
-        servoFR = hardwareMap.servo.get("servoFR");
-        servoBL = hardwareMap.servo.get("servoBL");
-        servoBR = hardwareMap.servo.get("servoBR");
-        landerRiser = hardwareMap.get(DcMotor.class, "lander riser");
-        clawUpDown = hardwareMap.servo.get("clawUpDown");
 
-        //switch these if the robot is going backward
-        leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
-        servoFL.setDirection(Servo.Direction.FORWARD);
-        servoFR.setDirection(Servo.Direction.REVERSE);
-        servoBL.setDirection(Servo.Direction.FORWARD);
-        servoBR.setDirection(Servo.Direction.REVERSE);
-        clawUpDown.setDirection(Servo.Direction.FORWARD);
+
+        strafeMotor = hardwareMap.dcMotor.get("motorM");
+        clawTower = hardwareMap.dcMotor.get("clawTower");
+        sClawL = hardwareMap.servo.get("blockClawL");
+        sClawR = hardwareMap.servo.get("blockClawR");
+        fGripL = hardwareMap.servo.get("foundationGripL");
+        fGripR = hardwareMap.servo.get("foundationGripR");
+
+
+        strafeMotor.setDirection(DcMotor.Direction.REVERSE); //change if backwards
+        clawTower.setDirection(DcMotor.Direction.FORWARD); //change if backwards
+        sClawL.setDirection(Servo.Direction.FORWARD);
+        sClawR.setDirection(Servo.Direction.REVERSE);
+        fGripL.setDirection(Servo.Direction.REVERSE);
+        fGripR.setDirection(Servo.Direction.FORWARD);
+
+    }
+
+    private void blueSample() {
+
+    }
+
+    private void redSample() { //remember that right and left are swapped.
+
     }
 
     private void vuforiaDetect() {
@@ -428,25 +455,36 @@ public class SkystoneIdentificationSample extends LinearOpMode {
         //telemetry.update();
     }
 
-    private void omniCalc() //turns the gamepad controls into omniwheel commands. Delete this method after testing vuforia.
+    private void omniCalc() //turns the gamepad controls into omniwheel commands
     {
+        double leftPower;
+        double rightPower;
+        double strafePower;
+
+        //Assign values to leftPower and rightPower
+        leftPower = -gamepad1.left_stick_y;
+        rightPower = -gamepad1.right_stick_y;
+        strafePower = gamepad1.left_trigger - gamepad1.right_trigger;
+
         // write the values to the motors
-        leftMotor.setPower(-gamepad1.left_stick_y);
-        rightMotor.setPower(-gamepad1.right_stick_y);
+        motorBL.setPower(leftPower);
+        motorBR.setPower(rightPower);
+        motorFL.setPower(leftPower);
+        motorFR.setPower(rightPower);
+        strafeMotor.setPower(strafePower);
 
-        if (gamepad1.right_bumper) {servoBL.setPosition(.1); servoBR.setPosition(.1);}
-        if (gamepad1.left_bumper) {servoBL.setPosition(.75); servoBR.setPosition(.75);}
-        if (gamepad1.b) {servoFL.setPosition(.05); servoFR.setPosition(.12);}
-        if (gamepad1.x) {servoFL.setPosition(.45); servoFR.setPosition(.32);}
-        if (gamepad1.y) {clawUpDown.setPosition(0.07);}
-        if (gamepad1.a) {clawUpDown.setPosition(0.04);}
+        if (gamepad1.right_bumper) {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
+        if (gamepad1.left_bumper) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
+        if (gamepad1.b) {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //might have to make these open more for robotV2
+        if (gamepad1.x) {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
+        if (gamepad1.y) {clawTower.setPower(0.7);} //tower up
+        if (gamepad1.a) {clawTower.setPower(-.7);} //tower down
 
-        
         //What does this do?
-        String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
+        String teleFormat = "leftPower (%.2f), rightPower (%.2f), strafePower (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", teleFormat, -gamepad1.left_stick_y, -gamepad1.right_stick_y);
-        //telemetry.update();
+        telemetry.addData("Motors", teleFormat, leftPower, rightPower, strafePower);
+        telemetry.update();
     }
 }
 
