@@ -95,6 +95,12 @@ public class VuforiaLoadingZoneAuto5361 extends LinearOpMode {
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
     private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
 
+    static final double COUNTS_PER_MOTOR_REV = 1220;    // eg: TETRIX Motor Encoder
+    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
     // 2) Phone Orientation. Choices are: PHONE_IS_PORTRAIT = true (portrait) or PHONE_IS_PORTRAIT = false (landscape)
@@ -485,6 +491,84 @@ public class VuforiaLoadingZoneAuto5361 extends LinearOpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", teleFormat, leftPower, rightPower, strafePower);
         telemetry.update();
+    }
+
+    public void encoderDrive(double speed,
+                             double leftInches, double rightInches, double strafeInches,
+                             double timeoutS) { // middle inputs are how many inches to travel
+        int newFRTarget;
+        int newFLTarget;
+        int newBLTarget;
+        int newBRTarget;
+        int newSMTarget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newFRTarget = motorFR.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
+            newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
+            newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH);
+
+            motorFR.setTargetPosition(newFRTarget);
+            motorFL.setTargetPosition(newFLTarget);
+            motorBL.setTargetPosition(newBLTarget);
+            motorBR.setTargetPosition(newBRTarget);
+            strafeMotor.setTargetPosition(newSMTarget);
+
+            // Turn On RUN_TO_POSITION
+            motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            strafeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            motorFR.setPower(Math.abs(speed));
+            motorFL.setPower(Math.abs(speed));
+            motorBL.setPower(Math.abs(speed));
+            motorBR.setPower(Math.abs(speed));
+            strafeMotor.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy() && strafeMotor.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
+                        newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d :%7d",
+                        motorFR.getCurrentPosition(),
+                        motorFL.getCurrentPosition(),
+                        motorBL.getCurrentPosition(),
+                        motorBR.getCurrentPosition(),
+                        strafeMotor.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            motorFR.setPower(0);
+            motorFL.setPower(0);
+            motorBL.setPower(0);
+            motorBR.setPower(0);
+            strafeMotor.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
 }
 

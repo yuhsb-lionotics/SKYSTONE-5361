@@ -102,18 +102,10 @@ public class TeleOp5361 extends LinearOpMode {
         if (gamepad1.left_bumper) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
         if (gamepad1.b) {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //might have to make these open more for robotV2
         if (gamepad1.x) {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
-        if (gamepad1.y) {clawTower.setPower(1); sleep(1500);} //tower up
-        if (gamepad1.a) {clawTower.setPower(-1); sleep(1500);} //tower down
+        if (gamepad1.y) {clawTower.setPower(0.7);} //tower up
+        if (gamepad1.a) {clawTower.setPower(-.7);} //tower down
 
 
-        /*
-        float rTrigger = gamepad1.right_trigger;
-        float lTrigger = gamepad1.left_trigger;
-        if(rTrigger > 0){
-            strafeMotor.setPower(-rTrigger);
-        } else if(lTrigger > 0){
-            strafeMotor.setPower(lTrigger);
-        } */
         //strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //[thousand]
 
         /* if (gamepad1.dpad_left) { //debugging
@@ -121,7 +113,6 @@ public class TeleOp5361 extends LinearOpMode {
             //telemetry.addData("Claw Position", gamepad1.right_trigger/10);
         }telemetry.addData("Claw Position", bClawM.getPosition()); */
 
-        //What does this do?
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", teleFormat, leftPower, rightPower);

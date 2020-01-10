@@ -23,6 +23,12 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
 
     public boolean getIsBlueAlliance() {return true;}
 
+    private static final double COUNTS_PER_MOTOR_REV = 1220;    // eg: TETRIX Motor Encoder
+    private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+
     @Override
     public void runOpMode() {
         setUp();
@@ -185,12 +191,12 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         fGripR.setDirection(Servo.Direction.FORWARD);
         bClawM.setDirection(Servo.Direction.REVERSE);
     }
-    /* //Account for the 5 driving motors
+
     public void encoderDrive(double speed,
-                             double FLin, double FRin, double BLin, double BRin, double SMin
+                             double leftInches, double rightInches, double strafeInches,
                              double timeoutS) { // middle inputs are how many inches to travel
-        int newFLTarget;
         int newFRTarget;
+        int newFLTarget;
         int newBLTarget;
         int newBRTarget;
 		int newSMTarget;
@@ -199,14 +205,14 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFLTarget = motorFR.getCurrentPosition() + (int) (FLin * COUNTS_PER_INCH);
-            newFRTarget = motorFL.getCurrentPosition() + (int) (FRin * COUNTS_PER_INCH);
-            newBLTarget = motorBL.getCurrentPosition() + (int) (BLin * COUNTS_PER_INCH);
-            newBRTarget = motorBR.getCurrentPosition() + (int) (BRin * COUNTS_PER_INCH);
-			newSMTarget = strafeMotor.getCurrentPosition() + (int) (SMin * COUNTS_PER_INCH);
+            newFRTarget = motorFR.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
+            newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
+            newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+			newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH);
 
-            motorFR.setTargetPosition(newFLTarget);
-            motorFL.setTargetPosition(newFRTarget);
+            motorFR.setTargetPosition(newFRTarget);
+            motorFL.setTargetPosition(newFLTarget);
             motorBL.setTargetPosition(newBLTarget);
             motorBR.setTargetPosition(newBRTarget);
 			strafeMotor.setTargetPosition(newSMTarget);
@@ -234,15 +240,16 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (FR.isBusy() && FL.isBusy() && BL.isBusy() && BR.isBusy())) {
+                    (motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy() && strafeMotor.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d :%7d", newFLTarget, newFRTarget, newBLTarget, newFLTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d :%7d",
+                telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
+                        newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d :%7d",
                         motorFR.getCurrentPosition(),
                         motorFL.getCurrentPosition(),
                         motorBL.getCurrentPosition(),
-                        motorBR.getCurrentPosition()
+                        motorBR.getCurrentPosition(),
 						strafeMotor.getCurrentPosition());
                 telemetry.update();
             }
@@ -261,5 +268,5 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
             motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 			strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-    } */
+    }
 }
