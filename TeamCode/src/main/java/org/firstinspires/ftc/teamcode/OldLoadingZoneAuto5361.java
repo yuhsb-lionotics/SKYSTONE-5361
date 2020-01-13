@@ -2,14 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Disabled
@@ -19,7 +16,7 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
     // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
-    private Servo sClawR, sClawL, fGripR, fGripL, bClawM; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
+    private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
 
     public boolean getIsBlueAlliance() {return true;}
 
@@ -181,7 +178,6 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
-        bClawM = hardwareMap.servo.get("blockClawM");
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
@@ -189,8 +185,26 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
-        bClawM.setDirection(Servo.Direction.REVERSE);
-    }
+
+
+        //resetting encoders & waiting
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        fGripL.setPosition(0.13);
+        fGripR.setPosition(0.1);
+        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.update();
+}
 
     public void encoderDrive(double speed,
                              double leftInches, double rightInches, double strafeInches,

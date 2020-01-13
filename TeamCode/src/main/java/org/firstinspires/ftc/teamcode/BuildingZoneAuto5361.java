@@ -9,24 +9,29 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-@Disabled
+
 @Autonomous(name="MOVE FORWARD LOL", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftMotor, rightMotor;
-    private Servo servoFR, servoFL, servoBR, servoBL, clawUpDown;
+    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
+    private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
 
     public boolean getIsBlueAlliance() {return true;}
 
+    private static final double COUNTS_PER_MOTOR_REV = 1220;    // eg: TETRIX Motor Encoder
+    private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
 
     public void runOpMode() {
         setUp();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
+/*
         telemetry.addData("Status","Toward foundation");
         telemetry.update();
         servoFL.setPosition(.8);
@@ -75,33 +80,157 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
-    }
+        */  //<--old code (no encoders)
+        fGripL.setPosition(.8);
+        fGripR.setPosition(.9);
+        sleep(400);
+        encoderDrive(1.0, 36, 36, 0, 2.5); // move towards foundation
+        fGripL.setPosition(.78);
+        fGripR.setPosition(.75); //grab onto Foundation
+        sleep(400);
+        encoderDrive(1.0, 24, 24, 4, 2.5); //pulling backwards
+        encoderDrive(1.0, -8, 8, 0, 6); //turning Foundation
+        fGripL.setPosition(.13);
+        fGripR.setPosition(.10); //unlatch Foundation
+        sleep(400);
 
-    private void setUp(){
+    }
+    private void setUp(){ //account for alliance
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        if (getIsBlueAlliance()) {
-            leftMotor = hardwareMap.dcMotor.get("leftMotor");
-            rightMotor = hardwareMap.dcMotor.get("rightMotor");
-            leftMotor.setDirection(DcMotor.Direction.REVERSE);
-            rightMotor.setDirection(DcMotor.Direction.FORWARD);
-        } else {
-            rightMotor = hardwareMap.dcMotor.get("leftMotor");
-            leftMotor = hardwareMap.dcMotor.get("rightMotor");
-            rightMotor.setDirection(DcMotor.Direction.REVERSE);
-            leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        }
-        servoFL = hardwareMap.servo.get("servoFL");
-        servoFR = hardwareMap.servo.get("servoFR");
-        servoBL = hardwareMap.servo.get("servoBL");
-        servoBR = hardwareMap.servo.get("servoBR");
-        clawUpDown = hardwareMap.servo.get("clawUpDown");
+        if(getIsBlueAlliance()){
+            motorBL = hardwareMap.dcMotor.get("motorBL");
+            motorFL = hardwareMap.dcMotor.get("motorFL");
+            motorBR = hardwareMap.dcMotor.get("motorBR");
+            motorFR = hardwareMap.dcMotor.get("motorFR");
+            strafeMotor = hardwareMap.dcMotor.get("motorM");
 
-        //switch these if the robot is going backward
-        servoFL.setDirection(Servo.Direction.FORWARD);
-        servoFR.setDirection(Servo.Direction.REVERSE);
-        servoBL.setDirection(Servo.Direction.REVERSE);
-        servoBR.setDirection(Servo.Direction.FORWARD);
-        clawUpDown.setDirection(Servo.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.REVERSE);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorBR.setDirection(DcMotor.Direction.FORWARD);
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+        } else {
+            motorBR = hardwareMap.dcMotor.get("motorBL");
+            motorFR = hardwareMap.dcMotor.get("motorFL");
+            motorBL = hardwareMap.dcMotor.get("motorBR");
+            motorFL = hardwareMap.dcMotor.get("motorFR");
+            strafeMotor = hardwareMap.dcMotor.get("motorM");
+
+            motorBR.setDirection(DcMotor.Direction.REVERSE);
+            motorFR.setDirection(DcMotor.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.REVERSE);
+        }
+        clawTower = hardwareMap.dcMotor.get("clawTower");
+        sClawL = hardwareMap.servo.get("blockClawL");
+        sClawR = hardwareMap.servo.get("blockClawR");
+        fGripL = hardwareMap.servo.get("foundationGripL");
+        fGripR = hardwareMap.servo.get("foundationGripR");
+
+        //switch these if they are going backward
+        clawTower.setDirection(DcMotor.Direction.FORWARD);
+        sClawL.setDirection(Servo.Direction.FORWARD);
+        sClawR.setDirection(Servo.Direction.REVERSE);
+        fGripL.setDirection(Servo.Direction.REVERSE);
+        fGripR.setDirection(Servo.Direction.FORWARD);
+
+
+        //resetting encoders & waiting
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        fGripL.setPosition(0.13);
+        fGripR.setPosition(0.1);
+        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.update();
+    }
+
+    public void encoderDrive(double speed,
+                             double leftInches, double rightInches, double strafeInches,
+                             double timeoutS) { // middle inputs are how many inches to travel
+        int newFRTarget;
+        int newFLTarget;
+        int newBLTarget;
+        int newBRTarget;
+        int newSMTarget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newFRTarget = motorFR.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
+            newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
+            newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH);
+
+            motorFR.setTargetPosition(newFRTarget);
+            motorFL.setTargetPosition(newFLTarget);
+            motorBL.setTargetPosition(newBLTarget);
+            motorBR.setTargetPosition(newBRTarget);
+            strafeMotor.setTargetPosition(newSMTarget);
+
+            // Turn On RUN_TO_POSITION
+            motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            strafeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            motorFR.setPower(Math.abs(speed));
+            motorFL.setPower(Math.abs(speed));
+            motorBL.setPower(Math.abs(speed));
+            motorBR.setPower(Math.abs(speed));
+            strafeMotor.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy() && strafeMotor.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
+                        newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d :%7d",
+                        motorFR.getCurrentPosition(),
+                        motorFL.getCurrentPosition(),
+                        motorBL.getCurrentPosition(),
+                        motorBR.getCurrentPosition(),
+                        strafeMotor.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            motorFR.setPower(0);
+            motorFL.setPower(0);
+            motorBL.setPower(0);
+            motorBR.setPower(0);
+            strafeMotor.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
 }
