@@ -33,6 +33,8 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        fGripL.setPosition(0.13);
+        fGripR.setPosition(0.1);
 
         // run until the end of the match (driver presses STOP)
 
@@ -141,7 +143,7 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
     }
 
     private void setUp(){ //account for alliance
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Initialized - Setting Up");
         telemetry.update();
 
         // Exchange right and left if in the red alliance.
@@ -187,6 +189,8 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         fGripR.setDirection(Servo.Direction.FORWARD);
 
 
+        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.update();
         //resetting encoders & waiting
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -200,9 +204,7 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        fGripL.setPosition(0.13);
-        fGripR.setPosition(0.1);
-        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.addData("Status", "Initialized and Set Up");
         telemetry.update();
 }
 

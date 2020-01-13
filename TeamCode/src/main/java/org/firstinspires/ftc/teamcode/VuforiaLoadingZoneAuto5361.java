@@ -338,7 +338,9 @@ public class VuforiaLoadingZoneAuto5361 extends LinearOpMode {
         waitForStart();
 
         runtime.reset();
-
+        /***********************************
+         *** DRIVING COMMANDS START HERE ***
+         ***********************************/
         //if(getIsBlueAlliance()) {blueSample();} else {redSample();}
 
         // Note: To use the remote camera preview:
@@ -359,46 +361,70 @@ public class VuforiaLoadingZoneAuto5361 extends LinearOpMode {
         targetsSkyStone.deactivate();
     }
 
-    private void setUp(){
-        telemetry.addData("Status", "Initialized");
+    private void setUp(){ //account for alliance
+        telemetry.addData("Status", "Initialized - Setting Up");
         telemetry.update();
-        if (getIsBlueAlliance()) {
-            motorFL = hardwareMap.dcMotor.get("motorFL");
+
+        // Exchange right and left if in the red alliance.
+        // We may need to assign a different variable to represent motors that don't switch for vuforia,
+        // if the camera is on the side of the phone.
+        if(getIsBlueAlliance()){
             motorBL = hardwareMap.dcMotor.get("motorBL");
-            motorFR = hardwareMap.dcMotor.get("motorFR");
+            motorFL = hardwareMap.dcMotor.get("motorFL");
             motorBR = hardwareMap.dcMotor.get("motorBR");
-            //switch these if the robot is going backward
-            motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorFR = hardwareMap.dcMotor.get("motorFR");
+            strafeMotor = hardwareMap.dcMotor.get("motorM");
+
             motorBL.setDirection(DcMotor.Direction.REVERSE);
-            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
             motorBR.setDirection(DcMotor.Direction.FORWARD);
-        } else { //switch right and left
-            motorFR = hardwareMap.dcMotor.get("motorFL");
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+        } else {
             motorBR = hardwareMap.dcMotor.get("motorBL");
-            motorFL = hardwareMap.dcMotor.get("motorFR");
+            motorFR = hardwareMap.dcMotor.get("motorFL");
             motorBL = hardwareMap.dcMotor.get("motorBR");
-            //switch these if the robot is going backward
-            motorFR.setDirection(DcMotor.Direction.FORWARD);
-            motorBR.setDirection(DcMotor.Direction.FORWARD);
-            motorFL.setDirection(DcMotor.Direction.REVERSE);
-            motorBL.setDirection(DcMotor.Direction.REVERSE);
+            motorFL = hardwareMap.dcMotor.get("motorFR");
+            strafeMotor = hardwareMap.dcMotor.get("motorM");
+
+            motorBR.setDirection(DcMotor.Direction.REVERSE);
+            motorFR.setDirection(DcMotor.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.REVERSE);
         }
 
-
-        strafeMotor = hardwareMap.dcMotor.get("motorM");
         clawTower = hardwareMap.dcMotor.get("clawTower");
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
 
-
-        strafeMotor.setDirection(DcMotor.Direction.REVERSE); //change if backwards
-        clawTower.setDirection(DcMotor.Direction.FORWARD); //change if backwards
+        //switch these if they are going backward
+        clawTower.setDirection(DcMotor.Direction.FORWARD);
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
+
+
+        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.update();
+        //resetting encoders & waiting
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("Status", "Initialized and Set Up");
+        telemetry.update();
 
     }
 
