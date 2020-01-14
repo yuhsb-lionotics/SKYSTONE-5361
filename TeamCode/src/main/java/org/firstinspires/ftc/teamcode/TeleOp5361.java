@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -27,6 +29,7 @@ public class TeleOp5361 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorFL, motorFR, strafeMotor, clawTower;
     private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left
+    private ColorSensor leftColor, rightColor;
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
     //private boolean yWasPressed = false;
@@ -39,34 +42,67 @@ public class TeleOp5361 extends LinearOpMode {
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) { omniCalc();  /*idle();*/ }
+        while (opModeIsActive()) {
+            omniCalc();
+            telemetry.addData("Left sensor (RGBV):", "%d, %d, %d, %d",
+                    leftColor.red(), leftColor.green(), leftColor.blue(), leftColor.alpha());
+            telemetry.addData("Right sensor (RGBV):", "%d, %d, %d, %d",
+                    rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.alpha());
+            telemetry.update();
+            //idle();
+        }
     }
 
-    private void setUp(){
-        telemetry.addData("Status", "Initialized");
+    private void setUp(){ //account for alliance
+        telemetry.addData("Status", "Initialized - Setting Up");
         telemetry.update();
+
         //motorBL = hardwareMap.dcMotor.get("motorBL");
         //motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFL = hardwareMap.dcMotor.get("motorFL");
         motorFR = hardwareMap.dcMotor.get("motorFR");
         strafeMotor = hardwareMap.dcMotor.get("motorM");
         clawTower = hardwareMap.dcMotor.get("clawTower");
+
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
+        leftColor = hardwareMap.colorSensor.get("Lcolor");
+        rightColor = hardwareMap.colorSensor.get("Rcolor");
 
-        //switch these if the robot is going backward
+        //switch these if they are going backward
         //motorBL.setDirection(DcMotor.Direction.REVERSE);
         //motorBR.setDirection(DcMotor.Direction.FORWARD);
         motorFL.setDirection(DcMotor.Direction.REVERSE);
         motorFR.setDirection(DcMotor.Direction.FORWARD);
-        strafeMotor.setDirection(DcMotor.Direction.REVERSE); //change if backwards
-        clawTower.setDirection(DcMotor.Direction.FORWARD); //change if backwards
+        strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+        clawTower.setDirection(DcMotor.Direction.FORWARD);
+
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
+
+
+        //resetting encoders & waiting
+        telemetry.addData("Status", "Resetting Encoders");
+        telemetry.update();
+
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("Status", "Initialized and Set Up");
+        telemetry.update();
     }
     private void omniCalc() //turns the gamepad controls into omniwheel commands
     {

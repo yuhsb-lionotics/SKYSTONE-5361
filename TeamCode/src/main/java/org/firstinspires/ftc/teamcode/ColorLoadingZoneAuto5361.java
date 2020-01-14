@@ -11,14 +11,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Disabled
 @Autonomous(name="Blue Loading (Good Al.)", group="Linear Opmode") // assuming our teammate's robot will move the foundation to the building site
-public class OldLoadingZoneAuto5361 extends LinearOpMode {
+public class ColorLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
-    // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
     private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
+    private ColorSensor leftColor, rightColor;
 
-    public boolean getIsBlueAlliance() {return true;}
+    public boolean getIsBlueAlliance() {return true;} //Set to false if red alliance
 
     private static final double COUNTS_PER_MOTOR_REV = 1220;    // eg: TETRIX Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
@@ -180,6 +180,8 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
+        leftColor = hardwareMap.colorSensor.get("Lcolor");
+        rightColor = hardwareMap.colorSensor.get("Rcolor");
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
@@ -189,9 +191,10 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
         fGripR.setDirection(Servo.Direction.FORWARD);
 
 
+        //resetting encoders & waiting
         telemetry.addData("Status", "Resetting Encoder");
         telemetry.update();
-        //resetting encoders & waiting
+
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -206,7 +209,7 @@ public class OldLoadingZoneAuto5361 extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized and Set Up");
         telemetry.update();
-}
+    }
 
     public void encoderDrive(double speed,
                              double leftInches, double rightInches, double strafeInches,
