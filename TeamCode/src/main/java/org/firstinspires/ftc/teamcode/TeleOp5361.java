@@ -101,49 +101,67 @@ public class TeleOp5361 extends LinearOpMode {
         motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Status", "Initialized and Set Up");
+        telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
     private void omniCalc() //turns the gamepad controls into omniwheel commands
     {
-        double leftPower;
-        double rightPower;
-        double leftPrecision;
-        double rightPrecision;
+        double leftPower; double rightPower; double leftPrecision; double rightPrecision;
 
-     /* if (!yWasPressed & gamepad1.y) {
+     /*   if (!yWasPressed & gamepad1.y) {
             if (driveMode == "Tank Control") {driveMode = "Joystick Control";}
             else if (driveMode == "Joystick Control") {driveMode = "Tank Control";}
             else {telemetry.addData("Error", "Unacceptable driveMode");}
         }
         yWasPressed = gamepad1.y; */
+
         telemetry.addData("Drive Mode", driveMode);
         //Assign values to leftPower and rightPower
         if (driveMode == "Tank Control") {
-            leftPower = -gamepad1.left_stick_y;
-            rightPower = -gamepad1.right_stick_y;
-            leftPrecision = -gamepad2.left_stick_y;
-            rightPrecision = -gamepad2.left_stick_y;
-
-
-        }/* else if (driveMode == "Joystick Control") {
+            leftPower       =   -gamepad1.left_stick_y;
+            rightPower      =   -gamepad1.right_stick_y;
+            leftPrecision   =   (-gamepad2.left_stick_y)/4;
+            rightPrecision  =   (-gamepad2.right_stick_y)/4;
+        }
+     /*   else if (driveMode == "Joystick Control") {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
             rightPower = Range.clip(-gamepad1.right_stick_y - gamepad2.right_stick_x, -1, 1);
-        } */ else {telemetry.addData("Error", "Unacceptable driveMode"); telemetry.update(); leftPower = 0; rightPower = 0; leftPrecision = 0; rightPrecision = 0;}
+        } */
+        else {telemetry.addData("Error", "Unacceptable Drive Mode"); telemetry.update(); leftPower = 0; rightPower = 0; leftPrecision = 0; rightPrecision = 0;}
 
-        // write the values to the motors
-        //driver A can give drive to driver B and vice versa for PowerDrive and PrecisionDrive
-        if(gamepad1.left_bumper && gamepad1.right_bumper) {
-            motorBL.setPower(leftPrecision);
-            motorBR.setPower(rightPrecision);
-            motorFL.setPower(leftPrecision);
-            motorFR.setPower(rightPrecision);
+
+    // write the values to the motors
+
+        //driver B can give drive to driver A (Driver Power)
+        if(gamepad2.left_bumper && gamepad2.right_bumper) { //BETA controller gives power to ALPHA
+            //controls
+            if(gamepad1.left_stick_y >= 0)      { motorBL.setPower(leftPower); motorFL.setPower(leftPower); }
+            if(gamepad1.right_stick_y >= 0)     { motorBR.setPower(rightPower); motorFR.setPower(rightPower); }
+            /*if(gamepad1.left_trigger >= 0)    { strafeMotor.setPower(leftPower); }
+            if(gamepad1.right_trigger >= 0)     { strafeMotor.setPower(-leftPower); }*/
+            if(gamepad1.left_trigger >= 0 || gamepad1.right_trigger >= 0)  { strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); }
+
+            //anti-controls (disable controls for beta)
+            if(gamepad2.left_stick_y >= 0)  { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
+            if(gamepad2.right_stick_y >= 0) { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
+            if(gamepad2.left_trigger >= 0)  { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
+            if(gamepad2.right_trigger >= 0) { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
         }
-        if(gamepad2.left_bumper && gamepad2.right_bumper) {
-            motorBL.setPower(leftPower);
-            motorBR.setPower(rightPower);
-            motorFL.setPower(leftPower);
-            motorFR.setPower(rightPower);
+
+        //driver A can give drive to driver B (Precision Power)
+        if(gamepad1.left_bumper && gamepad1.right_bumper) { //ALPHA controller gives power to BETA
+            //controls
+            if(gamepad2.left_stick_y >= 0)      { motorBL.setPower(leftPrecision); motorFL.setPower(leftPrecision); }
+            if(gamepad2.right_stick_y >= 0)     { motorBR.setPower(rightPrecision); motorFR.setPower(rightPrecision); }
+            /*if(gamepad2.left_trigger >= 0)    { strafeMotor.setPower(leftPrecision); }
+            if(gamepad2.right_trigger >= 0)     { strafeMotor.setPower(-leftPrecision); }*/
+            if(gamepad2.left_trigger >= 0 || gamepad2.right_trigger >= 0)  { strafeMotor.setPower((gamepad2.left_trigger - gamepad2.right_trigger)/4); }
+
+            //anti-controls (disable controls for alpha)
+            if(gamepad1.left_stick_y >= 0)  { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
+            if(gamepad1.right_stick_y >= 0) { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
+            if(gamepad1.left_trigger >= 0)  { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
+            if(gamepad1.right_trigger >= 0) { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
         }
 
         //foundation Grab //works
@@ -155,14 +173,11 @@ public class TeleOp5361 extends LinearOpMode {
         if (gamepad2.a)         {clawTower.setPower(-1); sleep(300); clawTower.setPower(0);} //tower down
 
         //stone grab //works
-        if (gamepad1.x)         {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //might have to make these open more for robotV2
+        if (gamepad1.x)         {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
         if (gamepad1.b)         {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
 
-
-
-        //strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //[thousand]
-
-        /* if (gamepad1.dpad_left) { //debugging
+        /*debugging
+        if (gamepad1.dpad_left) {
             bClawM.setPosition(gamepad1.right_trigger/2);
             //telemetry.addData("Claw Position", gamepad1.right_trigger/10);
         }telemetry.addData("Claw Position", bClawM.getPosition()); */
