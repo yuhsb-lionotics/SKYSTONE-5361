@@ -33,6 +33,8 @@ public class TeleOp5361 extends LinearOpMode {
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
     //private boolean yWasPressed = false;
+    private String driverMode = "Power"; //shifts between "Power" and "Precision" motor controls
+
 
     @Override
     public void runOpMode() {
@@ -130,39 +132,33 @@ public class TeleOp5361 extends LinearOpMode {
         else {telemetry.addData("Error", "Unacceptable Drive Mode"); telemetry.update(); leftPower = 0; rightPower = 0; leftPrecision = 0; rightPrecision = 0;}
 
 
+
     // write the values to the motors
+        //BETA Controls (Precision)
+        if(driverMode == "Precision") {
+            telemetry.addData("Drive Control:", "Precision-BETA");
+            telemetry.update();
 
-        //driver B can give drive to driver A (Driver Power)
-        if(gamepad2.left_bumper && gamepad2.right_bumper) { //BETA controller gives power to ALPHA
-            //controls
-            if(gamepad1.left_stick_y >= 0)      { motorBL.setPower(leftPower); motorFL.setPower(leftPower); }
-            if(gamepad1.right_stick_y >= 0)     { motorBR.setPower(rightPower); motorFR.setPower(rightPower); }
-            /*if(gamepad1.left_trigger >= 0)    { strafeMotor.setPower(leftPower); }
-            if(gamepad1.right_trigger >= 0)     { strafeMotor.setPower(-leftPower); }*/
-            if(gamepad1.left_trigger >= 0 || gamepad1.right_trigger >= 0)  { strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); }
-
-            //anti-controls (disable controls for beta)
-            if(gamepad2.left_stick_y >= 0)  { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
-            if(gamepad2.right_stick_y >= 0) { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
-            if(gamepad2.left_trigger >= 0)  { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
-            if(gamepad2.right_trigger >= 0) { telemetry.addData("Error", "Stop it BETA"); telemetry.update(); }
-        }
-
-        //driver A can give drive to driver B (Precision Power)
-        if(gamepad1.left_bumper && gamepad1.right_bumper) { //ALPHA controller gives power to BETA
-            //controls
-            if(gamepad2.left_stick_y >= 0)      { motorBL.setPower(leftPrecision); motorFL.setPower(leftPrecision); }
-            if(gamepad2.right_stick_y >= 0)     { motorBR.setPower(rightPrecision); motorFR.setPower(rightPrecision); }
+            if(gamepad2.left_bumper && gamepad2.right_bumper){ driverMode = "Power"; } //BETA give control to ALPHA (Power)
+            motorBL.setPower(leftPrecision); motorFL.setPower(leftPrecision);  //joysticks power
+            motorBR.setPower(rightPrecision); motorFR.setPower(rightPrecision);
+            if(gamepad2.left_trigger >= 0 || gamepad2.right_trigger >= 0)  { strafeMotor.setPower((gamepad2.left_trigger - gamepad2.right_trigger)/4); } //strafe
             /*if(gamepad2.left_trigger >= 0)    { strafeMotor.setPower(leftPrecision); }
             if(gamepad2.right_trigger >= 0)     { strafeMotor.setPower(-leftPrecision); }*/
-            if(gamepad2.left_trigger >= 0 || gamepad2.right_trigger >= 0)  { strafeMotor.setPower((gamepad2.left_trigger - gamepad2.right_trigger)/4); }
-
-            //anti-controls (disable controls for alpha)
-            if(gamepad1.left_stick_y >= 0)  { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
-            if(gamepad1.right_stick_y >= 0) { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
-            if(gamepad1.left_trigger >= 0)  { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
-            if(gamepad1.right_trigger >= 0) { telemetry.addData("Error", "Stop it ALPHA"); telemetry.update(); }
         }
+        //ALPHA Controls (Drive)
+        else if(driverMode == "Power") {
+            telemetry.addData("Drive Control:", "Power-ALPHA");
+            telemetry.update();
+            if(gamepad1.left_bumper && gamepad1.right_bumper){ driverMode = "Precision"; } //ALPHA give control to BETA (Precision)
+            motorBL.setPower(leftPower); motorFL.setPower(leftPower); //joysticks power
+            motorBR.setPower(rightPower); motorFR.setPower(rightPower);
+            if(gamepad1.left_trigger >= 0 || gamepad1.right_trigger >= 0)  { strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); } //strafe
+            /*if(gamepad1.left_trigger >= 0)    { strafeMotor.setPower(leftPower); }
+            if(gamepad1.right_trigger >= 0)     { strafeMotor.setPower(-leftPower); }*/
+        }
+
+
 
         //foundation Grab //works
         if (gamepad2.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
