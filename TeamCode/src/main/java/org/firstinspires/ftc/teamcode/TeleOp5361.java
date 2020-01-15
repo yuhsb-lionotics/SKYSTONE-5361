@@ -50,6 +50,11 @@ public class TeleOp5361 extends LinearOpMode {
                     leftColor.red(), leftColor.green(), leftColor.blue(), leftColor.argb(), leftColor.alpha());
             telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
                     rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.argb(), rightColor.alpha());
+            if (leftColor.argb() == 0) {telemetry.addData("Skystone", "Left");}
+            else if (rightColor.argb() == 0) {telemetry.addData("Skystone", "Right");}
+            else if (leftColor.blue() > leftColor.red()*0.8) {telemetry.addData("Skystone", "Left");}
+            else if (rightColor.blue() > rightColor.red()*0.8) {telemetry.addData("Skystone", "Right");}
+            else {telemetry.addData("Skystone", "Center");}
             telemetry.update();
             //idle();
         }
@@ -129,7 +134,7 @@ public class TeleOp5361 extends LinearOpMode {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
             rightPower = Range.clip(-gamepad1.right_stick_y - gamepad2.right_stick_x, -1, 1);
         } */
-        else {telemetry.addData("Error", "Unacceptable Drive Mode"); telemetry.update(); leftPower = 0; rightPower = 0; leftPrecision = 0; rightPrecision = 0;}
+        else {telemetry.addData("Error", "Unacceptable Drive Mode"); leftPower = 0; rightPower = 0; leftPrecision = 0; rightPrecision = 0;}
 
 
 
@@ -137,7 +142,6 @@ public class TeleOp5361 extends LinearOpMode {
         //BETA Controls (Precision)
         if(driverMode == "Precision") {
             telemetry.addData("Drive Control:", "Precision-BETA");
-            telemetry.update();
 
             if(gamepad2.left_bumper && gamepad2.right_bumper){ driverMode = "Power"; } //BETA give control to ALPHA (Power)
             motorBL.setPower(leftPrecision); motorFL.setPower(leftPrecision);  //joysticks power
@@ -149,11 +153,10 @@ public class TeleOp5361 extends LinearOpMode {
         //ALPHA Controls (Drive)
         else if(driverMode == "Power") {
             telemetry.addData("Drive Control:", "Power-ALPHA");
-            telemetry.update();
             if(gamepad1.left_bumper && gamepad1.right_bumper){ driverMode = "Precision"; } //ALPHA give control to BETA (Precision)
             motorBL.setPower(leftPower); motorFL.setPower(leftPower); //joysticks power
             motorBR.setPower(rightPower); motorFR.setPower(rightPower);
-            if(gamepad1.left_trigger >= 0 || gamepad1.right_trigger >= 0)  { strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); } //strafe
+            strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //strafe
             /*if(gamepad1.left_trigger >= 0)    { strafeMotor.setPower(leftPower); }
             if(gamepad1.right_trigger >= 0)     { strafeMotor.setPower(-leftPower); }*/
         }
@@ -181,6 +184,5 @@ public class TeleOp5361 extends LinearOpMode {
         String teleFormat = "leftPower (%.2f), rightPower (%.2f), leftPrecision (%.2f), rightPrecision (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", teleFormat, leftPower, rightPower, leftPrecision, rightPrecision);
-        telemetry.update();
     }
 }
