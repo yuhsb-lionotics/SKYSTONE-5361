@@ -46,10 +46,10 @@ public class TeleOp5361 extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             omniCalc();
-            telemetry.addData("Left sensor (RGBV):", "%d, %d, %d, %d",
-                    leftColor.red(), leftColor.green(), leftColor.blue(), leftColor.alpha());
-            telemetry.addData("Right sensor (RGBV):", "%d, %d, %d, %d",
-                    rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.alpha());
+            telemetry.addData("Left sensor (RGBHV):", "%d, %d, %d, %d, %d",
+                    leftColor.red(), leftColor.green(), leftColor.blue(), leftColor.argb(), leftColor.alpha());
+            telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
+                    rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.argb(), rightColor.alpha());
             telemetry.update();
             //idle();
         }
@@ -74,10 +74,10 @@ public class TeleOp5361 extends LinearOpMode {
         rightColor = hardwareMap.colorSensor.get("colorR");
 
         //switch these if they are going backward
-        motorBL.setDirection(DcMotor.Direction.FORWARD);
-        motorBR.setDirection(DcMotor.Direction.REVERSE);
-        motorFL.setDirection(DcMotor.Direction.REVERSE);
-        motorFR.setDirection(DcMotor.Direction.FORWARD);
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
+        motorBR.setDirection(DcMotor.Direction.FORWARD);
+        motorFL.setDirection(DcMotor.Direction.FORWARD);
+        motorFR.setDirection(DcMotor.Direction.REVERSE);
         strafeMotor.setDirection(DcMotor.Direction.FORWARD);
         clawTower.setDirection(DcMotor.Direction.FORWARD);
 
@@ -142,7 +142,7 @@ public class TeleOp5361 extends LinearOpMode {
             if(gamepad2.left_bumper && gamepad2.right_bumper){ driverMode = "Power"; } //BETA give control to ALPHA (Power)
             motorBL.setPower(leftPrecision); motorFL.setPower(leftPrecision);  //joysticks power
             motorBR.setPower(rightPrecision); motorFR.setPower(rightPrecision);
-            if(gamepad2.left_trigger >= 0 || gamepad2.right_trigger >= 0)  { strafeMotor.setPower((gamepad2.left_trigger - gamepad2.right_trigger)/4); } //strafe
+            strafeMotor.setPower((gamepad2.left_trigger - gamepad2.right_trigger)/4); //strafe
             /*if(gamepad2.left_trigger >= 0)    { strafeMotor.setPower(leftPrecision); }
             if(gamepad2.right_trigger >= 0)     { strafeMotor.setPower(-leftPrecision); }*/
         }
