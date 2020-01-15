@@ -52,8 +52,9 @@ public class TeleOp5361 extends LinearOpMode {
                     rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.argb(), rightColor.alpha());
             if (leftColor.argb() == 0) {telemetry.addData("Skystone", "Left");}
             else if (rightColor.argb() == 0) {telemetry.addData("Skystone", "Right");}
-            else if (leftColor.blue() > leftColor.red()*0.8) {telemetry.addData("Skystone", "Left");}
-            else if (rightColor.blue() > rightColor.red()*0.8) {telemetry.addData("Skystone", "Right");}
+            //The left and right sensors should not be compared to each other, since even a small differential in distance changes it a lot
+            else if (leftColor.blue() * 4.5 /*adjust value*/ > leftColor.alpha()) {telemetry.addData("Skystone", "Left");}
+            else if (rightColor.blue() * 4.5 > rightColor.alpha()) {telemetry.addData("Skystone", "Right");}
             else {telemetry.addData("Skystone", "Center");}
             telemetry.update();
             //idle();
