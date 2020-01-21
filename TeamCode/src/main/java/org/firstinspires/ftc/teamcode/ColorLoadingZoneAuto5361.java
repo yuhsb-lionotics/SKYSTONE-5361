@@ -8,15 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-@Disabled
-@Autonomous(name="Blue Loading (Good Al.)", group="Linear Opmode") // assuming our teammate's robot will move the foundation to the building site
+@Autonomous(name="Blue Loading", group="Linear Opmode")
 public class ColorLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
     private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
-    private ColorSensor leftColor, rightColor;
+    private ColorSensor bridgeColor, wallColor;
 
     public boolean getIsBlueAlliance() {return true;} //Set to false if red alliance
 
@@ -33,12 +31,33 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        fGripL.setPosition(0.13);
-        fGripR.setPosition(0.1);
-
         // run until the end of the match (driver presses STOP)
 
-        /* telemetry.addData("Status","Toward stone");
+        fGripL.setPosition(0.13);
+        fGripR.setPosition(0.1);
+        //set stone claw all the way closed
+        encoderDrive(.5, 17, 17, 0, 3);
+        String skystonePosition = detectSkystone();
+        if (skystonePosition == "Center") {
+            encoderDrive(.5, -6, -6, 0, 1.5);
+            sClawL.setPosition(.05); sClawR.setPosition(.12);
+            sleep(500);
+        }
+        if (skystonePosition == "Bridge") {
+            encoderDrive(.5, -6, -6, 0, 1.5);
+            encoderDrive(.5, 0, 0, 4, 1.5);
+            sClawL.setPosition(.05); sClawR.setPosition(.12);
+            sleep(500);
+        }
+        if (skystonePosition == "Wall")   {
+            encoderDrive(.5, -6, -6, 0, 1.5);
+            encoderDrive(.5, 0, 0, 4, 1.5);
+            sClawL.setPosition(.05); sClawR.setPosition(.12);
+            sleep(500);
+        }
+        /*
+        Old Code:
+        telemetry.addData("Status","Toward stone");
         telemetry.update();
         clawUpDown.setPosition(.1);
         servoBL.setPosition(.13);
@@ -155,6 +174,8 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             motorBR = hardwareMap.dcMotor.get("motorBR");
             motorFR = hardwareMap.dcMotor.get("motorFR");
             strafeMotor = hardwareMap.dcMotor.get("motorM");
+            bridgeColor = hardwareMap.colorSensor.get("colorL");
+            wallColor = hardwareMap.colorSensor.get("colorR");
 
             motorBL.setDirection(DcMotor.Direction.REVERSE);
             motorFL.setDirection(DcMotor.Direction.REVERSE);
@@ -167,6 +188,8 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             motorBL = hardwareMap.dcMotor.get("motorBR");
             motorFL = hardwareMap.dcMotor.get("motorFR");
             strafeMotor = hardwareMap.dcMotor.get("motorM");
+            bridgeColor = hardwareMap.colorSensor.get("colorR");
+            wallColor = hardwareMap.colorSensor.get("colorL");
 
             motorBR.setDirection(DcMotor.Direction.REVERSE);
             motorFR.setDirection(DcMotor.Direction.REVERSE);
@@ -180,8 +203,6 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
-        leftColor = hardwareMap.colorSensor.get("Lcolor");
-        rightColor = hardwareMap.colorSensor.get("Rcolor");
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
@@ -209,6 +230,25 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized and Set Up");
         telemetry.update();
+    }
+
+    private String detectSkystone() {
+        String skystonePosition;
+        telemetry.addData("Left sensor (RGBHV):", "%d, %d, %d, %d, %d",
+                bridgeColor.red(), bridgeColor.green(), bridgeColor.blue(), bridgeColor.argb(), bridgeColor.alpha());
+        telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
+                wallColor.red(), wallColor.green(), wallColor.blue(), wallColor.argb(), wallColor.alpha());
+        if (bridgeColor.argb() == 0) {skystonePosition = "Bridge";}
+        else if (wallColor.argb() == 0) {skystonePosition = "Wall";}
+        //The left and right sensors should not be compared to each other, since even a small differential in distance changes it a lot
+        else if (bridgeColor.red() + bridgeColor.green() < bridgeColor.blue() * 3.5) {
+            skystonePosition = "Bridge";
+        } else if (wallColor.red() + wallColor.green() < wallColor.blue() * 3.5) {
+            skystonePosition = "Wall";
+        } else {skystonePosition = "Center";}
+        telemetry.addData("Skystone", skystonePosition);
+        telemetry.update();
+        return skystonePosition;
     }
 
     public void encoderDrive(double speed,
@@ -259,7 +299,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy() && strafeMotor.isBusy())) {
+                    ((motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy()) || strafeMotor.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
