@@ -50,14 +50,13 @@ public class TeleOp5361 extends LinearOpMode {
                     leftColor.red(), leftColor.green(), leftColor.blue(), leftColor.argb(), leftColor.alpha());
             telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
                     rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.argb(), rightColor.alpha());
-            if (leftColor.argb() == 0) {telemetry.addData("Skystone", "Left");}
+            if      (leftColor.argb() == 0) {telemetry.addData("Skystone", "Left");}
             else if (rightColor.argb() == 0) {telemetry.addData("Skystone", "Right");}
-            //The left and right sensors should not be compared to each other, since even a small differential in distance changes it a lot
             else if (leftColor.red() + leftColor.green() < leftColor.blue() * 3.5) {
-                telemetry.addData("Skystone", "Left");
-            } else if (rightColor.red() + rightColor.green() < rightColor.blue() * 3.5) {
-                telemetry.addData("Skystone", "Right");
-            } else {telemetry.addData("Skystone", "Center");}
+                telemetry.addData("Skystone", "Left"); }
+            else if (rightColor.red() + rightColor.green() < rightColor.blue() * 3.5) {
+                telemetry.addData("Skystone", "Right"); }
+            else {telemetry.addData("Skystone", "Center");}
             telemetry.update();
             //idle();
         }
@@ -130,8 +129,8 @@ public class TeleOp5361 extends LinearOpMode {
         if (driveMode == "Tank Control") {
             leftPower       =   -gamepad1.left_stick_y;
             rightPower      =   -gamepad1.right_stick_y;
-            leftPrecision   =   (-gamepad2.left_stick_y)/4;
-            rightPrecision  =   (-gamepad2.right_stick_y)/4;
+            leftPrecision   =   (-gamepad2.left_stick_y)/5;
+            rightPrecision  =   (-gamepad2.right_stick_y)/5;
         }
      /*   else if (driveMode == "Joystick Control") {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
@@ -171,7 +170,7 @@ public class TeleOp5361 extends LinearOpMode {
             motorFL.setPower(leftPower); //joysticks power
             motorBR.setPower(rightPower);
             motorFR.setPower(rightPower);
-            strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //strafe
+            strafeMotor.setPower((gamepad1.left_trigger - gamepad1.right_trigger) / 2); //strafe
             /*if(gamepad1.left_trigger >= 0)    { strafeMotor.setPower(leftPower); }
             if(gamepad1.right_trigger >= 0)     { strafeMotor.setPower(-leftPower); }*/
         }
@@ -182,20 +181,24 @@ public class TeleOp5361 extends LinearOpMode {
     }
 
     private void roboCalc() {
-        //foundation Grab //works
-        if (gamepad2.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
+        //foundation Grab [Priority to BETA]
+        if      (gamepad2.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
         else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
         else if (gamepad1.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
         else if (gamepad1.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
 
-        //tower lift //works
-        if (gamepad2.y)         {clawTower.setPower(1); sleep(300); clawTower.setPower(0);} //tower up
-        else if (gamepad2.a)    {clawTower.setPower(-1); sleep(300); clawTower.setPower(0);} //tower down
-        else if (gamepad1.y)    {clawTower.setPower(1); sleep(300); clawTower.setPower(0);} //tower up
-        else if (gamepad1.a)    {clawTower.setPower(-1); sleep(300); clawTower.setPower(0);} //tower down
 
-        //stone grab //works
-        if (gamepad1.x)         {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
+        //tower lift [Priority to BETA]
+        if      (gamepad2.y)    {clawTower.setPower(1); } //tower up
+        else if (gamepad2.a)    {clawTower.setPower(-1); } //tower down
+        else if (gamepad1.y)    {clawTower.setPower(1); }
+        else if (gamepad1.a)    {clawTower.setPower(-1); }
+        else if (!gamepad2.y||!gamepad2.a) {clawTower.setPower(0);} //tower idle
+        else if (!gamepad1.y||!gamepad1.a) {clawTower.setPower(0);}
+
+
+        //stone grab [Priority to ALPHA]
+        if      (gamepad1.x)    {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
         else if (gamepad1.b)    {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
         else if (gamepad2.x)    {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
         else if (gamepad2.b)    {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
