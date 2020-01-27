@@ -184,17 +184,17 @@ public class TeleOp5361 extends LinearOpMode {
         //foundation Grab [Priority to BETA]
         if      (gamepad2.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
         else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
-        else if (gamepad1.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
-        else if (gamepad1.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
+        /*else if (gamepad1.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
+        else if (gamepad1.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down*/
 
 
         //tower lift [Priority to BETA]
         if      (gamepad2.y)    {clawTower.setPower(1); } //tower up
         else if (gamepad2.a)    {clawTower.setPower(-1); } //tower down
-        else if (gamepad1.y)    {clawTower.setPower(1); }
-        else if (gamepad1.a)    {clawTower.setPower(-1); }
+        /*else if (gamepad1.y)    {clawTower.setPower(1); }
+        else if (gamepad1.a)    {clawTower.setPower(-1); }*/
         else if (!gamepad2.y||!gamepad2.a) {clawTower.setPower(0);} //tower idle
-        else if (!gamepad1.y||!gamepad1.a) {clawTower.setPower(0);}
+        //else if (!gamepad1.y||!gamepad1.a) {clawTower.setPower(0);}
 
 
         //stone grab [Priority to ALPHA]
