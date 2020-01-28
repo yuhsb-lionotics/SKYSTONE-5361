@@ -97,7 +97,7 @@ public class TeleOp5361 extends LinearOpMode {
         //resetting encoders & waiting
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
-
+/*
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -109,7 +109,7 @@ public class TeleOp5361 extends LinearOpMode {
         motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+*/
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
