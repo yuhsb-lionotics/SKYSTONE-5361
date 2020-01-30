@@ -32,7 +32,7 @@ public class TeleOp5361 extends LinearOpMode {
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
     //private boolean yWasPressed = false;
-    private String driverMode = "Power"; //shifts between "Power" and "Precision" motor controls
+    //private String driverMode = "Power"; //shifts between "Power" and "Precision" motor controls //NO LONGER USING
 
 
     @Override
@@ -115,7 +115,7 @@ public class TeleOp5361 extends LinearOpMode {
     }
     private void driveCalc() //turns the gamepad controls into omniwheel commands
     {
-        double leftPower; double rightPower; double leftPrecision; double rightPrecision;
+        double leftPower; double rightPower;
 
         /* if (!yWasPressed & gamepad1.y) {
             if (driveMode == "Tank Control") {driveMode = "Joystick Control";}
@@ -129,8 +129,6 @@ public class TeleOp5361 extends LinearOpMode {
         if (driveMode == "Tank Control") {
             leftPower       =   -gamepad1.left_stick_y;
             rightPower      =   -gamepad1.right_stick_y;
-            leftPrecision   =   (-gamepad2.left_stick_y)/5;
-            rightPrecision  =   (-gamepad2.right_stick_y)/5;
         }
      /*   else if (driveMode == "Joystick Control") {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
@@ -140,68 +138,41 @@ public class TeleOp5361 extends LinearOpMode {
             telemetry.addData("Error", "Unacceptable Drive Mode");
             leftPower = 0;
             rightPower = 0;
-            leftPrecision = 0;
-            rightPrecision = 0;
         }
 
 
-    // write the values to the motors
-        //BETA Controls (Precision)
-        if(driverMode == "Precision") {
-            telemetry.addData("Drive Control:", "Precision-BETA");
+        // write the values to the motors
 
-            if (gamepad2.left_bumper && gamepad2.right_bumper)
-                { driverMode = "Power"; } //BETA give control to ALPHA (Power)
-            motorBL.setPower(leftPrecision);
-            motorFL.setPower(leftPrecision);  //joysticks power
-            motorBR.setPower(rightPrecision);
-            motorFR.setPower(rightPrecision);
-            strafeMotor.setPower((gamepad2.left_trigger - gamepad2.right_trigger) / 4); //strafe
-            /*if(gamepad2.left_trigger >= 0)    { strafeMotor.setPower(leftPrecision); }
-            if(gamepad2.right_trigger >= 0)     { strafeMotor.setPower(-leftPrecision); }*/
-        }
-        //ALPHA Controls (Drive)
-        else if (driverMode == "Power") {
-            telemetry.addData("Drive Control:", "Power-ALPHA");
-            if (gamepad1.left_bumper && gamepad1.right_bumper) {
-                driverMode = "Precision";
-            } //ALPHA give control to BETA (Precision)
-            motorBL.setPower(leftPower);
-            motorFL.setPower(leftPower); //joysticks power
-            motorBR.setPower(rightPower);
-            motorFR.setPower(rightPower);
-            strafeMotor.setPower((gamepad1.left_trigger - gamepad1.right_trigger) / 2); //strafe
-            /*if(gamepad1.left_trigger >= 0)    { strafeMotor.setPower(leftPower); }
-            if(gamepad1.right_trigger >= 0)     { strafeMotor.setPower(-leftPower); }*/
-        }
+        //Drive Controls [ALPHA]
+        motorBL.setPower(leftPower); //joysticks power
+        motorFL.setPower(leftPower);
+        motorBR.setPower(rightPower);
+        motorFR.setPower(rightPower);
+        strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //strafe
 
-        String teleFormat = "leftPower (%.2f), rightPower (%.2f), leftPrecision (%.2f), rightPrecision (%.2f)";
+        String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", teleFormat, leftPower, rightPower, leftPrecision, rightPrecision);
+        telemetry.addData("Motors", teleFormat, leftPower, rightPower);
     }
 
     private void roboCalc() {
-        //foundation Grab [Priority to BETA]
+        //Foundation Grab [BETA]
         if      (gamepad2.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
         else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
-        /*else if (gamepad1.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
-        else if (gamepad1.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down*/
 
 
-        //tower lift [Priority to BETA]
-        if      (gamepad2.y)    {clawTower.setPower(1); } //tower up
+        //Tower Lift [BETA]
+        /*if      (gamepad2.y)    {clawTower.setPower(1); } //tower up
         else if (gamepad2.a)    {clawTower.setPower(-1); } //tower down
-        /*else if (gamepad1.y)    {clawTower.setPower(1); }
-        else if (gamepad1.a)    {clawTower.setPower(-1); }*/
-        else if (!gamepad2.y||!gamepad2.a) {clawTower.setPower(0);} //tower idle
-        //else if (!gamepad1.y||!gamepad1.a) {clawTower.setPower(0);}
+        else if (!gamepad2.y||!gamepad2.a) {clawTower.setPower(0);} //tower idle*/
+        double clawString = -gamepad2.right_stick_y;
+        clawTower.setPower(clawString);
 
 
-        //stone grab [Priority to ALPHA]
+        //Stone Grab [ALPHA]
         if      (gamepad1.x)    {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
         else if (gamepad1.b)    {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
-        else if (gamepad2.x)    {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
-        else if (gamepad2.b)    {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
+
 
         /*debugging
         if (gamepad1.dpad_left) {
