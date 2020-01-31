@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="MOVE FORWARD LOL", group="Linear Opmode")
+@Autonomous(name="Blue Foundation [TEST]", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
@@ -28,9 +28,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
     public void runOpMode() {
         setUp();
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        runtime.reset();
+        //runtime.reset();
 /*
         telemetry.addData("Status","Toward foundation");
         telemetry.update();
@@ -81,20 +80,22 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
         */  //<--old code (no encoders)
-        sleep(400);
-        encoderDrive(1.0, 16, 16, 0, 2.5); // move towards foundation
+
+        encoderDrive(0.7, -32, -32, 0.1, 4); // move towards foundation (fClaw facing foundation)
+        fGripL.setPosition(.78);
+        fGripR.setPosition(.75); //grab onto Foundation
+        encoderDrive(0.7, 26, 26, 0.1, 4); // move towards foundation (fClaw facing foundation)
         fGripL.setPosition(.78);
         fGripR.setPosition(.75); //grab onto Foundation
         sleep(400);
-        encoderDrive(1.0, -24, -24, 4, 2.5); //pulling backwards
-        encoderDrive(1.0, -8, 8, 0, 6); //turning Foundation
-        fGripL.setPosition(.13);
-        fGripR.setPosition(.10); //unlatch Foundation
-        sleep(400);
+        encoderDrive(0.7, -12, 12, -8, 3); //turning Foundation
+        fGripL.setPosition(.25);
+        fGripR.setPosition(.22); //unlatch Foundation
+        encoderDrive(0.7, 24, -24, -2, 4);
 
     }
     private void setUp(){ //account for alliance
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Resetting Encoder");
         telemetry.update();
         if(getIsBlueAlliance()){
             motorBL = hardwareMap.dcMotor.get("motorBL");
@@ -104,8 +105,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             strafeMotor = hardwareMap.dcMotor.get("motorM");
 
             motorBL.setDirection(DcMotor.Direction.REVERSE);
-            motorFL.setDirection(DcMotor.Direction.FORWARD);
             motorBR.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.FORWARD);
             motorFR.setDirection(DcMotor.Direction.REVERSE);
             strafeMotor.setDirection(DcMotor.Direction.FORWARD);
         } else {
@@ -115,10 +116,10 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             motorFL = hardwareMap.dcMotor.get("motorFR");
             strafeMotor = hardwareMap.dcMotor.get("motorM");
 
-            motorBR.setDirection(DcMotor.Direction.REVERSE);
-            motorFR.setDirection(DcMotor.Direction.FORWARD);
             motorBL.setDirection(DcMotor.Direction.FORWARD);
+            motorBR.setDirection(DcMotor.Direction.REVERSE);
             motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
             strafeMotor.setDirection(DcMotor.Direction.REVERSE);
         }
         clawTower = hardwareMap.dcMotor.get("clawTower");
@@ -150,7 +151,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         fGripL.setPosition(0.13);
         fGripR.setPosition(0.1);
-        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
 

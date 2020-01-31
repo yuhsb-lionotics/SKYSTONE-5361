@@ -148,7 +148,7 @@ public class TeleOp5361 extends LinearOpMode {
         motorFL.setPower(leftPower);
         motorBR.setPower(rightPower);
         motorFR.setPower(rightPower);
-        strafeMotor.setPower(gamepad1.left_trigger - gamepad1.right_trigger); //strafe
+        strafeMotor.setPower((gamepad1.left_trigger - gamepad1.right_trigger)*0.7); //strafe
 
         String teleFormat = "leftPower (%.2f), rightPower (%.2f)";
         telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -157,7 +157,7 @@ public class TeleOp5361 extends LinearOpMode {
 
     private void roboCalc() {
         //Foundation Grab [BETA]
-        if      (gamepad2.dpad_up)   {fGripL.setPosition(.13); fGripR.setPosition(.1);} //up
+        if      (gamepad2.dpad_up)   {fGripL.setPosition(.25); fGripR.setPosition(.22);} //up
         else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
 
 
