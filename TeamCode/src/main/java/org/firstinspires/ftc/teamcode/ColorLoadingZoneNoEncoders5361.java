@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Blue Encoder Loading", group="Linear Opmode")
-public class ColorLoadingZoneAuto5361 extends LinearOpMode {
+@Autonomous(name="Blue Loading No Encoders", group="Linear Opmode")
+public class ColorLoadingZoneNoEncoders5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
@@ -32,26 +32,42 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-
+        telemetry.addData("Status","Toward stone");
+        telemetry.update();
         fGripL.setPosition(0.13);
         fGripR.setPosition(0.1);
         //set stone claw all the way closed
-        encoderDrive(.5, 17, 17, 0, 3);
+        sClawL.setPosition(.16); //may need adjusting
+        sClawR.setPosition(.25);
+        setMotors(.5, .5, 0);
+        sleep(1000);
+        setMotors(0, 0, 0);
+        sleep(800);
+
         String skystonePosition = detectSkystone();
+        setMotors(-.5, -.5, 0);
+        sleep(350);
+        setMotors(0,0,0);
+        sleep(300);
         if (skystonePosition == "Center") {
-            encoderDrive(.5, -6, -6, 0, 1.5);
+            telemetry.addData("Status", "Taking center stone");
+            telemetry.update();
             sClawL.setPosition(.05); sClawR.setPosition(.12);
             sleep(500);
         }
         if (skystonePosition == "Bridge") {
-            encoderDrive(.5, -6, -6, 0, 1.5);
-            encoderDrive(.5, 0, 0, 4, 1.5);
+            telemetry.addData("Status", "Taking bridge stone");
+            telemetry.update();
+            setMotors(0, 0, .5);
+            sleep(235);
             sClawL.setPosition(.05); sClawR.setPosition(.12);
             sleep(500);
         }
         if (skystonePosition == "Wall")   {
-            encoderDrive(.5, -6, -6, 0, 1.5);
-            encoderDrive(.5, 0, 0, 4, 1.5);
+            telemetry.addData("Status", "Taking wall stone");
+            telemetry.update();
+            setMotors(0, 0, -.5);
+            sleep(235);
             sClawL.setPosition(.05); sClawR.setPosition(.12);
             sleep(500);
         }
@@ -212,21 +228,12 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         fGripR.setDirection(Servo.Direction.FORWARD);
 
 
-        //resetting encoders & waiting
-        telemetry.addData("Status", "Resetting Encoder");
-        telemetry.update();
-
-        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        strafeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //Turn off encoders
+        motorFR.setMode    (DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFL.setMode    (DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBL.setMode    (DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBR.setMode    (DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        strafeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("Status", "Initialized and Set Up");
         telemetry.update();
@@ -234,6 +241,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
     private String detectSkystone() {
         String skystonePosition;
+        telemetry.addData("Status", "Detecting Skystone");
         telemetry.addData("Left sensor (RGBHV):", "%d, %d, %d, %d, %d",
                 bridgeColor.red(), bridgeColor.green(), bridgeColor.blue(), bridgeColor.argb(), bridgeColor.alpha());
         telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
@@ -251,81 +259,11 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         return skystonePosition;
     }
 
-    public void encoderDrive(double speed,
-                             double leftInches, double rightInches, double strafeInches,
-                             double timeoutS) { // middle inputs are how many inches to travel
-        int newFRTarget;
-        int newFLTarget;
-        int newBLTarget;
-        int newBRTarget;
-		int newSMTarget;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newFRTarget = motorFR.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
-            newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
-            newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
-            newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
-			newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH);
-
-            motorFR.setTargetPosition(newFRTarget);
-            motorFL.setTargetPosition(newFLTarget);
-            motorBL.setTargetPosition(newBLTarget);
-            motorBR.setTargetPosition(newBRTarget);
-			strafeMotor.setTargetPosition(newSMTarget);
-
-            // Turn On RUN_TO_POSITION
-            motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-			strafeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            motorFR.setPower(Math.abs(speed));
-            motorFL.setPower(Math.abs(speed));
-            motorBL.setPower(Math.abs(speed));
-            motorBR.setPower(Math.abs(speed));
-			strafeMotor.setPower(Math.abs(speed));
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    ((motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy()) || strafeMotor.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
-                        newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d :%7d",
-                        motorFR.getCurrentPosition(),
-                        motorFL.getCurrentPosition(),
-                        motorBL.getCurrentPosition(),
-                        motorBR.getCurrentPosition(),
-						strafeMotor.getCurrentPosition());
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            motorFR.setPower(0);
-            motorFL.setPower(0);
-            motorBL.setPower(0);
-            motorBR.setPower(0);
-			strafeMotor.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            motorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-			strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
+    private void setMotors(double leftPower, double rightPower, double strafePower) { //set power to driving motors
+        motorFL.setPower(leftPower);
+        motorBL.setPower(leftPower);
+        motorFR.setPower(rightPower);
+        motorBR.setPower(rightPower);
+        strafeMotor.setPower(strafePower);
     }
 }

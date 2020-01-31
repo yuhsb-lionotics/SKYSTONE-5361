@@ -181,6 +181,20 @@ public class TeleOp5361 extends LinearOpMode {
         double scotchTape = -gamepad2.left_stick_y;
         dude111.setPower(scotchTape);
 
+        //testing values for the servos
+        if (gamepad1.dpad_up) {
+            sClawL.setPosition(sClawL.getPosition() - 0.05);
+            sClawR.setPosition(sClawR.getPosition() - 0.05);
+            sleep(300);
+        }
+        else if (gamepad1.dpad_down) {
+            sClawL.setPosition(sClawL.getPosition() + 0.05);
+            sClawR.setPosition(sClawR.getPosition() + 0.05);
+            sleep(300);
+        }
+        telemetry.addData("sClaw values", "Left %d, Right %d",
+                sClawL.getPosition(), sClawR.getPosition());
+
         /*debugging
         if (gamepad1.dpad_left) {
             bClawM.setPosition(gamepad1.right_trigger/2);
