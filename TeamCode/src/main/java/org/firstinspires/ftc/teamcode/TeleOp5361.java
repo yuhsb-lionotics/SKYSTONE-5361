@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -26,7 +27,7 @@ public class TeleOp5361 extends LinearOpMode {
 
     // Declare OpMode members. //RECODING FOR 6 MOTORS, 4 SERVOS
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motorFL, motorFR, motorBL, motorBR, strafeMotor, clawTower;
+    private DcMotor motorFL, motorFR, motorBL, motorBR, strafeMotor, clawTower, dude111;
     private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left
     private ColorSensor leftColor, rightColor;
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
@@ -72,6 +73,7 @@ public class TeleOp5361 extends LinearOpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         strafeMotor = hardwareMap.dcMotor.get("motorM");
         clawTower = hardwareMap.dcMotor.get("clawTower");
+        dude111 = hardwareMap.dcMotor.get("tapeTongue");
 
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
@@ -81,12 +83,14 @@ public class TeleOp5361 extends LinearOpMode {
         rightColor = hardwareMap.colorSensor.get("colorR");
 
         //switch these if they are going backward
-        motorBL.setDirection(DcMotor.Direction.REVERSE);
         motorBR.setDirection(DcMotor.Direction.FORWARD);
         motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorFR.setDirection(DcMotor.Direction.REVERSE);
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
         strafeMotor.setDirection(DcMotor.Direction.FORWARD);
         clawTower.setDirection(DcMotor.Direction.FORWARD);
+        dude111.setDirection(DcMotor.Direction.FORWARD);
+
 
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
@@ -173,6 +177,9 @@ public class TeleOp5361 extends LinearOpMode {
         if      (gamepad1.x)    {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
         else if (gamepad1.b)    {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
 
+        //tapeTongue {BETA]
+        double scotchTape = -gamepad2.left_stick_y;
+        dude111.setPower(scotchTape);
 
         /*debugging
         if (gamepad1.dpad_left) {
