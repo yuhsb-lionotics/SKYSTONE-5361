@@ -81,14 +81,15 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.update();
         */  //<--old code (no encoders)
 
-        encoderDrive(0.7, -32, -32, 0.1, 4); // move towards foundation (fClaw facing foundation)
+        encoderDrive(0.7, -36, -36, 0, 4); // move towards foundation (fClaw facing foundation)
         fGripL.setPosition(.78);
-        fGripR.setPosition(.75); //grab onto Foundation
-        encoderDrive(0.7, 26, 26, 0.1, 4); // move towards foundation (fClaw facing foundation)
+        fGripR.setPosition(.78); //grab onto Foundation
+        sleep(500);
+        encoderDrive(0.7, 44, 44, 0, 5); // move towards foundation (fClaw facing foundation)
         fGripL.setPosition(.78);
-        fGripR.setPosition(.75); //grab onto Foundation
+        fGripR.setPosition(.78); //grab onto Foundation
         sleep(400);
-        encoderDrive(0.7, -12, 12, -8, 3); //turning Foundation
+        encoderDrive(0.7, -12, 12, 8, 3); //turning Foundation
         fGripL.setPosition(.25);
         fGripR.setPosition(.22); //unlatch Foundation
         encoderDrive(0.7, 24, -24, -2, 4);
@@ -135,7 +136,6 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
 
-
         //resetting encoders & waiting
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -149,8 +149,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        fGripL.setPosition(0.13);
-        fGripR.setPosition(0.1);
+        fGripL.setPosition(0.19);
+        fGripR.setPosition(0.19);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
@@ -203,7 +203,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy() && strafeMotor.isBusy())) {
+                    (motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy() || strafeMotor.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",

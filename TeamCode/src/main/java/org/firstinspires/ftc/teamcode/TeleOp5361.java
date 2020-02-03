@@ -161,8 +161,8 @@ public class TeleOp5361 extends LinearOpMode {
 
     private void roboCalc() {
         //Foundation Grab [BETA]
-        if      (gamepad2.dpad_up)   {fGripL.setPosition(.25); fGripR.setPosition(.22);} //up
-        else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.75);} //down
+        if      (gamepad2.dpad_up)   {fGripL.setPosition(.19); fGripR.setPosition(.19);} //up
+        else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.78);} //down
 
 
         //Tower Lift [BETA]
@@ -182,6 +182,7 @@ public class TeleOp5361 extends LinearOpMode {
         dude111.setPower(scotchTape);
 
         //testing values for the servos
+        /*
         if (gamepad1.dpad_up) {
             sClawL.setPosition(sClawL.getPosition() - 0.05);
             sClawR.setPosition(sClawR.getPosition() - 0.05);
@@ -193,7 +194,7 @@ public class TeleOp5361 extends LinearOpMode {
             sleep(300);
         }
         telemetry.addData("sClaw values", "Left %d, Right %d",
-                sClawL.getPosition(), sClawR.getPosition());
+                sClawL.getPosition(), sClawR.getPosition());*/
 
         /*debugging
         if (gamepad1.dpad_left) {
