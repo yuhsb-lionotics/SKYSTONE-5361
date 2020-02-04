@@ -144,9 +144,6 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         fGripL.setPosition(.78);//start test
         fGripR.setPosition(.78);
-        sleep(1000);
-        fGripL.setPosition(.25);
-        fGripR.setPosition(.22);//end test [cut]
 
 
         String skystonePosition = detectSkystone();

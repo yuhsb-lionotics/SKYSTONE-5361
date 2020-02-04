@@ -131,8 +131,8 @@ public class TeleOp5361 extends LinearOpMode {
         telemetry.addData("Drive Mode", driveMode);
         //Assign values to leftPower and rightPower
         if (driveMode == "Tank Control") {
-            leftPower       =   -gamepad1.left_stick_y;
-            rightPower      =   -gamepad1.right_stick_y;
+            leftPower       =   (-gamepad1.left_stick_y)*.7;
+            rightPower      =   (-gamepad1.right_stick_y)*.7;
         }
      /*   else if (driveMode == "Joystick Control") {
             leftPower = Range.clip(-gamepad1.right_stick_y + gamepad1.right_stick_x, -1, 1);
@@ -174,8 +174,8 @@ public class TeleOp5361 extends LinearOpMode {
 
 
         //Stone Grab [ALPHA]
-        if      (gamepad1.x)    {sClawL.setPosition(.05); sClawR.setPosition(.12);} //open - originally both .1 //consider making larger
-        else if (gamepad1.b)    {sClawL.setPosition(.34); sClawR.setPosition(.47);} // close - originally both .4
+        if      (gamepad1.x)    {sClawL.setPosition(.8); sClawR.setPosition(.9);} //open
+        else if (gamepad1.b)    {sClawL.setPosition(.6); sClawR.setPosition(.7);} // close higher=more
 
         //tapeTongue {BETA]
         double scotchTape = -gamepad2.left_stick_y;
