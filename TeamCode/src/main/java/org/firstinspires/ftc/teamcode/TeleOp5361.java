@@ -175,14 +175,14 @@ public class TeleOp5361 extends LinearOpMode {
 
         //Stone Grab [ALPHA]
         if      (gamepad1.x)    {sClawL.setPosition(.8); sClawR.setPosition(.9);} //open
-        else if (gamepad1.b)    {sClawL.setPosition(.6); sClawR.setPosition(.7);} // close higher=more
+        else if (gamepad1.b)    {sClawL.setPosition(.4); sClawR.setPosition(.5);} // close higher=more
 
         //tapeTongue {BETA]
         double scotchTape = -gamepad2.left_stick_y;
         dude111.setPower(scotchTape);
 
         //testing values for the servos
-        /*
+
         if (gamepad1.dpad_up) {
             sClawL.setPosition(sClawL.getPosition() - 0.05);
             sClawR.setPosition(sClawR.getPosition() - 0.05);
@@ -193,8 +193,8 @@ public class TeleOp5361 extends LinearOpMode {
             sClawR.setPosition(sClawR.getPosition() + 0.05);
             sleep(300);
         }
-        telemetry.addData("sClaw values", "Left %d, Right %d",
-                sClawL.getPosition(), sClawR.getPosition());*/
+        telemetry.addData("sClaw values", "Left %f, Right %f",
+                sClawL.getPosition(), sClawR.getPosition());
 
         /*debugging
         if (gamepad1.dpad_left) {

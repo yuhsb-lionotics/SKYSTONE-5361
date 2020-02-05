@@ -184,25 +184,30 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             motorBR = hardwareMap.dcMotor.get("motorBR");
             motorFR = hardwareMap.dcMotor.get("motorFR");
             strafeMotor = hardwareMap.dcMotor.get("motorM");
+            bridgeColor = hardwareMap.colorSensor.get("colorL");
+            wallColor = hardwareMap.colorSensor.get("colorR");
 
             motorBL.setDirection(DcMotor.Direction.REVERSE);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
             motorBR.setDirection(DcMotor.Direction.FORWARD);
-            motorFL.setDirection(DcMotor.Direction.FORWARD);
-            motorFR.setDirection(DcMotor.Direction.REVERSE);
-            strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.FORWARD); //Positive values go to the left
         } else {
             motorBR = hardwareMap.dcMotor.get("motorBL");
             motorFR = hardwareMap.dcMotor.get("motorFL");
             motorBL = hardwareMap.dcMotor.get("motorBR");
             motorFL = hardwareMap.dcMotor.get("motorFR");
             strafeMotor = hardwareMap.dcMotor.get("motorM");
+            bridgeColor = hardwareMap.colorSensor.get("colorR");
+            wallColor = hardwareMap.colorSensor.get("colorL");
 
-            motorBL.setDirection(DcMotor.Direction.FORWARD);
             motorBR.setDirection(DcMotor.Direction.REVERSE);
-            motorFL.setDirection(DcMotor.Direction.REVERSE);
-            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            motorFR.setDirection(DcMotor.Direction.REVERSE);
+            motorBL.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.FORWARD);
             strafeMotor.setDirection(DcMotor.Direction.REVERSE);
         }
+
         clawTower = hardwareMap.dcMotor.get("clawTower");
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
