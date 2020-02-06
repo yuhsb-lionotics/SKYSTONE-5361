@@ -174,8 +174,8 @@ public class TeleOp5361 extends LinearOpMode {
 
 
         //Stone Grab [ALPHA]
-        if      (gamepad1.x)    {sClawL.setPosition(.8); sClawR.setPosition(.9);} //open
-        else if (gamepad1.b)    {sClawL.setPosition(.4); sClawR.setPosition(.5);} // close higher=more
+        if      (gamepad1.x)    {sClawL.setPosition(.8); sClawR.setPosition(.9);} //close
+        else if (gamepad1.b)    {sClawL.setPosition(.4); sClawR.setPosition(.5);} // open
 
         //tapeTongue {BETA]
         double scotchTape = -gamepad2.left_stick_y;

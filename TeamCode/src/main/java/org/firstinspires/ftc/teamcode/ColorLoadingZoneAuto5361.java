@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -140,36 +141,39 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sClawR.setPosition(1);
         //set stone claw all the way closed
 
-        encoderDrive(0.7, 28, 28, 0, 5);
-
-        fGripL.setPosition(.78);//start test
-        fGripR.setPosition(.78);
-
+        encoderDrive(0.7, 25, 25, 0, 3);          //towards stones
 
         String skystonePosition = detectSkystone();
         if (skystonePosition == "Center") {
-            encoderDrive(.5, -6, -6, 0, 1.5);
-            sClawL.setPosition(.05); sClawR.setPosition(.12);
+            telemetry.addData("Block Pos:", "Center");
+            telemetry.update();
+            encoderDrive(.3, -3, -3, 0, 1.5);
             sleep(500);
         }
         if (skystonePosition == "Bridge") {
-            encoderDrive(.5, -6, -6, 0, 1.5);
-            encoderDrive(.5, 0, 0, 4, 1.5);
-            sClawL.setPosition(.05); sClawR.setPosition(.12);
+            telemetry.addData("Block Pos:", "Bridge");
+            telemetry.update();
+            encoderDrive(.3, -3, -3, 0, 1.5);
+            encoderDrive(.3, 0, 0, 2, 1.0);
             sleep(500);
         }
         if (skystonePosition == "Wall")   {
-            encoderDrive(.5, -6, -6, 0, 1.5);
-            encoderDrive(.5, 0, 0, 4, 1.5);
-            sClawL.setPosition(.05); sClawR.setPosition(.12);
+            telemetry.addData("Block Pos:", "Wall");
+            telemetry.update();
+            encoderDrive(.3, -3, -3, 0, 1.5);
+            encoderDrive(.3, 0, 0, -2, 1.0);
             sleep(500);
         }
 
-
-
-
-
+        sClawL.setPosition(.4); sClawR.setPosition(.5);                                     //open claw
+        encoderDrive(.5, 14, 14, 0, 2.0);      //towards block
+        sClawL.setPosition(.8); sClawR.setPosition(.9);                                      //grab block
+        encoderDrive(.5, -15, -15, 0, 2.0);     //move back
+        encoderDrive(.7, 0, 0, 36, 3.0);        //cross bridge
+        sClawL.setPosition(.2); sClawR.setPosition(.1);                                     //open claw (wide to let block slide out of claw)
     }
+            //NOTE --- the 6 measurements above are programed for "Wall", so it will need to be put into
+            // skystonePos==Wall and we will need to copy the 6 lines above and paste it into ==Bridge and ==Center
 
     private void setUp(){ //account for alliance
         telemetry.addData("Status", "Initialized - Setting Up");
@@ -188,9 +192,9 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             wallColor = hardwareMap.colorSensor.get("colorR");
 
             motorBL.setDirection(DcMotor.Direction.REVERSE);
-            motorFL.setDirection(DcMotor.Direction.REVERSE);
+            motorFL.setDirection(DcMotor.Direction.FORWARD);
             motorBR.setDirection(DcMotor.Direction.FORWARD);
-            motorFR.setDirection(DcMotor.Direction.FORWARD);
+            motorFR.setDirection(DcMotor.Direction.REVERSE);
             strafeMotor.setDirection(DcMotor.Direction.FORWARD); //Positive values go to the left
         } else {
             motorBR = hardwareMap.dcMotor.get("motorBL");
@@ -202,9 +206,9 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             wallColor = hardwareMap.colorSensor.get("colorL");
 
             motorBR.setDirection(DcMotor.Direction.REVERSE);
-            motorFR.setDirection(DcMotor.Direction.REVERSE);
+            motorFR.setDirection(DcMotor.Direction.FORWARD);
             motorBL.setDirection(DcMotor.Direction.FORWARD);
-            motorFL.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
             strafeMotor.setDirection(DcMotor.Direction.REVERSE);
         }
 
