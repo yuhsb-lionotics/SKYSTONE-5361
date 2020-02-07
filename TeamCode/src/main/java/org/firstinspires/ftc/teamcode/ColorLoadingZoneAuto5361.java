@@ -137,27 +137,25 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update(); */ //<--old code
 
         // run until the end of the match (driver presses STOP)
-        sClawL.setPosition(1);
-        sClawR.setPosition(1);
         //set stone claw all the way closed
 
         encoderDrive(0.7, 25, 25, 0, 3);          //towards stones
 
         String skystonePosition = detectSkystone();
-        if (skystonePosition == "Center") {
+        if (skystonePosition.equals("Center")) {
             telemetry.addData("Block Pos:", "Center");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
             sleep(500);
         }
-        if (skystonePosition == "Bridge") {
+        if (skystonePosition.equals("Bridge")) {
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
             encoderDrive(.3, 0, 0, 2, 1.0);
             sleep(500);
         }
-        if (skystonePosition == "Wall")   {
+        if (skystonePosition.equals("Wall"))   {
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
@@ -165,9 +163,9 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             sleep(500);
         }
 
-        sClawL.setPosition(.4); sClawR.setPosition(.5);                                     //open claw
+        TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
         encoderDrive(.5, 14, 14, 0, 2.0);      //towards block
-        sClawL.setPosition(.8); sClawR.setPosition(.9);                                      //grab block
+        TeleOp5361.grabStone(sClawL, sClawR);                                      //grab block
         encoderDrive(.5, -15, -15, 0, 2.0);     //move back
         encoderDrive(.7, 0, 0, 36, 3.0);        //cross bridge
         sClawL.setPosition(.2); sClawR.setPosition(.1);                                     //open claw (wide to let block slide out of claw)
@@ -245,8 +243,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 //start loading auto
         //sClawL.setPosition(0.6); //open perfect
         //sClawR.setPosition(0.75);
-        sClawL.setPosition(1);
-        sClawR.setPosition(1);
+        TeleOp5361.closeClaw(sClawL, sClawR);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -254,10 +251,14 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
     private String detectSkystone() {
         String skystonePosition;
-        telemetry.addData("Left sensor (RGBHV):", "%d, %d, %d, %d, %d",
-                bridgeColor.red(), bridgeColor.green(), bridgeColor.blue(), bridgeColor.argb(), bridgeColor.alpha());
-        telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
-                wallColor.red(), wallColor.green(), wallColor.blue(), wallColor.argb(), wallColor.alpha());
+        //telemetry.addData("Left sensor (RGBHV):", "%d, %d, %d, %d, %d",
+                //bridgeColor.red(), bridgeColor.green(), bridgeColor.blue(), bridgeColor.argb(), bridgeColor.alpha());
+        //telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
+                //wallColor.red(), wallColor.green(), wallColor.blue(), wallColor.argb(), wallColor.alpha());
+        telemetry.addData("Bridge Yellowness ratio",
+                (bridgeColor.red() + bridgeColor.green()) / bridgeColor.blue());
+        telemetry.addData("Wall Yellowness ratio",
+                (wallColor.red() + wallColor.green()) / wallColor.blue());
         if (bridgeColor.argb() == 0) {skystonePosition = "Bridge";}
         else if (wallColor.argb() == 0) {skystonePosition = "Wall";}
         //The left and right sensors should not be compared to each other, since even a small differential in distance changes it a lot
@@ -271,7 +272,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         return skystonePosition;
     }
 
-    public void encoderDrive(double speed,
+    protected void encoderDrive(double speed,
                              double leftInches, double rightInches, double strafeInches,
                              double timeoutS) { // middle inputs are how many inches to travel
         int newFRTarget;
