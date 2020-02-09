@@ -20,7 +20,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
     public boolean getIsBlueAlliance() {return true;}
 
-    private static final double COUNTS_PER_MOTOR_REV = 1220;    // eg: TETRIX Motor Encoder
+    private static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -172,7 +172,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
             newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
             newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
-            newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH);
+            newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH / 1.5); //gear reduction
 
             motorFR.setTargetPosition(newFRTarget);
             motorFL.setTargetPosition(newFLTarget);

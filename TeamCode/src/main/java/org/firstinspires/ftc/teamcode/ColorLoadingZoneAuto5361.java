@@ -19,7 +19,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
     public boolean getIsBlueAlliance() {return true;} //Set to false if red alliance
 
-    private static final double COUNTS_PER_MOTOR_REV = 1220;    // eg: TETRIX Motor Encoder
+    private static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -143,45 +143,43 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         //set stone claw all the way closed
 
-        encoderDrive(0.7, 24, 24, 0, 3);          //towards stones
-
+        encoderDrive(0.3, 6, 6, 0, 2);
+        encoderDrive(0.7, 17.5, 17.5, 0, 3);          //towards stones
         String skystonePosition = detectSkystone();
+        encoderDrive(.2, -2, -2, 0.0, 1.0);         //backwards
 
-        char skyStonePos = 'Q';
+        char skyStonePos = 'Q'; //may be unnecessary but can't hurt
 
-        if (skystonePosition.equals("Center")) {
+        if (skystonePosition == "Center") {
             skyStonePos = 'C';
             telemetry.addData("Block Pos:", "Center");
             telemetry.update();
-            encoderDrive(.3, -3, -3, 0, 1.5);
             sleep(500);
         }
 
-        if (skystonePosition.equals("Bridge")) {
+        if (skystonePosition == "Bridge") {
             skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
-            encoderDrive(.3, -3, -3, 0, 1.5);
-            encoderDrive(.3, 0, 0, 2, 1.5);
+            encoderDrive(.15, 0, 0, 1, 1.0);
             sleep(500);
         }
 
-        if (skystonePosition.equals("Wall"))   {
+        if (skystonePosition == "Wall")   {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.3, -3, -3, 0, 1.0);
-            encoderDrive(.3, 0, 0, -2, 1.0);
+            encoderDrive(.15, 0, 0, -1, 1.0);
             sleep(500);
         }
 
         TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
-        encoderDrive(.5, 14, 14, 0, 2.0);      //towards block
+        encoderDrive(.5, 12, 12, 0, 2.0);      //towards block
         TeleOp5361.grabStone(sClawL, sClawR);                                      //grab block
-        encoderDrive(.5, -15, -15, 0, 2.0);     //move back
+        encoderDrive(.5, -16, -16, 0, 2.0);     //move back
 
         if (skyStonePos == 'W') {
-            encoderDrive(.7, 0, 0, 40, 3.5);        //cross bridge
+            encoderDrive(.7, 0, 0, 24, 2.7);        //cross bridge
             encoderDrive(.5, -1, -1, 0, 2.0);           //move back
             sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open all the way
             encoderDrive(.7, 0, 0, -12, 2.5);           //move to 2nd block
@@ -316,7 +314,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
             newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
             newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
-			newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH);
+			newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH / 1.5); //gear reduction
 
             motorFR.setTargetPosition(newFRTarget);
             motorFL.setTargetPosition(newFLTarget);
@@ -358,7 +356,6 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
                         motorBL.getCurrentPosition(),
                         motorBR.getCurrentPosition(),
 						strafeMotor.getCurrentPosition());
-                telemetry.update();
             }
 
             // Stop all motion;
