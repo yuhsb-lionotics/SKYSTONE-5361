@@ -137,46 +137,37 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update(); */ //<--old code
 
         // run until the end of the match (driver presses STOP)
-<<<<<<< HEAD
+
         sClawL.setPosition(1.2);
         sClawR.setPosition(1.2);
-=======
->>>>>>> origin/master
+
         //set stone claw all the way closed
 
         encoderDrive(0.7, 24, 24, 0, 3);          //towards stones
 
         String skystonePosition = detectSkystone();
-<<<<<<< HEAD
-        char skyStonePos = 'E';
-        if (skystonePosition == "Center") {
-            skyStonePos = 'C';
-=======
+
+        char skyStonePos = 'Q';
+
         if (skystonePosition.equals("Center")) {
->>>>>>> origin/master
+            skyStonePos = 'C';
             telemetry.addData("Block Pos:", "Center");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
             sleep(500);
         }
-<<<<<<< HEAD
-        if (skystonePosition == "Bridge") {
-            skyStonePos = 'B';
-=======
+
         if (skystonePosition.equals("Bridge")) {
->>>>>>> origin/master
+            skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
             encoderDrive(.3, 0, 0, 2, 1.5);
             sleep(500);
         }
-<<<<<<< HEAD
-        if (skystonePosition == "Wall")   {
-            skyStonePos = 'W';
-=======
+
         if (skystonePosition.equals("Wall"))   {
->>>>>>> origin/master
+            skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.0);
