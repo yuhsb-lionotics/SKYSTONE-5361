@@ -63,7 +63,22 @@ public class TeleOp5361 extends LinearOpMode {
         }
     }
 
-    private void setUp(){ //account for alliance
+    public static void openClaw(Servo leftServo, Servo rightServo) {
+        leftServo.setPosition(.4);
+        rightServo.setPosition(.5);
+    }
+
+    public static void grabStone(Servo leftServo, Servo rightServo) {
+        leftServo.setPosition(.8);
+        rightServo.setPosition(.9);
+    }
+
+    public static void closeClaw(Servo leftServo, Servo rightServo) { // all the way
+        leftServo.setPosition(1);
+        rightServo.setPosition(1);
+    }
+
+    private void setUp(){
         telemetry.addData("Status", "Initialized - Setting Up");
         telemetry.update();
 
@@ -130,7 +145,7 @@ public class TeleOp5361 extends LinearOpMode {
 
         telemetry.addData("Drive Mode", driveMode);
         //Assign values to leftPower and rightPower
-        if (driveMode == "Tank Control") {
+        if (driveMode.equals("Tank Control")) {
             leftPower       =   (-gamepad1.left_stick_y)*.7;
             rightPower      =   (-gamepad1.right_stick_y)*.7;
         }
@@ -174,13 +189,14 @@ public class TeleOp5361 extends LinearOpMode {
 
 
         //Stone Grab [ALPHA]
-        if      (gamepad1.x)    {sClawL.setPosition(.8); sClawR.setPosition(.9);} //close
-        else if (gamepad1.b)    {sClawL.setPosition(.4); sClawR.setPosition(.5);} // open
+        if      (gamepad1.x)    {TeleOp5361.grabStone(sClawL, sClawR);} //close
+        else if (gamepad1.b)    {TeleOp5361.openClaw(sClawL, sClawR);} // open
 
         //tapeTongue {BETA]
         double scotchTape = -gamepad2.left_stick_y;
         dude111.setPower(scotchTape);
 
+        /*
         //testing values for the servos
 
         if (gamepad1.dpad_up) {
@@ -194,12 +210,6 @@ public class TeleOp5361 extends LinearOpMode {
             sleep(300);
         }
         telemetry.addData("sClaw values", "Left %f, Right %f",
-                sClawL.getPosition(), sClawR.getPosition());
-
-        /*debugging
-        if (gamepad1.dpad_left) {
-            bClawM.setPosition(gamepad1.right_trigger/2);
-            //telemetry.addData("Claw Position", gamepad1.right_trigger/10);
-        }telemetry.addData("Claw Position", bClawM.getPosition()); */
+                sClawL.getPosition(), sClawR.getPosition()); */
     }
 }
