@@ -137,30 +137,34 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         telemetry.update(); */ //<--old code
 
         // run until the end of the match (driver presses STOP)
-        sClawL.setPosition(1);
-        sClawR.setPosition(1);
+        sClawL.setPosition(1.2);
+        sClawR.setPosition(1.2);
         //set stone claw all the way closed
 
-        encoderDrive(0.7, 25, 25, 0, 3);          //towards stones
+        encoderDrive(0.7, 24, 24, 0, 3);          //towards stones
 
         String skystonePosition = detectSkystone();
+        char skyStonePos = 'E';
         if (skystonePosition == "Center") {
+            skyStonePos = 'C';
             telemetry.addData("Block Pos:", "Center");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
             sleep(500);
         }
         if (skystonePosition == "Bridge") {
+            skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
             encoderDrive(.3, -3, -3, 0, 1.5);
-            encoderDrive(.3, 0, 0, 2, 1.0);
+            encoderDrive(.3, 0, 0, 2, 1.5);
             sleep(500);
         }
         if (skystonePosition == "Wall")   {
+            skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.3, -3, -3, 0, 1.5);
+            encoderDrive(.3, -3, -3, 0, 1.0);
             encoderDrive(.3, 0, 0, -2, 1.0);
             sleep(500);
         }
@@ -169,7 +173,22 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         encoderDrive(.5, 14, 14, 0, 2.0);      //towards block
         sClawL.setPosition(.8); sClawR.setPosition(.9);                                      //grab block
         encoderDrive(.5, -15, -15, 0, 2.0);     //move back
-        encoderDrive(.7, 0, 0, 36, 3.0);        //cross bridge
+
+        if (skyStonePos == 'W') {
+            encoderDrive(.7, 0, 0, 40, 3.5);        //cross bridge
+            encoderDrive(.5, -1, -1, 0, 2.0);           //move back
+            sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open all the way
+            encoderDrive(.7, 0, 0, -12, 2.5);           //move to 2nd block
+            sClawL.setPosition(.4); sClawR.setPosition(.5);                                     //open claw
+            encoderDrive(.5, 14, 14, 0, 2.0);          //towards block
+            sClawL.setPosition(.8); sClawR.setPosition(.9);                                        //grab block
+            encoderDrive(.5, -14, -14, 0, 2.0);         //move back
+            encoderDrive(.7, 0, 0, 26, 2.5);        //cross bridge #2
+            sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open all the way
+            encoderDrive(.7, 0, 0, -8, 2.5);        //park under bridge
+
+        }
+
         sClawL.setPosition(.2); sClawR.setPosition(.1);                                     //open claw (wide to let block slide out of claw)
     }
             //NOTE --- the 6 measurements above are programed for "Wall", so it will need to be put into
