@@ -281,15 +281,15 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         //telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
                 //wallColor.red(), wallColor.green(), wallColor.blue(), wallColor.argb(), wallColor.alpha());
         telemetry.addData("Bridge Yellowness ratio",
-                (bridgeColor.red() + bridgeColor.green()) / bridgeColor.blue());
+                (bridgeColor.red() + bridgeColor.green()) / (double) bridgeColor.blue());
         telemetry.addData("Wall Yellowness ratio",
-                (wallColor.red() + wallColor.green()) / wallColor.blue());
+                (wallColor.red() + wallColor.green()) / (double) wallColor.blue());
         if (bridgeColor.argb() == 0) {skystonePosition = "Bridge";}
         else if (wallColor.argb() == 0) {skystonePosition = "Wall";}
         //The left and right sensors should not be compared to each other, since even a small differential in distance changes it a lot
-        else if (bridgeColor.red() + bridgeColor.green() < bridgeColor.blue() * 3.5) {
+        else if (bridgeColor.red() + bridgeColor.green() < bridgeColor.blue() * 3.3) {
             skystonePosition = "Bridge";
-        } else if (wallColor.red() + wallColor.green() < wallColor.blue() * 3.5) {
+        } else if (wallColor.red() + wallColor.green() < wallColor.blue() * 3.3) {
             skystonePosition = "Wall";
         } else {skystonePosition = "Center";}
         telemetry.addData("Skystone", skystonePosition);

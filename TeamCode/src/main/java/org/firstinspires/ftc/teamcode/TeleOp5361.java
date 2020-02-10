@@ -47,15 +47,15 @@ public class TeleOp5361 extends LinearOpMode {
         while (opModeIsActive()) {
             driveCalc();
             roboCalc();
-            telemetry.addData("Left sensor (RGBHV):", "%d, %d, %d, %d, %d",
-                    leftColor.red(), leftColor.green(), leftColor.blue(), leftColor.argb(), leftColor.alpha());
-            telemetry.addData("Right sensor (RGBHV):", "%d, %d, %d, %d, %d",
-                    rightColor.red(), rightColor.green(), rightColor.blue(), rightColor.argb(), rightColor.alpha());
+            telemetry.addData("Left Yellowness ratio",
+                    (leftColor.red() + leftColor.green()) / (double) leftColor.blue());
+            telemetry.addData("Right Yellowness ratio",
+                    (rightColor.red() + rightColor.green()) / (double) rightColor.blue());
             if      (leftColor.argb() == 0) {telemetry.addData("Skystone", "Left");}
             else if (rightColor.argb() == 0) {telemetry.addData("Skystone", "Right");}
-            else if (leftColor.red() + leftColor.green() < leftColor.blue() * 3.5) {
+            else if (leftColor.red() + leftColor.green() < leftColor.blue() * 3.3) {
                 telemetry.addData("Skystone", "Left"); }
-            else if (rightColor.red() + rightColor.green() < rightColor.blue() * 3.5) {
+            else if (rightColor.red() + rightColor.green() < rightColor.blue() * 3.3) {
                 telemetry.addData("Skystone", "Right"); }
             else {telemetry.addData("Skystone", "Center");}
             telemetry.update();
