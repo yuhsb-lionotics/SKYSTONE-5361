@@ -144,7 +144,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         //set stone claw all the way closed
 
         encoderDrive(0.3, 6, 6, 0, 2);
-        encoderDrive(0.7, 17.5, 17.5, 0, 3);          //towards stones
+        encoderDrive(0.7, 16, 16, 0, 3);          //towards stones
         String skystonePosition = detectSkystone();
         encoderDrive(.2, -2, -2, 0.0, 1.0);         //backwards
 
@@ -175,17 +175,17 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
         encoderDrive(.5, 12, 12, 0, 2.0);      //towards block
-        TeleOp5361.grabStone(sClawL, sClawR);                                      //grab block
+        TeleOp5361.grabStone(sClawL, sClawR);                                      //grab Skystone #1
         encoderDrive(.5, -16, -16, 0, 2.0);     //move back
 
-        if (skyStonePos == 'W') {
+        if (skyStonePos == 'W') {//we will not be going for a 2nd skystone if pos is against wall, too difficult to get with our claw setup
             encoderDrive(.7, 0, 0, 24, 2.7);        //cross bridge
             encoderDrive(.5, -1, -1, 0, 2.0);           //move back
-            sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open all the way
-            encoderDrive(.7, 0, 0, -12, 2.5);           //move to 2nd block
+            sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open claw all the way
+            encoderDrive(.5, 0, 0, -12, 2.5);           //move to 2nd block
             sClawL.setPosition(.4); sClawR.setPosition(.5);                                     //open claw
             encoderDrive(.5, 14, 14, 0, 2.0);          //towards block
-            sClawL.setPosition(.8); sClawR.setPosition(.9);                                        //grab block
+            sClawL.setPosition(.8); sClawR.setPosition(.9);                                        //grab block #2
             encoderDrive(.5, -14, -14, 0, 2.0);         //move back
             encoderDrive(.7, 0, 0, 26, 2.5);        //cross bridge #2
             sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open all the way
