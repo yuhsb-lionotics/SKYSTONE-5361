@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -28,7 +27,7 @@ public class TeleOp5361 extends LinearOpMode {
     // Declare OpMode members. //RECODING FOR 6 MOTORS, 4 SERVOS
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorFL, motorFR, motorBL, motorBR, strafeMotor, clawTower, dude111;
-    private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left
+    private Servo sClawR, sClawL, fGripR, fGripL, compressor; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left
     private ColorSensor leftColor, rightColor;
     private String driveMode = "Tank Control"; //Values are "Tank Control" and "Joystick Control".
                                                //Press Y on the controller to change the mode.
@@ -94,8 +93,10 @@ public class TeleOp5361 extends LinearOpMode {
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
+        compressor = hardwareMap.servo.get("compressor");
         leftColor = hardwareMap.colorSensor.get("colorL");
         rightColor = hardwareMap.colorSensor.get("colorR");
+
 
         //switch these if they are going backward
         motorBR.setDirection(DcMotor.Direction.FORWARD);
@@ -106,11 +107,11 @@ public class TeleOp5361 extends LinearOpMode {
         clawTower.setDirection(DcMotor.Direction.FORWARD);
         dude111.setDirection(DcMotor.Direction.FORWARD);
 
-
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
+        compressor.setDirection(Servo.Direction.FORWARD);
 
 
         //resetting encoders & waiting
@@ -159,7 +160,6 @@ public class TeleOp5361 extends LinearOpMode {
             rightPower = 0;
         }
 
-
         // write the values to the motors
 
         //Drive Controls [ALPHA]
@@ -175,24 +175,19 @@ public class TeleOp5361 extends LinearOpMode {
     }
 
     private void roboCalc() {
-        //Foundation Grab [BETA]
+
+        if      (gamepad1.x)    {TeleOp5361.grabStone(sClawL, sClawR);} //close
+        else if (gamepad1.b)    {TeleOp5361.openClaw(sClawL, sClawR);} // open
+
         if      (gamepad2.dpad_up)   {fGripL.setPosition(.19); fGripR.setPosition(.19);} //up
         else if (gamepad2.dpad_down) {fGripL.setPosition(.78); fGripR.setPosition(.78);} //down
 
-
-        //Tower Lift [BETA]
         /*if      (gamepad2.y)    {clawTower.setPower(1); } //tower up
         else if (gamepad2.a)    {clawTower.setPower(-1); } //tower down
         else if (!gamepad2.y||!gamepad2.a) {clawTower.setPower(0);} //tower idle*/
         double clawString = -gamepad2.right_stick_y;
         clawTower.setPower(clawString);
 
-
-        //Stone Grab [ALPHA]
-        if      (gamepad1.x)    {TeleOp5361.grabStone(sClawL, sClawR);} //close
-        else if (gamepad1.b)    {TeleOp5361.openClaw(sClawL, sClawR);} // open
-
-        //tapeTongue {BETA]
         double scotchTape = -gamepad2.left_stick_y;
         dude111.setPower(scotchTape);
 

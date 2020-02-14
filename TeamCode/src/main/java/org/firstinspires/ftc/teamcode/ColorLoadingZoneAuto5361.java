@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,7 +13,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
-    private Servo sClawR, sClawL, fGripR, fGripL; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
+    private Servo sClawR, sClawL, fGripR, fGripL, compressor; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
     private ColorSensor bridgeColor, wallColor;
 
     public boolean getIsBlueAlliance() {return true;} //Set to false if red alliance
@@ -143,10 +142,11 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         //set stone claw all the way closed
 
-        encoderDrive(0.3, 6, 6, 0, 2);
+        encoderDrive(0.3, 6, 6, 0, 2);              //slow at start (idk why)
         encoderDrive(0.7, 16, 16, 0, 3);          //towards stones
         String skystonePosition = detectSkystone();
-        encoderDrive(.2, -2, -2, 0.0, 1.0);         //backwards
+        encoderDrive(.2, -3, -3, 0.0, 1.0);         //back up
+
 
         char skyStonePos = 'Q'; //may be unnecessary but can't hurt
 
@@ -156,47 +156,75 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             telemetry.update();
             sleep(500);
         }
-
         if (skystonePosition == "Bridge") {
             skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
-            encoderDrive(.15, 0, 0, 1, 1.0);
+            encoderDrive(.4, 0, 0, .5, 1.0);
             sleep(500);
         }
-
         if (skystonePosition == "Wall")   {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.15, 0, 0, -1, 1.0);
+            encoderDrive(.4, 0, 0, -.5, 1.0);
             sleep(500);
         }
 
-        TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
-        encoderDrive(.5, 12, 12, 0, 2.0);      //towards block
-        TeleOp5361.grabStone(sClawL, sClawR);                                      //grab Skystone #1
-        encoderDrive(.5, -16, -16, 0, 2.0);     //move back
 
-        if (skyStonePos == 'W') {//we will not be going for a 2nd skystone if pos is against wall, too difficult to get with our claw setup
-            encoderDrive(.7, 0, 0, 24, 2.7);        //cross bridge
-            encoderDrive(.5, -1, -1, 0, 2.0);           //move back
-            sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open claw all the way
-            encoderDrive(.5, 0, 0, -12, 2.5);           //move to 2nd block
-            sClawL.setPosition(.4); sClawR.setPosition(.5);                                     //open claw
-            encoderDrive(.5, 14, 14, 0, 2.0);          //towards block
-            sClawL.setPosition(.8); sClawR.setPosition(.9);                                        //grab block #2
-            encoderDrive(.5, -14, -14, 0, 2.0);         //move back
-            encoderDrive(.7, 0, 0, 26, 2.5);        //cross bridge #2
-            sClawL.setPosition(.0); sClawR.setPosition(.0);                                         //open all the way
-            encoderDrive(.7, 0, 0, -8, 2.5);        //park under bridge
+        TeleOp5361.openClaw(sClawL, sClawR);                                                        //open claw
+        encoderDrive(.5, 12, 12, 0, 2.0);               //towards block
+        TeleOp5361.grabStone(sClawL, sClawR);                                                       //grab Skystone #1
+        encoderDrive(.5, -16, -16, 0, 2.0);             //move back
 
+
+        if (skyStonePos == 'B'){//theoretical--needs reevaluation after motorBR is reinstalled--edit values with /**/ (2 blockLength to left)
+            encoderDrive(.7, 0, 0, 24/**/, 2.7);            //cross bridge (into building)
+            encoderDrive(.5, -2, -2, 0, 1.0);           //move back
+            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open claw all the way open
+            encoderDrive(.5, 0, 0, -9/**/, 2.0);           //cross bridge) to 2nd block (into loading)
+            TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
+            encoderDrive(.5, 16, 16, 0, 2.0);          //towards block #2
+            TeleOp5361.grabStone(sClawL, sClawR);                                                   //grab block #2
+            encoderDrive(.5, -16, -16, 0, 2.0);         //move back
+            encoderDrive(.7, 0, 0, 16/**/, 2.0);            //cross bridge #2 (into building)
+            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open all the way
+            encoderDrive(.7, 7, 7, -4/**/, 1.2);            //park under bridge (closer to neutral bridge)
         }
 
-        sClawL.setPosition(.2); sClawR.setPosition(.1);                                     //open claw (wide to let block slide out of claw)
+        if (skyStonePos == 'W') {//we will not be going for a 2nd skystone if pos is against wall; too difficult to get with our claw setup
+            encoderDrive(.7, 0, 0, 18, 2.5);            //cross bridge with block #1 (into building)
+            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open claw all the way open
+            sleep(250);
+            encoderDrive(.5, 0, 0, -8, 2.0);           //cross bridge) to 2nd block (into loading)
+            TeleOp5361.openClaw(sClawL, sClawR);                                                    //open claw
+            sleep(250);
+            encoderDrive(.5, 16, 16, 0, 2.0);          //towards block #2
+            TeleOp5361.grabStone(sClawL, sClawR);                                                   //grab block #2
+            encoderDrive(.5, -16, -16, 0, 2.0);         //move back
+            sleep(250);
+            encoderDrive(.7, 0, 0, 10, 2.0);            //cross bridge with block #2 (into building)
+            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open all the way
+            sleep(250);
+            encoderDrive(.7, 4, 4, -4, 1.2);            //park under bridge (closer to neutral bridge)
+        }
+
+        if (skyStonePos == 'C'){//theoretical--needs reevaluation after motorBR is reinstalled--edit values with /**/ (1 blockLength to left)
+            encoderDrive(.7, 0, 0, 24/**/, 2.7);            //cross bridge (into building)
+            encoderDrive(.5, -2, -2, 0, 1.0);           //move back
+            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open claw all the way open
+            encoderDrive(.5, 0, 0, -9/**/, 2.0);           //cross bridge) to 2nd block (into loading)
+            TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
+            encoderDrive(.5, 16, 16, 0, 2.0);          //towards block #2
+            TeleOp5361.grabStone(sClawL, sClawR);                                                   //grab block #2
+            encoderDrive(.5, -16, -16, 0, 2.0);         //move back
+            encoderDrive(.7, 0, 0, 16/**/, 2.0);            //cross bridge #2 (into building)
+            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open all the way
+            encoderDrive(.7, 7, 7, -4/**/, 1.2);            //park under bridge (closer to neutral bridge)
+        }
+
     }
-            //NOTE --- the 6 measurements above are programed for "Wall", so it will need to be put into
-            // skystonePos==Wall and we will need to copy the 6 lines above and paste it into ==Bridge and ==Center
+
 
     private void setUp(){ //account for alliance
         telemetry.addData("Status", "Initialized - Setting Up");
@@ -240,6 +268,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
+        compressor = hardwareMap.servo.get("compressor");
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
@@ -247,6 +276,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
+        compressor.setDirection(Servo.Direction.FORWARD);
 
 
         //resetting encoders & waiting
@@ -269,6 +299,11 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         //sClawL.setPosition(0.6); //open perfect
         //sClawR.setPosition(0.75);
         TeleOp5361.closeClaw(sClawL, sClawR);
+        compressor.setPosition(.98);//change if compressor malfunctions
+        sleep(750);
+        clawTower.setPower(-.2);
+        sleep(400);
+        clawTower.setPower(0);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
