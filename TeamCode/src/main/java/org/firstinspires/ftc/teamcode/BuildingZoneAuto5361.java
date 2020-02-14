@@ -15,7 +15,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
+    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower, dude111;
     private Servo sClawR, sClawL, fGripR, fGripL, compressor; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
 
     public boolean getIsBlueAlliance() {return true;}
@@ -124,6 +124,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             strafeMotor.setDirection(DcMotor.Direction.REVERSE);
         }
         clawTower = hardwareMap.dcMotor.get("clawTower");
+        dude111 = hardwareMap.dcMotor.get("tapeTongue");
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
@@ -133,6 +134,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
+        dude111.setDirection(DcMotor.Direction.FORWARD);
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);

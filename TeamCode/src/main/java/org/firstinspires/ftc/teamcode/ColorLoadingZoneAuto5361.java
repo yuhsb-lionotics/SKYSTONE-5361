@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ColorLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower;
+    private DcMotor motorBL, motorBR, motorFL, motorFR, strafeMotor, clawTower, dude111;
     private Servo sClawR, sClawL, fGripR, fGripL, compressor; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
     private ColorSensor bridgeColor, wallColor;
 
@@ -160,14 +160,14 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
-            encoderDrive(.4, 0, 0, .5, 1.0);
+            encoderDrive(.2, 0, 0, 1, 0.9);
             sleep(500);
         }
         if (skystonePosition == "Wall")   {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.4, 0, 0, -.5, 1.0);
+            encoderDrive(.2, 0, 0, -1, 0.9);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
             sleep(500);
         }
 
@@ -192,11 +192,13 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             encoderDrive(.7, 7, 7, -4/**/, 1.2);            //park under bridge (closer to neutral bridge)
         }
 
+
         if (skyStonePos == 'W') {//we will not be going for a 2nd skystone if pos is against wall; too difficult to get with our claw setup
-            encoderDrive(.7, 0, 0, 18, 2.5);            //cross bridge with block #1 (into building)
-            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open claw all the way open
             sleep(250);
-            encoderDrive(.5, 0, 0, -8, 2.0);           //cross bridge) to 2nd block (into loading)
+            encoderDrive(.5, 0, 0, 18, 2.5);            //cross bridge with block #1 (into building)
+            sClawL.setPosition(.0); sClawR.setPosition(.2);                                         //open claw all the way open
+            sleep(250);
+            encoderDrive(.5, 0, 0, -8, 1.8);           //cross bridge) to 2nd block (into loading)
             TeleOp5361.openClaw(sClawL, sClawR);                                                    //open claw
             sleep(250);
             encoderDrive(.5, 16, 16, 0, 2.0);          //towards block #2
@@ -204,9 +206,16 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             encoderDrive(.5, -16, -16, 0, 2.0);         //move back
             sleep(250);
             encoderDrive(.7, 0, 0, 10, 2.0);            //cross bridge with block #2 (into building)
-            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open all the way
+            sClawL.setPosition(.0); sClawR.setPosition(.2);                                         //open all the way
             sleep(250);
-            encoderDrive(.7, 4, 4, -4, 1.2);            //park under bridge (closer to neutral bridge)
+            //encoderDrive(.7, 0, 0, -3, 1.0);            //park under bridge (closer to neutral bridge)
+            encoderDrive(.5, 10, 10, 0, 2.0); //positioning to park
+            encoderDrive(.7, -10, 10, 0, 2.0);
+            dude111.setPower(.7);//dispense tape measure
+            sleep(2250);
+            dude111.setPower(0);
+
+
         }
 
         if (skyStonePos == 'C'){//theoretical--needs reevaluation after motorBR is reinstalled--edit values with /**/ (1 blockLength to left)
@@ -264,6 +273,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         }
 
         clawTower = hardwareMap.dcMotor.get("clawTower");
+        dude111 = hardwareMap.dcMotor.get("tapeTongue");
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
@@ -272,6 +282,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
+        dude111.setDirection(DcMotor.Direction.FORWARD);
         sClawL.setDirection(Servo.Direction.FORWARD);
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
@@ -345,8 +356,8 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFRTarget = motorFR.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
-            newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newFRTarget = motorFR.getCurrentPosition()     + (int) (rightInches   * COUNTS_PER_INCH);
+            newFLTarget = motorFL.getCurrentPosition()     + (int) (leftInches  * COUNTS_PER_INCH);
             newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
             newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
 			newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH / 1.5); //gear reduction
