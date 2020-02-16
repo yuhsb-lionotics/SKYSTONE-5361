@@ -15,13 +15,13 @@ public class ExtendTape5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor tapeExtender, clawTower;
+    private DcMotor dude111, clawTower;
     private Servo sClawR, sClawL, fGripR, fGripL, compressor; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
 
     public void runOpMode() {
         telemetry.addData("Status", "Initializing...");
         telemetry.update();
-        tapeExtender = hardwareMap.dcMotor.get("tapeTongue");
+        dude111 = hardwareMap.dcMotor.get("tapeTongue");
         clawTower = hardwareMap.dcMotor.get("clawTower");
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
@@ -41,22 +41,23 @@ public class ExtendTape5361 extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
-
         runtime.reset();
+
         telemetry.addData("Status", "Unsquishifying");
         compressor.setPosition(.98);//change if compressor malfunctions
         sleep(750);
         clawTower.setPower(-.2);
         sleep(400);
         clawTower.setPower(0);
+
         telemetry.addData("Status", "Waiting");
         telemetry.update();
         //wait until the end
-        while(runtime.seconds() < 27.5) {}
+        //while(runtime.seconds() < 22.5) { }
         telemetry.addData("Status", "Extending");
         telemetry.update();
-        tapeExtender.setPower(.7);
-        sleep(1500);
-        tapeExtender.setPower(0);
+        dude111.setPower(.7);
+        sleep(3000);
+        dude111.setPower(0);
     }
 }
