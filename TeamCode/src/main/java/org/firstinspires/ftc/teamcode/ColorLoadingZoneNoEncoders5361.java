@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+@Disabled
 @Autonomous(name="BlueLoading [NO ENCODERS]", group="Linear Opmode")
 public class ColorLoadingZoneNoEncoders5361 extends LinearOpMode {
     // Declare OpMode members.

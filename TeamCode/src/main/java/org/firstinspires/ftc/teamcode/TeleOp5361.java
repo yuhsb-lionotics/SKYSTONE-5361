@@ -61,24 +61,21 @@ public class TeleOp5361 extends LinearOpMode {
             //idle();
         }
     }
-
     public static void openClaw(Servo leftServo, Servo rightServo) {
         leftServo.setPosition(.4);
         rightServo.setPosition(.5);
     }
-
     public static void grabStone(Servo leftServo, Servo rightServo) {
         leftServo.setPosition(.8);
         rightServo.setPosition(.9);
     }
-
     public static void closeClaw(Servo leftServo, Servo rightServo) { // all the way
         leftServo.setPosition(1);
         rightServo.setPosition(1);
     }
     public static void wideClaw(Servo leftServo, Servo rightServo){
-        leftServo.setPosition(.0);
-        rightServo.setPosition(.2);
+        leftServo.setPosition(.15);
+        rightServo.setPosition(.25);
     }
 
     private void setUp(){

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Blue Building [TEST]", group="Linear Opmode")
+@Autonomous(name="Blue Building [Foundation]", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance
@@ -29,7 +29,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
     public void runOpMode() {
         setUp();
         waitForStart();
-        //runtime.reset();
+        runtime.reset();
 /*
         telemetry.addData("Status","Toward foundation");
         telemetry.update();
@@ -80,24 +80,35 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         telemetry.addData("Dinner", "Served <0/");
         telemetry.update();
         */  //<--old code (no encoders)
+        // run until the end of the match (driver presses STOP)
 
-        encoderDrive(0.7, -36, -36, 0, 4); // move towards foundation (fClaw facing foundation)
-        fGripL.setPosition(.78);
-        fGripR.setPosition(.78); //grab onto Foundation
-        sleep(500);
-        encoderDrive(0.7, 44, 44, 0, 5); // move towards foundation (fClaw facing foundation)
-        fGripL.setPosition(.78);
-        fGripR.setPosition(.78); //grab onto Foundation
-        sleep(400);
-        encoderDrive(0.7, -12, 12, 8, 3); //turning Foundation
-        fGripL.setPosition(.25);
-        fGripR.setPosition(.22); //unlatch Foundation
-        encoderDrive(0.7, 24, -24, -2, 4);
+        sClawL.setPosition(1.2); //yes, servos only go from [0,1]
+        sClawR.setPosition(1.2);
+
+        encoderDrive(0.5, -18, -18, 0, 4.0);// move towards foundation (motorBL facing foundation)
+        encoderDrive(0.5, 6.25, -6.25, 0, 2.0);//face foundation
+        encoderDrive(0.5, -12, -12, 0, 3.0);//into foundation
+        fGripL.setPosition(.78); fGripR.setPosition(.78); //grab onto Foundation
+        sleep(250);
+        encoderDrive(.7, 22, 22, 0, 5.0);//turn and pull back
+        encoderDrive(.7, -12.5, 12.5, 1, 2.0);
+        encoderDrive(.7, -24, -24, 0, 5.0);
+        fGripL.setPosition(.25); fGripR.setPosition(.22); //unlatch Foundation
+
+        encoderDrive(0.7, 3, 3, 0, 0.5);//parking
+        encoderDrive(0.7, -22, 22, 0, 4.0);
+
+        encoderDrive(0.7, 0, 0, 2, 0.7);
+
+        dude111.setPower(.7);//dispense tape measure
+        sleep(3500);
+        dude111.setPower(0);
 
     }
     private void setUp(){ //account for alliance
         telemetry.addData("Status", "Resetting Encoder");
         telemetry.update();
+
         if(getIsBlueAlliance()){
             motorBL = hardwareMap.dcMotor.get("motorBL");
             motorFL = hardwareMap.dcMotor.get("motorFL");
@@ -106,10 +117,10 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             strafeMotor = hardwareMap.dcMotor.get("motorM");
 
             motorBL.setDirection(DcMotor.Direction.REVERSE);
-            motorBR.setDirection(DcMotor.Direction.FORWARD);
             motorFL.setDirection(DcMotor.Direction.FORWARD);
+            motorBR.setDirection(DcMotor.Direction.FORWARD);
             motorFR.setDirection(DcMotor.Direction.REVERSE);
-            strafeMotor.setDirection(DcMotor.Direction.FORWARD);
+            strafeMotor.setDirection(DcMotor.Direction.FORWARD); //Positive values go to the left
         } else {
             motorBR = hardwareMap.dcMotor.get("motorBL");
             motorFR = hardwareMap.dcMotor.get("motorFL");
@@ -117,12 +128,13 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
             motorFL = hardwareMap.dcMotor.get("motorFR");
             strafeMotor = hardwareMap.dcMotor.get("motorM");
 
-            motorBL.setDirection(DcMotor.Direction.FORWARD);
             motorBR.setDirection(DcMotor.Direction.REVERSE);
-            motorFL.setDirection(DcMotor.Direction.REVERSE);
             motorFR.setDirection(DcMotor.Direction.FORWARD);
+            motorBL.setDirection(DcMotor.Direction.FORWARD);
+            motorFL.setDirection(DcMotor.Direction.REVERSE);
             strafeMotor.setDirection(DcMotor.Direction.REVERSE);
         }
+
         clawTower = hardwareMap.dcMotor.get("clawTower");
         dude111 = hardwareMap.dcMotor.get("tapeTongue");
         sClawL = hardwareMap.servo.get("blockClawL");
@@ -130,7 +142,6 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
         compressor = hardwareMap.servo.get("compressor");
-
 
         //switch these if they are going backward
         clawTower.setDirection(DcMotor.Direction.FORWARD);
@@ -141,7 +152,11 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         fGripR.setDirection(Servo.Direction.FORWARD);
         compressor.setDirection(Servo.Direction.FORWARD);
 
+
         //resetting encoders & waiting
+        telemetry.addData("Status", "Resetting Encoder");
+        telemetry.update();
+
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -156,6 +171,13 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         fGripL.setPosition(0.19);
         fGripR.setPosition(0.19);
+        TeleOp5361.closeClaw(sClawL, sClawR);
+        compressor.setPosition(.98);//change if compressor malfunctions
+        sleep(750);
+        clawTower.setPower(-.2);
+        sleep(400);
+        clawTower.setPower(0);
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
@@ -173,8 +195,8 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFRTarget = motorFR.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
-            newFLTarget = motorFL.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newFRTarget = motorFR.getCurrentPosition()     + (int) (rightInches   * COUNTS_PER_INCH);
+            newFLTarget = motorFL.getCurrentPosition()     + (int) (leftInches  * COUNTS_PER_INCH);
             newBLTarget = motorBL.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
             newBRTarget = motorBR.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
             newSMTarget = strafeMotor.getCurrentPosition() + (int) (strafeInches * COUNTS_PER_INCH / 1.5); //gear reduction
