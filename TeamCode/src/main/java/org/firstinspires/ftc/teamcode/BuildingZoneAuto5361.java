@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Blue Foundation [TEST]", group="Linear Opmode")
+@Autonomous(name="Blue Building [TEST]", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     // public boolean isBlueAlliance = true; //Set to false if red alliance

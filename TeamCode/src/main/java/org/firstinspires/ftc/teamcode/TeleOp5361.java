@@ -76,6 +76,10 @@ public class TeleOp5361 extends LinearOpMode {
         leftServo.setPosition(1);
         rightServo.setPosition(1);
     }
+    public static void wideClaw(Servo leftServo, Servo rightServo){
+        leftServo.setPosition(.0);
+        rightServo.setPosition(.2);
+    }
 
     private void setUp(){
         telemetry.addData("Status", "Initialized - Setting Up");

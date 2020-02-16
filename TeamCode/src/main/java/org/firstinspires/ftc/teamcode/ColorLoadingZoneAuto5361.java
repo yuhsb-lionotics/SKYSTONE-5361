@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Blue Stones [TEST]", group="Linear Opmode")
+@Autonomous(name="Blue Loading [TEST]", group="Linear Opmode")
 public class ColorLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -137,7 +137,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
 
-        sClawL.setPosition(1.2);
+        sClawL.setPosition(1.2); //yes, servos only go from [0,1]
         sClawR.setPosition(1.2);
 
         //set stone claw all the way closed
@@ -179,24 +179,24 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
 
         if (skyStonePos == 'B'){//theoretical--needs reevaluation after motorBR is reinstalled--edit values with /**/ (2 blockLength to left)
-            encoderDrive(.7, 0, 0, 24/**/, 2.7);            //cross bridge (into building)
+            encoderDrive(.7, 0, 0, 24/*-2block*/, 2.7);            //cross bridge (into building)
             encoderDrive(.5, -2, -2, 0, 1.0);           //move back
-            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open claw all the way open
-            encoderDrive(.5, 0, 0, -9/**/, 2.0);           //cross bridge) to 2nd block (into loading)
+            TeleOp5361.wideClaw(sClawL, sClawR);                                         //open claw all the way
+            encoderDrive(.5, 0, 0, -8/*-3block*/, 2.0);           //cross bridge) to 2nd block (into loading)
             TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
             encoderDrive(.5, 16, 16, 0, 2.0);          //towards block #2
             TeleOp5361.grabStone(sClawL, sClawR);                                                   //grab block #2
             encoderDrive(.5, -16, -16, 0, 2.0);         //move back
-            encoderDrive(.7, 0, 0, 16/**/, 2.0);            //cross bridge #2 (into building)
-            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open all the way
-            encoderDrive(.7, 7, 7, -4/**/, 1.2);            //park under bridge (closer to neutral bridge)
+            encoderDrive(.7, 0, 0, 16/*+3block*/, 2.0);            //cross bridge #2 (into building)
+            TeleOp5361.wideClaw(sClawL, sClawR);                                         //open all the way
+            encoderDrive(.7, 7, 7, -4/*0block*/, 1.2);            //park under bridge (closer to neutral bridge)
         }
 
 
         if (skyStonePos == 'W') {//we will not be going for a 2nd skystone if pos is against wall; too difficult to get with our claw setup
             sleep(250);
             encoderDrive(.5, 0, 0, 18, 2.5);            //cross bridge with block #1 (into building)
-            sClawL.setPosition(.0); sClawR.setPosition(.2);                                         //open claw all the way open
+            TeleOp5361.wideClaw(sClawL, sClawR);                                         //open claw all the way
             sleep(250);
             encoderDrive(.5, 0, 0, -8, 1.8);           //cross bridge) to 2nd block (into loading)
             TeleOp5361.openClaw(sClawL, sClawR);                                                    //open claw
@@ -206,7 +206,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             encoderDrive(.5, -16, -16, 0, 2.0);         //move back
             sleep(250);
             encoderDrive(.7, 0, 0, 10, 2.0);            //cross bridge with block #2 (into building)
-            sClawL.setPosition(.0); sClawR.setPosition(.2);                                         //open all the way
+            TeleOp5361.wideClaw(sClawL, sClawR);                                         //open all the way
             sleep(250);
             //encoderDrive(.7, 0, 0, -3, 1.0);            //park under bridge (closer to neutral bridge)
             encoderDrive(.5, 10, 10, 0, 2.0); //positioning to park
@@ -221,14 +221,14 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         if (skyStonePos == 'C'){//theoretical--needs reevaluation after motorBR is reinstalled--edit values with /**/ (1 blockLength to left)
             encoderDrive(.7, 0, 0, 24/**/, 2.7);            //cross bridge (into building)
             encoderDrive(.5, -2, -2, 0, 1.0);           //move back
-            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open claw all the way open
+            TeleOp5361.wideClaw(sClawL, sClawR);                                         //open claw all the way
             encoderDrive(.5, 0, 0, -9/**/, 2.0);           //cross bridge) to 2nd block (into loading)
             TeleOp5361.openClaw(sClawL, sClawR);                                     //open claw
             encoderDrive(.5, 16, 16, 0, 2.0);          //towards block #2
             TeleOp5361.grabStone(sClawL, sClawR);                                                   //grab block #2
             encoderDrive(.5, -16, -16, 0, 2.0);         //move back
             encoderDrive(.7, 0, 0, 16/**/, 2.0);            //cross bridge #2 (into building)
-            sClawL.setPosition(.0); sClawR.setPosition(.1);                                         //open all the way
+            TeleOp5361.wideClaw(sClawL, sClawR);                                         //open all the way
             encoderDrive(.7, 7, 7, -4/**/, 1.2);            //park under bridge (closer to neutral bridge)
         }
 

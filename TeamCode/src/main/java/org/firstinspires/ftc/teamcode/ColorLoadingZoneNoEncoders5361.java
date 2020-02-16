@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Blue Loading No Encoders", group="Linear Opmode")
+@Autonomous(name="BlueLoading [NO ENCODERS]", group="Linear Opmode")
 public class ColorLoadingZoneNoEncoders5361 extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
