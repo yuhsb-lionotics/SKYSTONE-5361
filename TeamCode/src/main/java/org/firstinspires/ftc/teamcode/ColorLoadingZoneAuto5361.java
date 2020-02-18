@@ -426,15 +426,18 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
                     ((motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy()) || strafeMotor.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
+                /* telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
                         newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);
                 telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d :%7d",
                         motorFR.getCurrentPosition(),
                         motorFL.getCurrentPosition(),
                         motorBL.getCurrentPosition(),
                         motorBR.getCurrentPosition(),
-						strafeMotor.getCurrentPosition());
+						strafeMotor.getCurrentPosition()); */
             }
+
+            telemetry.addData("Encoder Drive", "Finished in %f seconds", runtime.seconds());
+            telemetry.update();
 
             // Stop all motion;
             motorFR.setPower(0);
