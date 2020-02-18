@@ -151,6 +151,8 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         encoderDrive(.2, -3, -3, 0.0, 1.0);         //back up
 
 
+
+            //2/17/20--fix all lateral movements, tweak auto
         char skyStonePos = 'Q'; //may be unnecessary but can't hurt
 
         if (skystonePosition == "Center") {
