@@ -82,8 +82,13 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
         */  //<--old code (no encoders)
         // run until the end of the match (driver presses STOP)
 
-        sClawL.setPosition(1.2); //yes, servos only go from [0,1]
-        sClawR.setPosition(1.2);
+        //unsquish and move servos into position
+        TeleOp5361.closeClaw(sClawL, sClawR);
+        compressor.setPosition(.98);//change if compressor malfunctions
+        sleep(750);
+        clawTower.setPower(-.2);
+        sleep(400);
+        clawTower.setPower(0);
 
         encoderDrive(0.5, -18, -18, 0, 4.0);// move towards foundation (motorBL facing foundation)
         encoderDrive(0.5, 6.25, -6.25, 0, 2.0);//face foundation
@@ -97,8 +102,7 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         encoderDrive(0.7, 3, 3, 0, 0.5);//parking
         encoderDrive(0.7, -22, 22, 0, 4.0);
-
-        encoderDrive(0.7, 0, 0, 2, 0.7);
+        encoderDrive(0.7, 0, 0, 2, 0.4);
 
         dude111.setPower(.7);//dispense tape measure
         sleep(3500);
@@ -171,12 +175,6 @@ public class BuildingZoneAuto5361 extends LinearOpMode {
 
         fGripL.setPosition(0.19);
         fGripR.setPosition(0.19);
-        TeleOp5361.closeClaw(sClawL, sClawR);
-        compressor.setPosition(.98);//change if compressor malfunctions
-        sleep(750);
-        clawTower.setPower(-.2);
-        sleep(400);
-        clawTower.setPower(0);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

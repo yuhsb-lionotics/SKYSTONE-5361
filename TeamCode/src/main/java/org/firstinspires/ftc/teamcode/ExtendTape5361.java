@@ -37,13 +37,15 @@ public class ExtendTape5361 extends LinearOpMode {
         fGripR.setDirection(Servo.Direction.FORWARD);
         compressor.setDirection(Servo.Direction.FORWARD);
 
-        TeleOp5361.closeClaw(sClawL, sClawR);
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
         runtime.reset();
 
         telemetry.addData("Status", "Unsquishifying");
+        telemetry.update();
+        TeleOp5361.closeClaw(sClawL, sClawR);
         compressor.setPosition(.98);//change if compressor malfunctions
         sleep(750);
         clawTower.setPower(-.2);
@@ -53,11 +55,11 @@ public class ExtendTape5361 extends LinearOpMode {
         telemetry.addData("Status", "Waiting");
         telemetry.update();
         //wait until the end
-        //while(runtime.seconds() < 22.5) { }
+        while(runtime.seconds() < 22.5) { }
         telemetry.addData("Status", "Extending");
         telemetry.update();
         dude111.setPower(.7);
-        sleep(3000);
+        sleep(3500);
         dude111.setPower(0);
     }
 }
