@@ -145,8 +145,8 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sleep(200);
 
         //set stone claw all the way closed
-        //encoderDrive(0.3, 6, 6, 0, 2);              //slow at start (idk why)
-        encoderDrive(0.7, 22, 22, 0, 3.5);          //towards stones
+        encoderDrive(0.3, 6, 6, 0, 2);              //slow at start - it shakes if it starts fast against the wall
+        encoderDrive(0.7, 16, 16, 0, 3.5);          //towards stones
         String skystonePosition = detectSkystone();
         encoderDrive(.2, -3, -3, 0.0, 1.0);         //back up
 

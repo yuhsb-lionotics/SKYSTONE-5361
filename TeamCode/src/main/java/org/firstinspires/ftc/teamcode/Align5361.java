@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Instructions:
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Align5361 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor motorBL, motorBR, motorFL, motorFR;
+    private Servo sClawR, sClawL;
     private static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
@@ -22,10 +24,11 @@ public class Align5361 extends LinearOpMode {
     @Override
     public void runOpMode() {
         setUp();
+        TeleOp5361.wideClaw(sClawL,sClawR);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        encoderDrive(0.3, -23, -23, 4);
+        encoderDrive(0.3, -21, -21, 4);
     }
 
     private void setUp(){ //account for alliance
@@ -40,6 +43,15 @@ public class Align5361 extends LinearOpMode {
         motorFL = hardwareMap.dcMotor.get("motorFL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFR = hardwareMap.dcMotor.get("motorFR");
+        sClawL = hardwareMap.servo.get("blockClawL");
+        sClawR = hardwareMap.servo.get("blockClawR");
+
+        motorBR.setDirection(DcMotor.Direction.FORWARD);
+        motorFL.setDirection(DcMotor.Direction.FORWARD);
+        motorFR.setDirection(DcMotor.Direction.REVERSE);
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
+        sClawL.setDirection(Servo.Direction.FORWARD);
+        sClawR.setDirection(Servo.Direction.REVERSE);
 
         //resetting encoders & waiting
         telemetry.addData("Status", "Resetting Encoder");
