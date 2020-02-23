@@ -28,7 +28,8 @@ public class Align5361 extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        encoderDrive(0.3, -21, -21, 4);
+        encoderDrive(0.3, -20, -20, 4);
+        encoderDrive(0.1,-2,-2,1.5);
     }
 
     private void setUp(){ //account for alliance
