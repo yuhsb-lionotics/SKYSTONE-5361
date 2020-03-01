@@ -33,6 +33,8 @@ public class TeleOp5361 extends LinearOpMode {
                                                //Press Y on the controller to change the mode.
     //private boolean yWasPressed = false;
     //private String driverMode = "Power"; //shifts between "Power" and "Precision" motor controls //NO LONGER USING
+    private Servo elisheva;
+    private boolean mormon = true;
 
 
     @Override
@@ -59,6 +61,20 @@ public class TeleOp5361 extends LinearOpMode {
             else {telemetry.addData("Skystone", "Center");}
             telemetry.update();
             //idle();
+
+            if(gamepad2.right_bumper) {
+                while(gamepad2.right_bumper);
+                if (mormon) {
+                    elisheva.setPosition(.65);
+                    mormon = false;
+                } else{
+                    elisheva.setPosition(.55);
+                    mormon = true;
+                }
+            }
+            if(gamepad2.left_bumper){
+                elisheva.setPosition(1);
+            }
         }
     }
     public static void openClaw(Servo leftServo, Servo rightServo) {
@@ -90,10 +106,12 @@ public class TeleOp5361 extends LinearOpMode {
         clawTower = hardwareMap.dcMotor.get("clawTower");
         dude111 = hardwareMap.dcMotor.get("tapeTongue");
 
+
         sClawL = hardwareMap.servo.get("blockClawL");
         sClawR = hardwareMap.servo.get("blockClawR");
         fGripL = hardwareMap.servo.get("foundationGripL");
         fGripR = hardwareMap.servo.get("foundationGripR");
+        elisheva = hardwareMap.servo.get("capstoneArm");
         compressor = hardwareMap.servo.get("compressor");
         leftColor = hardwareMap.colorSensor.get("colorL");
         rightColor = hardwareMap.colorSensor.get("colorR");
@@ -112,6 +130,7 @@ public class TeleOp5361 extends LinearOpMode {
         sClawR.setDirection(Servo.Direction.REVERSE);
         fGripL.setDirection(Servo.Direction.REVERSE);
         fGripR.setDirection(Servo.Direction.FORWARD);
+        elisheva.setDirection(Servo.Direction.FORWARD);
         compressor.setDirection(Servo.Direction.FORWARD);
 
 
