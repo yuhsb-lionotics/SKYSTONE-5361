@@ -65,15 +65,15 @@ public class TeleOp5361 extends LinearOpMode {
             if(gamepad2.right_bumper) {
                 while(gamepad2.right_bumper);
                 if (mormon) {
-                    elisheva.setPosition(.65);
+                    elisheva.setPosition(.35);
                     mormon = false;
                 } else{
-                    elisheva.setPosition(.55);
+                    elisheva.setPosition(.30);
                     mormon = true;
                 }
             }
             if(gamepad2.left_bumper){
-                elisheva.setPosition(1);
+                elisheva.setPosition(.9);
             }
         }
     }

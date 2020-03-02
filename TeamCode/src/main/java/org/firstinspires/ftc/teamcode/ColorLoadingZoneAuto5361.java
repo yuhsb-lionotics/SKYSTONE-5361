@@ -145,11 +145,11 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sleep(200);
 
         //set stone claw all the way closed
-        encoderDrive(0.3, 6, 6, 0, 2);              //slow at start - it shakes if it starts fast against the wall
-        encoderDrive(0.7, 16, 16, 0, 3.5);          //towards stones
-        encoderDrive(.2, 0, 0, .6, 0.8);
+        encoderDrive(0.3, 6, 6, 0, 5);              //slow at start - it shakes if it starts fast against the wall
+        encoderDrive(0.7, 15.5, 15.5, 0, 5);          //towards stones
+        encoderDrive(.2, 0, 0, -5, 5);            //moving to 5th block
         String skystonePosition = detectSkystone();
-        encoderDrive(.2, -3, -3, 0.0, 1.0);         //back up
+        encoderDrive(.2, -3, -3, 0.0, 5);         //back up
 
 
 
@@ -166,22 +166,22 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
-            encoderDrive(.2, 0, 0, 1, 0.8);
+            encoderDrive(0.2, 0, 0, 1, 5);
             sleep(500);
         }
         if (skystonePosition == "Wall")   {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.2, 0, 0, -1, 0.8);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
+            encoderDrive(.2, 0, 0, -1, 5);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
             sleep(500);
         }
 
         //move#0: grasping stone#1
         TeleOp5361.openClaw(sClawL, sClawR);
-        encoderDrive(.5, 14, 14, 0, 2.0);
+        encoderDrive(.5, 14, 14, 0, 5);
         TeleOp5361.grabStone(sClawL, sClawR);
-        encoderDrive(.5, -19, -19, 0, 2.5);
+        encoderDrive(.5, -15, -15, 0, 5);
 
         /**
          * SKYSTONE AUTONOMOUS COMMENTS
@@ -192,77 +192,77 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         if (skyStonePos == 'B'){
             /*move#1*/{
-            encoderDrive(.5, 0, 0, 10, 2.5);//-2block
+            encoderDrive(.5, 0, 0, 6, 5);//-2block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#2*/{
-            encoderDrive(.5, 0, 0, -44, 4.5 );//-3block
-            encoderDrive(.5, 0, 0, 6, 1);
+            encoderDrive(.5, 0, .5, -40, 5 );//-3block
+            encoderDrive(.5, 0, 0, 2, 5);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#3*/{
-            encoderDrive(.5, 18, 18, 0, 3.25);
+            encoderDrive(.5, 18, 18, 0, 5);
             TeleOp5361.grabStone(sClawL, sClawR);}
 
             /*move#4*/{
-            encoderDrive(.5, -20, -20, 0, 3.5);
+            encoderDrive(.5, -20, -20, 0, 5);
             sleep(250);
-            encoderDrive(.5, 0, 0, 16, 3.0);//+3block
+            encoderDrive(.5, 0, 0, 16, 5);//+3block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
         }
         if (skyStonePos == 'W') {//1 skystone, 1 stone
             /*move#1*/{
-            encoderDrive(.5, 0, 0, 20, 2.0);
+            encoderDrive(.5, 0, 0, 20, 5);
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#2*/{
-            encoderDrive(.5, 0, 0, -38,3.75);
+            encoderDrive(.5, 0, 0, -38,5);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#3*/{
-            encoderDrive(.5, 18, 18, 0, 3.25);
+            encoderDrive(.5, 18, 18, 0, 5);
             TeleOp5361.grabStone(sClawL, sClawR);}
 
             /*move#4*/{
-            encoderDrive(.5, -26, -26, 0, 3.5);
+            encoderDrive(.5, -26, -26, 0, 5);
             sleep(250);
-            encoderDrive(.5, 0, 0, 10, 2.0);
+            encoderDrive(.5, 0, 0, 10, 5);
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
         }
         if (skyStonePos == 'C'){
             /*move#1*/{
-            encoderDrive(.5, 0, 0, 22, 2.7);//-1block
+            encoderDrive(.5, 0, 0, 22, 5);//-1block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#2*/{
-            encoderDrive(.5, 0, 0, -28,3.5);//-3block
-            encoderDrive(.5, 0, 0, 1, 0.5);
+            encoderDrive(.5, 0, 0, -28,5);//-3block
+            encoderDrive(.5, 0, 0, 1, 5);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#3*/{
-            encoderDrive(.5, 16, 16, 0, 3.0);
+            encoderDrive(.5, 16, 16, 0, 5);
             TeleOp5361.grabStone(sClawL, sClawR);}
 
             /*move#4*/{
-            encoderDrive(.5, -20, -20, 0, 3.5);
+            encoderDrive(.5, -20, -20, 0, 5);
             sleep(250);
-            encoderDrive(.5, 0, 0, 18, 3.5);//+3block
+            encoderDrive(.5, 0, 0, 18, 5);//+3block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
         }
 
         //parking
         //encoderDrive(.7, 0, 0, -3, 1.0);
-        encoderDrive(.5, 10, 10, 0, 2.0);
-        encoderDrive(.5, -11, 11, 0, 2.0);
+        encoderDrive(.5, 10, 10, 0, 5);
+        encoderDrive(.5, -11, 11, 0, 5);
         dude111.setPower(.7);//dispense tape measure
         sleep(2400);
         dude111.setPower(0);
