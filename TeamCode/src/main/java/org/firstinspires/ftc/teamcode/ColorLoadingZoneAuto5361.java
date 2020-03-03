@@ -138,16 +138,16 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         //unsquish and move servos into position
         TeleOp5361.closeClaw(sClawL, sClawR);
         compressor.setPosition(.98);//change if compressor malfunctions
-        sleep(750);
-        clawTower.setPower(-.2);
-        sleep(400);
+        sleep(500);
+        clawTower.setPower(-.5);
+        sleep(150);
         clawTower.setPower(0);
-        sleep(200);
+        sleep(100);
 
         //set stone claw all the way closed
         encoderDrive(0.3, 6, 6, 0, 5);              //slow at start - it shakes if it starts fast against the wall
-        encoderDrive(0.7, 15.5, 15.5, 0, 5);          //towards stones
-        encoderDrive(.2, 0, 0, -5, 5);            //moving to 5th block
+        encoderDrive(0.7, 16.5, 16.5, 0, 5);          //towards stones
+        encoderDrive(.4, 0, 0, 5, 5);            //moving to 5th block
         String skystonePosition = detectSkystone();
         encoderDrive(.2, -3, -3, 0.0, 5);         //back up
 
@@ -166,22 +166,22 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
-            encoderDrive(0.2, 0, 0, 1, 5);
+            encoderDrive(0.6, 0, 0, 9.5, 5);
             sleep(500);
         }
         if (skystonePosition == "Wall")   {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.2, 0, 0, -1, 5);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
+            encoderDrive(.6, 0, 0, -9.5, 5);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
             sleep(500);
         }
 
         //move#0: grasping stone#1
         TeleOp5361.openClaw(sClawL, sClawR);
-        encoderDrive(.5, 14, 14, 0, 5);
+        encoderDrive(.7, 9, 9, 0, 5);
         TeleOp5361.grabStone(sClawL, sClawR);
-        encoderDrive(.5, -15, -15, 0, 5);
+        encoderDrive(.7, -13, -13, 0, 5);
 
         /**
          * SKYSTONE AUTONOMOUS COMMENTS
@@ -192,46 +192,46 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         if (skyStonePos == 'B'){
             /*move#1*/{
-            encoderDrive(.5, 0, 0, 6, 5);//-2block
+            encoderDrive(.7, 0, 0, 50, 10);//-2block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#2*/{
-            encoderDrive(.5, 0, .5, -40, 5 );//-3block
-            encoderDrive(.5, 0, 0, 2, 5);
+            encoderDrive(.7, 0, 0, -80, 10 );//-3block
+            encoderDrive(.7, 0, 0.5, 0, 5);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#3*/{
-            encoderDrive(.5, 18, 18, 0, 5);
+            encoderDrive(.7, 12, 12, 0, 5);
             TeleOp5361.grabStone(sClawL, sClawR);}
 
             /*move#4*/{
-            encoderDrive(.5, -20, -20, 0, 5);
+            encoderDrive(.7, -10, -10.5, 0, 5);
             sleep(250);
-            encoderDrive(.5, 0, 0, 16, 5);//+3block
+            encoderDrive(.7, 0, 0, 80, 10);//+3block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
         }
         if (skyStonePos == 'W') {//1 skystone, 1 stone
             /*move#1*/{
-            encoderDrive(.5, 0, 0, 20, 5);
+            encoderDrive(.5, 0, 0, 69, 10);
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#2*/{
-            encoderDrive(.5, 0, 0, -38,5);
+            encoderDrive(.5, 0, 0, -80,10);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#3*/{
-            encoderDrive(.5, 18, 18, 0, 5);
+            encoderDrive(.5, 15, 15, 0, 5);
             TeleOp5361.grabStone(sClawL, sClawR);}
 
             /*move#4*/{
-            encoderDrive(.5, -26, -26, 0, 5);
+            encoderDrive(.5, -2, -2, 0, 5);
             sleep(250);
-            encoderDrive(.5, 0, 0, 10, 5);
+            encoderDrive(.5, 0, 0, 80, 10);
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
         }
@@ -242,29 +242,29 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             sleep(250);}
 
             /*move#2*/{
-            encoderDrive(.5, 0, 0, -28,5);//-3block
-            encoderDrive(.5, 0, 0, 1, 5);
+            encoderDrive(.5, 0, 0, -80,10);//-3block
+            encoderDrive(.5, 0, 0, 0, 5);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
             /*move#3*/{
-            encoderDrive(.5, 16, 16, 0, 5);
+            encoderDrive(.5, 15, 15, 0, 5);
             TeleOp5361.grabStone(sClawL, sClawR);}
 
             /*move#4*/{
             encoderDrive(.5, -20, -20, 0, 5);
             sleep(250);
-            encoderDrive(.5, 0, 0, 18, 5);//+3block
+            encoderDrive(.5, 0, 0, 80, 10);//+3block
             TeleOp5361.wideClaw(sClawL, sClawR);
             sleep(250);}
         }
 
         //parking
         //encoderDrive(.7, 0, 0, -3, 1.0);
-        encoderDrive(.5, 10, 10, 0, 5);
-        encoderDrive(.5, -11, 11, 0, 5);
-        dude111.setPower(.7);//dispense tape measure
-        sleep(2400);
+        //dispense tape measure
+        dude111.setPower(.7);
+        encoderDrive(.7, -5, 50, 0, 5);
+        sleep(400);
         dude111.setPower(0);
 
     }
@@ -424,7 +424,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    ((motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy()) || strafeMotor.isBusy())) {
+                    ((motorFR.isBusy() && motorFL.isBusy() && motorBL.isBusy() && motorBR.isBusy()) || (strafeMotor.isBusy()))) {
 
                 // Display it for the driver.
                 /* telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
