@@ -139,8 +139,8 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         TeleOp5361.closeClaw(sClawL, sClawR);
         compressor.setPosition(.98);//change if compressor malfunctions
         sleep(500);
-        clawTower.setPower(-.5);
-        sleep(150);
+        clawTower.setPower(-.7);
+        sleep(100);
         clawTower.setPower(0);
         sleep(100);
 
@@ -182,6 +182,10 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
         sleep(100);
         encoderDrive(.7, 9, 9, 0, 5);
         TeleOp5361.grabStone(sClawL, sClawR);
+        clawTower.setPower(.7);
+        sleep(150);
+        clawTower.setPower(0);
+        sleep(100);
         encoderDrive(.7, -11, -11, 0, 5);
 
         /**
@@ -201,14 +205,22 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             encoderDrive(.7, 0, 0, -80, 10 );//-3block
             encoderDrive(.7, 0, 0.5, 0, 5);
             TeleOp5361.openClaw(sClawL, sClawR);
-            sleep(250);}
+            sleep(150);}
 
             /*move#3*/{
+                clawTower.setPower(-.7);
+                sleep(150);
+                clawTower.setPower(0);
+                sleep(100);
             encoderDrive(.7, 12, 12, 0, 5);
-            TeleOp5361.grabStone(sClawL, sClawR);}
+            TeleOp5361.grabStone(sClawL, sClawR);
+                clawTower.setPower(.7);
+                sleep(150);
+                clawTower.setPower(0);
+                sleep(100);}
 
             /*move#4*/{
-            encoderDrive(.7, -12, -12.5, 0, 10);
+            encoderDrive(.7, -13, -13.5, 0, 10);
             sleep(250);
             encoderDrive(.7, 0, 0, 80, 10);//+3block
             TeleOp5361.wideClaw(sClawL, sClawR);
