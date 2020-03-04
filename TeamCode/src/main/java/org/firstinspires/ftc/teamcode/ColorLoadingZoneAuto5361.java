@@ -203,7 +203,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
             /*move#2*/{
             encoderDrive(.7, 0, 0, -80.5, 10 );//-3block
-            encoderDrive(.3, 0, 0, 0, 5);
+            sleep(200);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(150);}
 
@@ -212,11 +212,13 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
                 sleep(150);
                 clawTower.setPower(0);
                 sleep(200);
-            encoderDrive(.4, 10, 10, 0, 5);
-            TeleOp5361.grabStone(sClawL, sClawR);
+                encoderDrive(.4, 10, 10, 0, 5);
+                TeleOp5361.grabStone(sClawL, sClawR);
                 clawTower.setPower(.7);
+
                 sleep(150);
                 clawTower.setPower(0);
+
                 }
 
             /*move#4*/{
