@@ -137,7 +137,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
         //unsquish and move servos into position
         TeleOp5361.closeClaw(sClawL, sClawR);
-        compressor.setPosition(.98);//change if compressor malfunctions
+        compressor.setPosition(1);//change if compressor malfunctions
         sleep(300);
         clawTower.setPower(-.7);
         sleep(100);
@@ -172,7 +172,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
-            encoderDrive(.7, 0, 0, -9.5, 5);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
+            encoderDrive(.7, 0, 0, -10.5, 5);//[.2,1,1 sometimes overshoots 1/2 block]get marmon to fix motorM
             sleep(250);
         }
 
@@ -265,7 +265,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
 
             /*move#2*/{
             encoderDrive(.7, 0, 0, -89.5,10);//-3block
-            encoderDrive(.5, 0, .7, 0, 5);
+            encoderDrive(.5, 0, .0, 0, 5);
             TeleOp5361.openClaw(sClawL, sClawR);
             sleep(250);}
 
@@ -282,7 +282,7 @@ public class ColorLoadingZoneAuto5361 extends LinearOpMode {
                 sleep(100);}
 
             /*move#4*/{
-                encoderDrive(.7, -11, -11.5, 0, 10);
+                encoderDrive(.7, -11, -11, 0, 10);
                 sleep(250);
                 encoderDrive(.7, 0, 0, 89.5, 10);//+3block
                 TeleOp5361.wideClaw(sClawL, sClawR);
