@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+@Disabled
 @Autonomous(name="Extend Tape Auto", group="Linear Opmode")
 public class ExtendTape5361 extends LinearOpMode {
     // Declare OpMode members.

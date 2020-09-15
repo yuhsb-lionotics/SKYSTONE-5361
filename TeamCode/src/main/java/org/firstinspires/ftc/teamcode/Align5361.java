@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Align the robot in front of the center stone without squishing the squishy.
  * Run this code to move the robot directly backward so it will line up.
  */
+@Disabled
 @Autonomous(name="Align with stone", group="Linear Opmode")
 public class Align5361 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();

@@ -15,7 +15,7 @@ public class ClubFairAuto extends LinearOpMode {
     private Servo sClawR, sClawL, fGripR, fGripL, compressor; //fGrip : foundationGripRight/Left, sClaw : stoneClawRight/Left/Middle
     private ColorSensor leftColor, rightColor;
 
-    private final double SKYSTONE_DISTANCE = 18; //inches
+    private final double SKYSTONE_DISTANCE = 3; //inches
     private static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
@@ -38,10 +38,10 @@ public class ClubFairAuto extends LinearOpMode {
         sleep(100);
         clawTower.setPower(0);
 
-        encoderDrive(0.3, 3, 3, 0, 5);              //slow at start - it shakes if it starts fast against the wall
-        encoderDrive(0.7, SKYSTONE_DISTANCE-3, SKYSTONE_DISTANCE-3, 0, 5);    //towards stones
-        encoderDrive(.7, 0, 0, 5.5, 5);            //moving to 5th block
+        sleep(300);
+        encoderDrive(0.7,SKYSTONE_DISTANCE,SKYSTONE_DISTANCE,0,5);
         String skystonePosition = detectSkystone();
+        sleep(1000);
         encoderDrive(.7, -3, -3, 0.0, 5);         //back up
 
         char skyStonePos = 'Q'; //may be unnecessary but can't hurt
@@ -72,7 +72,7 @@ public class ClubFairAuto extends LinearOpMode {
         sleep(100);
         encoderDrive(.4, 7, 7, 0, 5);
         TeleOp5361.grabStone(sClawL, sClawR);
-        sleep(100);
+        sleep(400);
         clawTower.setPower(.7);
         sleep(400);
         clawTower.setPower(0);
@@ -134,12 +134,9 @@ public class ClubFairAuto extends LinearOpMode {
         strafeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 //start loading auto
-        //sClawL.setPosition(0.6); //open perfect
-        //sClawR.setPosition(0.75);
+        TeleOp5361.wideClaw(sClawL,sClawR);
         fGripL.setPosition(0.19);
         fGripR.setPosition(0.19);
-
-
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

@@ -151,8 +151,8 @@ public class ClubFairTeleOp extends LinearOpMode {
         double leftPower; double rightPower;
 
         //Assign values to leftPower and rightPower
-        leftPower       =   (-gamepad1.left_stick_y)*.4;
-        rightPower      =   (-gamepad1.right_stick_y)*.4;
+        leftPower       =   (-gamepad1.left_stick_y)*.5;
+        rightPower      =   (-gamepad1.right_stick_y)*.5;
 
         //Drive Controls [ALPHA]
         motorBL.setPower(leftPower); //joysticks power
@@ -179,8 +179,9 @@ public class ClubFairTeleOp extends LinearOpMode {
         else                  {clawTower.setPower(0);} //tower idle
 
         if      (gamepad1.dpad_left)  {
-            tapeMeasure.setPower(-.7);}
+            tapeMeasure.setPower(.7);}
         else if (gamepad1.dpad_right) {
             tapeMeasure.setPower (-.7);}
+        else {tapeMeasure.setPower(0);}
     }
 }

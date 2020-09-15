@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+@Disabled
 @Autonomous(name="Blue Building [Foundation]", group="Linear Opmode")
 public class BuildingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.

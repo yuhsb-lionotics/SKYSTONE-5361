@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+@Disabled
 @Autonomous(name="Blue Loading [Skystones]", group="Linear Opmode")
 public class ColorLoadingZoneAuto5361 extends LinearOpMode {
     // Declare OpMode members.
