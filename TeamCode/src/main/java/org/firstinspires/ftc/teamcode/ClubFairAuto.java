@@ -52,14 +52,14 @@ public class ClubFairAuto extends LinearOpMode {
             telemetry.update();
             sleep(250);
         }
-        if (skystonePosition == "Bridge") {
+        if (skystonePosition == "Left") {
             skyStonePos = 'B';
             telemetry.addData("Block Pos:", "Bridge");
             telemetry.update();
             encoderDrive(.7, 0, 0, 9.5, 5);
             sleep(250);
         }
-        if (skystonePosition == "Wall")   {
+        if (skystonePosition == "Right")   {
             skyStonePos = 'W';
             telemetry.addData("Block Pos:", "Wall");
             telemetry.update();
